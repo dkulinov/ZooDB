@@ -1,212 +1,167 @@
--- MySQL dump 10.13  Distrib 8.0.19, for osx10.15 (x86_64)
---
--- Host: localhost    Database: zoo
--- ------------------------------------------------------
--- Server version	8.0.19
+CREATE DATABASE `zoo`;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+USE `zoo`;
 
---
--- Table structure for table `Customer`
---
+CREATE TABLE `food_supply`
+(
+    `food_id` INT NOT NULL AUTO_INCREMENT, 
+    `food_name` VARCHAR(50),
+    `stock` INT NOT NULL,
+    PRIMARY KEY (`food_id`)
+);
 
-DROP TABLE IF EXISTS `Customer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Customer` (
-  `email_address` varchar(50) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `password` varchar(20) NOT NULL,
-  `date_registered` date NOT NULL,
-  `credit_card_info` int NOT NULL,
-  PRIMARY KEY (`email_address`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE `medicine_supply`
+(
+    `med_id` INT NOT NULL AUTO_INCREMENT,
+    `med_name` VARCHAR(50),
+    `stock` INT NOT NULL,
+    PRIMARY KEY (`med_id`)
+);
 
---
--- Dumping data for table `Customer`
---
+/* whats enclosure name and type? and do we need it */
+CREATE TABLE `enclosure`
+(
+    `enclosure_id` INT NOT NULL AUTO_INCREMENT,
+    `enclosure_capacity` INT,
+    `ecosystem_type` ENUM('AQUATIC', 'RAINFOREST', 'ARCTIC', 'DESERT'),
+    PRIMARY KEY (`enclosure_id`)
+);
 
-LOCK TABLES `Customer` WRITE;
-/*!40000 ALTER TABLE `Customer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Customer` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE `animal`
+(
+    `animal_id` INT NOT NULL AUTO_INCREMENT,
+    `animal_name` VARCHAR(30),
+    `species` VARCHAR(30),
+    `admission` DATE,
+    `dob` DATE,
+    `gender` ENUM('M', 'F'),
+    `enclosure_id` INT,
+    `status` ENUM('healthy','sick', 'pregnant','deceased'),
+    `diet_type` ENUM('Herbivorous', 'Carnivorous', 'Omnivorous'),
+    `feedings_per_day` INT NOT NULL,
+    PRIMARY KEY (`animal_id`)
+);
 
---
--- Table structure for table `Diet`
---
+CREATE TABLE `takes_care_of`
+(
+    `caretaker_id` INT NOT NULL,
+    `animal_id` INT NOT NULL,
+    PRIMARY KEY(`caretaker_id`, `animal_id`)
+);
 
-DROP TABLE IF EXISTS `Diet`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Diet` (
-  `Animal_ID` int NOT NULL AUTO_INCREMENT,
-  `Diet_type` varchar(100) NOT NULL,
-  `Feedings_per_day` int NOT NULL,
-  `Allergies` varchar(100) NOT NULL,
-  `Food_ID` int NOT NULL,
-  `Feeding_TImes` datetime NOT NULL,
-  PRIMARY KEY (`Animal_ID`),
-  KEY `Food_ID_idx` (`Food_ID`),
-  CONSTRAINT `Food_ID` FOREIGN KEY (`Food_ID`) REFERENCES `Food` (`Food_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/*includes gift shops*/
+CREATE TABLE `department`
+(
+    `department_id` INT NOT NULL AUTO_INCREMENT,
+    `department_name` VARCHAR(30),
+    `manager_id` INT,
+    PRIMARY KEY (`department_id`)
+);
 
---
--- Dumping data for table `Diet`
---
+/* when inserting use an encryption function
+   didnt include address and phone cause more of HR thing*/
+CREATE TABLE `employee`
+(
+    `employee_id` INT NOT NULL AUTO_INCREMENT,
+    `pswd` VARCHAR(255) NOT NULL,
+    `supervisor_id` INT,
+    `department_id` INT,
+    PRIMARY KEY (`employee_id`)
+);
 
-LOCK TABLES `Diet` WRITE;
-/*!40000 ALTER TABLE `Diet` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Diet` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE `customer`
+(
+    -- `customer_id` INT NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(255),
+    `f_name` VARCHAR(30),
+    `l_name` VARCHAR(30),
+    `pswd` VARCHAR(255) NOT NULL,
+    `isMember` BOOLEAN NOT NULL DEFAULT 0,
+    `date_registered` TIMESTAMP NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (`email`)
+);
 
---
--- Table structure for table `Food`
---
+/* all products including tickets 
+   if stock is null then its a ticket(unlimited)*/
+CREATE TABLE `product`
+(
+    `product_id` INT NOT NULL AUTO_INCREMENT,
+    `product_size` ENUM('XS','S','M','L','XL','NA') DEFAULT 'NA',
+    `product_name` VARCHAR(50),
+    `gift_shop_id` INT NOT NULL,
+    `price` DECIMAL(5,2) NOT NULL,
+    `stock` INT,
+    `image` LONGBLOB,
+    PRIMARY KEY (`product_id`, `product_size`)
+);
 
-DROP TABLE IF EXISTS `Food`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Food` (
-  `Food_ID` int NOT NULL AUTO_INCREMENT,
-  `Stock` int NOT NULL,
-  PRIMARY KEY (`Food_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+/* if email is null then its a in person order */
+CREATE TABLE `order`
+(
+    `order_id` INT NOT NULL AUTO_INCREMENT,
+    `product_id` INT NOT NULL,
+    `order_date` TIMESTAMP NOT NULL DEFAULT NOW(),
+    `price_total` DECIMAL(5,2),
+    `quantity` INT NOT NULL DEFAULT 1,
+    `email` VARCHAR(255),
+    `in_store` BOOLEAN NOT NULL DEFAULT 1,
+    PRIMARY KEY(`order_id`)
+);
 
---
--- Dumping data for table `Food`
---
+CREATE TABLE `animal_health`
+(
+    `animal_id` INT NOT NULL,
+    `med_id` INT,
+    `dose_amount` INT,
+    `dose_frequency` ENUM('daily', 'weekly', 'monthly', 'yearly'),
+    `disease` VARCHAR(255) DEFAULT "None",
+    PRIMARY KEY(`animal_id`, `med_id`)
+);
 
-LOCK TABLES `Food` WRITE;
-/*!40000 ALTER TABLE `Food` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Food` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE `animal_diet`
+(
+    `animal_id` INT,
+    `food_id` INT NOT NULL,
+    `serving_size_in_grams` INT, 
+    PRIMARY KEY(`animal_id`, `food_id`)
+);
 
---
--- Table structure for table `Health_Profile`
---
+CREATE TABLE `attraction`
+(
+    `attraction_id` INT,
+    `attraction_name` VARCHAR(50),
+    `capacity` INT,
+    `attraction_status` ENUM('under construction', 'open', 'closed', 'under repair', 'needs repair'),
+    PRIMARY KEY(`attraction_id`),
+    FOREIGN KEY(`attraction_id`) REFERENCES `department`(`department_id`)
+);
 
-DROP TABLE IF EXISTS `Health_Profile`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Health_Profile` (
-  `Animal_ID` int NOT NULL AUTO_INCREMENT,
-  `Status` varchar(100) NOT NULL,
-  `Medicine_ID` int NOT NULL,
-  `Dose` int NOT NULL,
-  `Diseases` varchar(100) NOT NULL,
-  PRIMARY KEY (`Animal_ID`),
-  KEY `Medicine_ID_idx` (`Medicine_ID`),
-  CONSTRAINT `Medicine_ID` FOREIGN KEY (`Medicine_ID`) REFERENCES `Medicine` (`Medicine_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `Health_Profile`
---
+ALTER TABLE `animal`
+	ADD FOREIGN KEY (`enclosure_id`) REFERENCES `enclosure`(`enclosure_id`);
+	
+ALTER TABLE `department`
+    ADD FOREIGN KEY (`manager_id`) REFERENCES `employee`(`employee_id`);
+	
+ALTER TABLE `employee`
+	ADD FOREIGN KEY (`supervisor_id`) REFERENCES `employee`(`employee_id`),
+    ADD FOREIGN KEY (`department_id`) REFERENCES `department`(`department_id`);
+	
+ALTER TABLE `product`
+	ADD FOREIGN KEY (`gift_shop_id`) REFERENCES `department`(`department_id`);
+	
+ALTER TABLE `order`
+	ADD FOREIGN KEY(`product_id`) REFERENCES `product`(`product_id`),
+    ADD FOREIGN KEY(`email`) REFERENCES `customer`(`email`); /* will be null if in person order */
 
-LOCK TABLES `Health_Profile` WRITE;
-/*!40000 ALTER TABLE `Health_Profile` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Health_Profile` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Medicine`
---
-
-DROP TABLE IF EXISTS `Medicine`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Medicine` (
-  `Medicine_ID` int NOT NULL,
-  `Stock` int NOT NULL,
-  PRIMARY KEY (`Medicine_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Medicine`
---
-
-LOCK TABLES `Medicine` WRITE;
-/*!40000 ALTER TABLE `Medicine` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Medicine` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Orders`
---
-
-DROP TABLE IF EXISTS `Orders`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Orders` (
-  `order_Id` int NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(100) NOT NULL,
-  `purchase_date` date NOT NULL,
-  `price` int NOT NULL,
-  `email_address` varchar(50) NOT NULL,
-  PRIMARY KEY (`order_Id`),
-  KEY `email_address_idx` (`email_address`),
-  KEY `product_name_idx` (`product_name`),
-  CONSTRAINT `email_address` FOREIGN KEY (`email_address`) REFERENCES `Customer` (`email_address`),
-  CONSTRAINT `product_name` FOREIGN KEY (`product_name`) REFERENCES `Product` (`product_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Orders`
---
-
-LOCK TABLES `Orders` WRITE;
-/*!40000 ALTER TABLE `Orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Orders` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Product`
---
-
-DROP TABLE IF EXISTS `Product`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Product` (
-  `Product_ID` int NOT NULL AUTO_INCREMENT,
-  `product_name` varchar(100) NOT NULL,
-  `Stock` int NOT NULL,
-  `Price` decimal(50,0) NOT NULL,
-  PRIMARY KEY (`Product_ID`),
-  KEY `Product_Name_idx` (`product_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Product`
---
-
-LOCK TABLES `Product` WRITE;
-/*!40000 ALTER TABLE `Product` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Product` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2020-02-24 19:58:58
+ALTER TABLE `animal_health`
+	ADD FOREIGN KEY(`animal_id`) REFERENCES `animal`(`animal_id`),
+    ADD FOREIGN KEY(`med_id`) REFERENCES `medicine_supply`(`med_id`);
+	
+ALTER TABLE `animal_diet`
+	ADD FOREIGN KEY(`animal_id`) REFERENCES `animal`(`animal_id`),
+    ADD FOREIGN KEY(`food_id`) REFERENCES `food_supply`(`food_id`);
+	
+ALTER TABLE `takes_care_of`
+    ADD FOREIGN KEY(`caretaker_id`) REFERENCES `employee`(`employee_id`),
+    ADD FOREIGN KEY(`animal_id`) REFERENCES `animal`(`animal_id`);
