@@ -18,10 +18,12 @@ CREATE TABLE `medicine_supply`
     PRIMARY KEY (`med_id`)
 );
 
-/* whats enclosure name and type? and do we need it */
+/* name is for what we call an enclosure ex. the bat cave type is the biome/ecosystem  */
 CREATE TABLE `enclosure`
 (
     `enclosure_id` INT NOT NULL AUTO_INCREMENT,
+    `enclosure_name` VARCHAR(50),
+    `enclosure_description` VARCHAR(200),
     `enclosure_capacity` INT,
     `ecosystem_type` ENUM('AQUATIC', 'RAINFOREST', 'ARCTIC', 'DESERT'),
     PRIMARY KEY (`enclosure_id`)
@@ -33,7 +35,7 @@ CREATE TABLE `animal`
     `animal_name` VARCHAR(30),
     `species` VARCHAR(30),
     `admission` DATE,
-    `dob` DATE,
+    `age` INT,
     `gender` ENUM('M', 'F'),
     `enclosure_id` INT,
     `status` ENUM('healthy','sick', 'pregnant','deceased'),
@@ -64,6 +66,8 @@ CREATE TABLE `employee`
 (
     `employee_id` INT NOT NULL AUTO_INCREMENT,
     `pswd` VARCHAR(255) NOT NULL,
+    `first_name` VARCHAR(50),
+    `last_name` VARCHAR(50),
     `supervisor_id` INT,
     `department_id` INT,
     PRIMARY KEY (`employee_id`)
@@ -88,7 +92,7 @@ CREATE TABLE `product`
     `product_id` INT NOT NULL AUTO_INCREMENT,
     `product_size` ENUM('XS','S','M','L','XL','NA') DEFAULT 'NA',
     `product_name` VARCHAR(50),
-    `gift_shop_id` INT NOT NULL,
+    `gift_shop_id` INT,   /* can be null if its a ticket */
     `price` DECIMAL(5,2) NOT NULL,
     `stock` INT,
     `image` LONGBLOB,
@@ -108,13 +112,13 @@ CREATE TABLE `order`
     PRIMARY KEY(`order_id`)
 );
 
-CREATE TABLE `animal_health`
+CREATE TABLE `animal_health`  /* might want to rename this table */
 (
     `animal_id` INT NOT NULL,
     `med_id` INT,
     `dose_amount` INT,
     `dose_frequency` ENUM('daily', 'weekly', 'monthly', 'yearly'),
-    `disease` VARCHAR(255) DEFAULT "None",
+    'last_prescribed' DATE,   /* used so that care takers know when they need to give medicine etc */
     PRIMARY KEY(`animal_id`, `med_id`)
 );
 
