@@ -35,7 +35,7 @@ CREATE TABLE `animal`
     `animal_name` VARCHAR(30),
     `species` VARCHAR(30),
     `admission` DATE,
-    `age` INT,
+    `dob` DATE,
     `gender` ENUM('M', 'F'),
     `enclosure_id` INT,
     `status` ENUM('healthy','sick', 'pregnant','deceased'),
@@ -112,13 +112,14 @@ CREATE TABLE `order`
     PRIMARY KEY(`order_id`)
 );
 
-CREATE TABLE `animal_health`  /* might want to rename this table */
+CREATE TABLE `animal_health`
 (
     `animal_id` INT NOT NULL,
     `med_id` INT,
     `dose_amount` INT,
     `dose_frequency` ENUM('daily', 'weekly', 'monthly', 'yearly'),
     'last_prescribed' DATE,   /* used so that care takers know when they need to give medicine etc */
+    `disease` VARCHAR(255) DEFAULT 'None',
     PRIMARY KEY(`animal_id`, `med_id`)
 );
 
