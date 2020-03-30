@@ -1,0 +1,4 @@
+#ignoring node_modules will reduce the repo size
+# simply run npm install to install all the node modules locally
+node_modules
+.env
