@@ -11,7 +11,8 @@ Zoo DBMS for COSC 3380
 First of all make sure you have Node installed on your computer. You can get it from here https://nodejs.org/en/download/ 
 then you can try doing node -v in the terminal to see if it installed correctly
 
-Now get the files from github using git clone or download
+Now get the files from github using git clone or download.
+
 cd into the ZooDB folder
 
 In the folder you will see the package.json file which contains all the dependencies needed to make the project run. Currently there is mysql,express and body-parser which are for the server. 
