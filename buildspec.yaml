@@ -12,6 +12,7 @@ phases:
       - npm install
   build:
     commands:
+      - cd server
       - node routes.js
 
 artifacts:
