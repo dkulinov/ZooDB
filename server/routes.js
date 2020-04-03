@@ -33,6 +33,9 @@ app.post('/test',function(req, res) {
     });
 });
   
-
+// catch all route that will notify the user that this page doesn't exist
+app.get('*', function(req, res){
+    res.render(wrongRoute.html);
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));    
