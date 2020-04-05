@@ -13,7 +13,8 @@ app.use(express.static(path.join(__dirname, '/../')));
 //allows us to use data send from html forms using req.body.name
 app.use(express.urlencoded({ extended: false }));
 
-
+//part of express session
+app.use(session({secret: "SecretKey"}));
 // ------------------------------------------------------------------------- //
 
 
