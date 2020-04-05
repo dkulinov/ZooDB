@@ -13,8 +13,15 @@ app.use(express.static(path.join(__dirname, '/../')));
 //allows us to use data send from html forms using req.body.name
 app.use(express.urlencoded({ extended: false }));
 
-//part of express session
+//each user has a different session so we can keep track of them no matter where they are on the site
 app.use(session({secret: "SecretKey"}));
+
+//use the ejs files in the views folder however 
+app.set('view engine', 'ejs');
+
+//redefine views folder to the right path
+app.set('views', path.join(__dirname, '/../views'));
+
 // ------------------------------------------------------------------------- //
 
 
@@ -27,10 +34,10 @@ function user(username, role) {
 
 // ----------------------------- ROUTES -------------------------------- //
 //default route will point to index.html which is the homepage
-app.get('/', (req, res) => res.sendFile(index.html));
+app.get('/', (req, res) => res.send("hi"));
 
 app.get('/employeeLogin', function(req, res){
-    res.sendFile(path.join(__dirname+'/../views/employeeLogin.html'));
+    res.render('employeeLogin');
  });
 
  //on submit of the employee login form
@@ -70,8 +77,8 @@ app.get('/employeeLogin', function(req, res){
 /* pretty much copy paste of the employee login above but for customers instead of employees*/  
 
 app.get('/customerLogin', function(req, res){
-    res.sendFile(path.join(__dirname+'/../views/customerLogin.html'));
- });
+    res.render('customerLogin');
+});
 
  //on submit of the login form this will be run to authenticate customer
  app.post('/customerLogin', function(req, res){
@@ -147,7 +154,7 @@ app.use('/protected_page', function(err, req, res, next){
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
 app.get('*', function(req, res){
-    res.sendFile('../views/wrongRoute.html');
+    res.render('wrongRoute');
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));    
