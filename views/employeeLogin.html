@@ -1,0 +1,33 @@
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    <title>Zoo Login</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <link rel="stylesheet" href="/../assets/css/employeeLogin.css">
+
+    </head>
+
+    <body>
+        <div class="login-page">
+            <div class="form">
+              <h2>Employee Login</h2>
+              <form class="register-form">
+                <input type="text" placeholder="name"/>
+                <input type="password" placeholder="password"/>
+                <input type="text" placeholder="email address"/>
+                <button>create</button>
+                <p class="message">Already registered? <a href="#">Sign In</a></p>
+              </form>
+              <form class="login-form" action = "/employeeLogin" method = "POST">    <!-- The form sends the username and password submitted to the server then server redirects us-->
+                <input type="text" placeholder="username" name = "username" id = "username"/>
+                <input type="password" placeholder="password" name = "password" id = "password"/>
+                <button>Login</button>
+                <p class="message">Not registered? <a href="#">Create an account</a></p>
+              </form>
+            </div>
+          </div>
+    </body>
+</html>
