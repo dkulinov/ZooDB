@@ -135,10 +135,6 @@ function checkCustomerSignIn(req, res){
    res.send('Loaded protected page');
 });
 
-// catch all route that will notify the user that this page doesn't exist
-app.get('*', function(req, res){
-    res.render('views/wrongRoute.ejs');
-});
 // ------------------------------------------------------------------------- //
 
 app.use('/protected_page', function(err, req, res, next){
@@ -146,5 +142,11 @@ app.use('/protected_page', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/customerLogin');
  });
+
+// catch all route that will notify the user that this page doesn't exist
+// this has to remain the on the bottom
+app.get('*', function(req, res){
+    res.sendFile('../views/wrongRoute.html');
+});
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));    
