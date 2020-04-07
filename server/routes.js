@@ -5,6 +5,10 @@ const port = 3000;
 var path = require('path');
 var db = require('../server/db.js') 
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
+
 // ----------------------------- MIDDLEWARE -------------------------------- //
 
 //used to get the correct directory which is the root directory 
@@ -150,6 +154,35 @@ app.use('/protected_page', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/customerLogin');
  });
+
+
+//GIFT SHOP ROUTES
+app.get('/shop', function(req,res)
+{   
+    var items = [];
+    db.getProducts(function(items)
+    {
+        res.render("shop.ejs", {items: items});
+    });
+});
+
+app.post('/checkout/:id/:size/:price/:imagepath/', function(req,res)
+{
+    var cart = {id: req.params.id, size: req.params.size, price: req.params.price, quantity: req.body.quantity, image_path: req.params.imagepath};
+    res.render("checkout.ejs", {cart: cart});
+});
+
+app.post('/buy/:id/:size/:quantity/:total/', function(req,res)
+{
+    var newID;
+    var order = {product_id: req.params.id, product_size: req.params.size, quantity: req.params.quantity, total: req.params.total, email: req.body.email, address: req.body.address, city: req.body.city, state: req.body.state, zipcode: req.body.zip};
+    db.makeOnlinePurchase(order, function(response){
+        newID = response;
+        newID = newID.insertId;
+        res.render("confirmation.ejs", {newID:newID});
+    });
+});
+
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
