@@ -105,7 +105,7 @@
               <div class="card-body">
                 <h5 class="card-title">$<%= items[i].price %></h5>
                 <p class="card-text"><%= items[i].product_name %></p>
-                <form class="card-text" method="POST" action="/checkout/<%=items[i].product_id%>/NA/<%=items[i].price%>/<%=items[i].image_path;%>/">
+                <form class="card-text" method="POST" action="/checkout/<%=items[i].product_id%>/<%=items[i].product_size%>/<%=items[i].price%>/<%=items[i].image_path;%>/">
                   <label>Quantity:</label>
                   <input type="number" name="quantity" min="0" max="200" step="1" value="0">
                   <p>
