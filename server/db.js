@@ -67,6 +67,7 @@ module.exports.authenticateCustomer = authenticateCustomer;
 
 
 
+<<<<<<< HEAD
 
 //connects the sign up form to the database. It can handle errors but
 // it doesnt tell the user what the error is
@@ -111,3 +112,38 @@ signUpCustomer = function(data, callback){
 
 }
 module.exports.signUpCustomer = signUpCustomer;
+=======
+getProducts = function(callback){
+
+  var sql = "SELECT * FROM product WHERE stock > 0 OR stock IS NULL GROUP BY product_id ORDER BY gift_shop_id, product_id";
+  var items=[];
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(res.length)
+        callback(res);
+    });
+  });
+}
+module.exports.getProducts = getProducts;
+
+
+// SELECT LAST_INSERT_ID();
+makeOnlinePurchase = function(order, callback){
+  var sql = "INSERT INTO `order` (order_id, product_id, product_size, quantity, email, address, city, state, zipcode, price_total, in_store, order_status) VALUES (null,";
+  sql += order.product_id; sql += ",'"; sql+= order.product_size; sql += "',"; sql += order.quantity; sql += ",'"; sql += order.email; sql += "','"; sql += order.address; sql += "','"; sql += order.city; sql += "','"; sql += order.state; sql += "',"; sql += order.zipcode; sql += ","; sql += order.total;sql += ","; sql += "0"; sql += ","; sql += "'placed');";
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.makeOnlinePurchase = makeOnlinePurchase;
+
+
+>>>>>>> 5a11a8b4499567e3b12c54c002a8ee0fb0ad1b06
