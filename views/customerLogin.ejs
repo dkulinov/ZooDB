@@ -14,20 +14,29 @@
         <div class="login-page">
             <div class="form">
               <h2>Customer Login</h2>
-              <form class="register-form">
-                <input type="text" placeholder="name"/>
-                <input type="password" placeholder="password"/>
-                <input type="text" placeholder="email address"/>
+              <form class="register-form" action = "/signup" method = "POST">
+                <input type="text" placeholder="first name"  name = "firstName" id = "lastName"/>
+                <input type="text" placeholder="last name"  name = "lastName" id = "lastName"/>
+                <input type="text" placeholder="email address"/  name = "email" id = "email">
+                <input type="password" placeholder="password"  name = "password" id = "password"/>
                 <button>create</button>
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
               </form>
+
               <form class="login-form" action = "/customerLogin" method = "POST">    <!-- The form sends the username and password submitted to the server then server redirects us-->
-                <input type="text" placeholder="username" name = "username" id = "username"/>
+                <input type="text" placeholder="email" name = "username" id = "username"/>
                 <input type="password" placeholder="password" name = "password" id = "password"/>
                 <button>Login</button>
                 <p class="message">Not registered? <a href="#">Create an account</a></p>
+                <p>or</p>
+                <p class ="message">Go Back to <a href="/">Home Page</a></p>
               </form>
             </div>
           </div>
     </body>
+
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    
+    <script src="assets/js/customerLogin.js"></script>
+
 </html>

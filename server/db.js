@@ -67,6 +67,50 @@ module.exports.authenticateCustomer = authenticateCustomer;
 
 
 
+
+//connects the sign up form to the database. It can handle errors but
+// it doesnt tell the user what the error is
+//if a user with the same email exists in the db it will not add the new user
+signUpCustomer = function(data, callback){
+
+  
+  pool.getConnection(function(err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    
+    var sql1 = "SELECT email FROM zoo_schema.customer WHERE email LIKE ?;"
+    var str = "%" + data[2] + "%";
+
+    connection.query(sql1, str, function(err, results) {
+      
+      if(err) { console.log(err); callback(true); return; }
+
+      //if there are results then another user exists with the same email so we should not add the user
+      if(results){
+        if(results[0].email === data[2]){
+          connection.release();
+          callback(false, false);  //there is a user with same email in the database
+          
+        }
+      }else{
+        
+        // this command actually inserts the new user into the db only if there is no user with the same email existing
+        var sql = "INSERT INTO zoo_schema.customer (f_name, l_name, email, pswd, date_registered, isMember, membership_expiration) VALUES (?,?,?,?, CURDATE(), 0, NULL);"
+        connection.query(sql, data, function(err, results) {
+          connection.release();
+          if(err) { console.log(err); callback(true); return; }
+
+          callback(false, true);  //no error return to routes.js
+          
+        });
+      }
+      
+    });
+
+
+  });
+
+}
+module.exports.signUpCustomer = signUpCustomer;
 getProducts = function(callback){
 
   var sql = "SELECT * FROM product WHERE stock > 0 OR stock IS NULL GROUP BY product_id ORDER BY gift_shop_id, product_id";

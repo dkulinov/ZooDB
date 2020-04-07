@@ -38,11 +38,34 @@ function user(username, role) {
 
 // ----------------------------- ROUTES -------------------------------- //
 //default route will point to index.html which is the homepage
-app.get('/', (req, res) => res.send("hi"));
+app.get('/', (req, res) => res.sendFile("index.html"));
 
 app.get('/employeeLogin', function(req, res){
     res.render('employeeLogin');
  });
+
+
+app.post('/signup', function(req, res){
+   //if one of the sign up fields is blank it wont work
+   if(!req.body.firstName, !req.body.lastName, !req.body.email, !req.body.password){
+      res.render('errorPage', {message: "Error one of the fields are missing."});   
+   }
+   db.signUpCustomer([req.body.firstName, req.body.lastName, req.body.email, req.body.password], function(err, data){
+      if(err) {console.log("error"); return;}
+      else{
+        
+          if(data === true){
+              res.redirect("/customerLogin");
+              
+          }else{
+              res.render('errorPage', {message: "Error user with that email already exists."});  //user already exists with this email
+          } 
+      }
+  }); 
+});
+
+
+
 
  //on submit of the employee login form
  app.post('/employeeLogin', function(req, res){
@@ -59,10 +82,10 @@ app.get('/employeeLogin', function(req, res){
               
                 if(data === true){
                     req.session.user = new user(username, "Employee");
-                    res.send("Login Success");
+                    res.send("Login Success");   //should be changed based on the role of the user. Ex vet sees the vet page after logging in
                     
                 }else{
-                    res.send("Login Failed");
+                  res.render('errorPage', {message: "Wrong username or password"});
                     
                 } 
             }
@@ -99,10 +122,10 @@ app.get('/customerLogin', function(req, res){
 
                 if(data === true){
                     req.session.user = new user(username, "Customer");
-                    res.send("Login Success");
+                    res.redirect("/");
                     
                 }else{
-                    res.send("Login Failed");
+                  res.render('errorPage', {message: "Wrong username or password"});
                     
                 } 
             }
@@ -120,37 +143,47 @@ app.get('/customerLogin', function(req, res){
 
 
 
-/* can be used in each route  to see if the user is logged in and if it is an employee*/
-function checkEmployeeSignIn(req, res){
-   if(req.session.user.role === "Employee"){
-      console.log(req.session.user.role);
-       next();   //If session exists, proceed to page
-   } else {
-      console.log("error not logged in");
-      next(err);
-   }
-}
-
-/* can be used in each route  to see if the user is logged in */
-function checkCustomerSignIn(req, res){
-   if(req.session.user.role === "Customer"){
-      console.log(req.session.user.role);
-      next();   //If session exists, proceed to page
-   } else {
-      console.log("error not logged in");
-      next(err);
-   }
-}
-
-/* testing authentication in order to access a page */
- app.get('/protected_page', checkCustomerSignIn, function(req, res){
-   res.send('Loaded protected page');
+//inorder to access this page you need to be logged in as a customer 
+app.get('/protected', checkCustomerSignIn, function(req, res){
+   res.send("If you can see this then you are logged in as customer");
 });
+
 
 // ------------------------------------------------------------------------- //
 
-app.use('/protected_page', function(err, req, res, next){
-   console.log(err);
+
+/* can be used in each route to see if the user is logged in */
+function checkCustomerSignIn(req, res, next){
+   if(!req.session.user){
+      var err = new Error("Not logged in!");
+      next(err);
+   }
+   else if(req.session.user.role === "Customer"){
+      
+      next();   //If session exists, proceed to page
+   }else {
+      var err = new Error("Not logged in!");
+      next(err);
+   }
+}
+
+
+/* can be used in each route  to see if the user is logged in and if it is an employee*/
+function checkEmployeeSignIn(req, res, next){
+   if(!req.session.user){
+      var err = new Error("Not logged in!");
+      next(err);
+   }
+   else if(req.session.user.role === "Employee"){
+      
+       next();   //If session exists, proceed to page
+   }else {
+      var err = new Error("Not logged in!");
+      next(err);
+   }
+}
+//if there is an error we call next(err) and it redirects back to customer login page
+app.use('/protected', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/customerLogin');
  });
