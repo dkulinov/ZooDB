@@ -1,11 +1,8 @@
 {
-  "name": "zoodb",
+  "name": "zoo-app",
   "version": "1.0.0",
   "description": "a zoo simulation site for database course",
-  "main": "routes.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/migsbeast/ZooDB.git"
@@ -22,10 +19,14 @@
   },
   "homepage": "https://github.com/migsbeast/ZooDB#readme",
   "dependencies": {
+    "aws-sdk": "^2.655.0",
     "body-parser": "^1.19.0",
     "ejs": "^3.0.2",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "mysql": "^2.18.1"
+  },
+  "scripts": {
+    "start": "node app.js"
   }
 }
