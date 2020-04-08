@@ -384,11 +384,11 @@ figure figcaption {
 }
 
 .sticky-wrapper.is-sticky .site-navbar .site-menu > li > a:hover, .sticky-wrapper.is-sticky .site-navbar .site-menu > li > a.active {
-  color: #2d71a1 !important;
+  color: #1DB954 !important;
 }
 
 .sticky-wrapper.is-sticky .site-navbar .site-menu > li.active a {
-  color: #2d71a1 !important;
+  color: #1DB954 !important;
 }
 
 .sticky-wrapper .shrink {
@@ -406,7 +406,7 @@ figure figcaption {
 .form-control:active, .form-control:focus {
   outline: none;
   box-shadow: none;
-  border: 1px solid #2d71a1;
+  border: 1px solid #1DB954;
 }
 
 .php-email-form .validate {

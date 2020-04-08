@@ -69,8 +69,6 @@ app.post('/signup', function(req, res){
 });
 
 
-
-
  //on submit of the employee login form
  app.post('/employeeLogin', function(req, res){
     var username = req.body.username;
