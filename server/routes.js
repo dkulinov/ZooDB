@@ -3,7 +3,7 @@ var session = require('express-session');
 const app = express();
 const port = 3000;
 var path = require('path');
-var db = require('../server/db.js') 
+var db = require('./db.js') 
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));

@@ -2,7 +2,7 @@
     <head>
     <meta charset="utf-8">
 
-    <title>Zoo Login</title>
+    <title>Houston Zoo Login</title>
     <meta name="description">
     <meta name="author">
 
@@ -15,10 +15,10 @@
             <div class="form">
               <h2>Customer Login</h2>
               <form class="register-form" action = "/signup" method = "POST">
-                <input type="text" placeholder="first name"  name = "firstName" id = "lastName"/>
-                <input type="text" placeholder="last name"  name = "lastName" id = "lastName"/>
-                <input type="text" placeholder="email address"/  name = "email" id = "email">
-                <input type="password" placeholder="password"  name = "password" id = "password"/>
+                <input type="text" placeholder="first name"  name = "firstName" id = "lastName" required/>
+                <input type="text" placeholder="last name"  name = "lastName" id = "lastName" required/>
+                <input type="text" placeholder="email address"/  name = "email" id = "email" required>
+                <input type="password" placeholder="password"  name = "password" id = "password" required/>
                 <button>create</button>
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
               </form>
