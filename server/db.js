@@ -113,7 +113,7 @@ signUpCustomer = function(data, callback){
 module.exports.signUpCustomer = signUpCustomer;
 getProducts = function(callback){
 
-  var sql = "SELECT * FROM product WHERE stock > 0 OR stock IS NULL GROUP BY product_id ORDER BY gift_shop_id, product_id";
+  var sql = "SELECT * FROM product WHERE stock > 0 OR stock IS NULL ORDER BY gift_shop_id, product_id";
   var items=[];
   pool.getConnection(function(err, connection){
     if(err) { console.log(err); callback(true); return; }
