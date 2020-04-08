@@ -2,3 +2,6 @@
 # simply run npm install to install all the node modules locally
 node_modules
 .env
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
