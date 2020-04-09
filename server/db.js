@@ -23,8 +23,10 @@ authenticateEmployee = function(data, callback){
     connection.query(sql, data, function(err, results) {
       connection.release();
       if(err) { console.log(err); callback(true); return; }
-
-      if(results[0].pswd == data[1]){  //check if the db password matches what was entered in login form
+      if(!results[0]){
+        callback(false, false); //email isnt in the db so returns false that login is not correct
+      }
+      else if(results[0].pswd == data[1]){  //check if the db password matches what was entered in login form
         callback(false, true);   //returns true that the password was correct
       }else{
         callback(false, false);  //returns false that password is incorrect
@@ -52,8 +54,10 @@ authenticateCustomer = function(data, callback){
     connection.query(sql, data, function(err, results) {
       connection.release();
       if(err) { console.log(err); callback(true); return; }
-
-      if(results[0].pswd == data[1]){  //check if the db password matches what was entered in login form
+      if(!results[0]){
+        callback(false, false); //email isnt in the db so returns false that login is not correct
+      }
+      else if(results[0].pswd == data[1]){  //check if the db password matches what was entered in login form
         callback(false, true);   //returns true that the password was correct
       }else{
         callback(false, false);  //returns false that password is incorrect
