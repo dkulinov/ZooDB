@@ -84,7 +84,7 @@ app.post('/signup', function(req, res){
               
                 if(data === true){
                     req.session.user = new user(username, "Employee");
-                    res.send("Login Success");   //should be changed based on the role of the user. Ex vet sees the vet page after logging in
+                    res.redirect('/managerFrontPage');
                     
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
@@ -189,6 +189,32 @@ app.use('/protected', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/customerLogin');
  });
+
+//Manager page routes
+app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
+ {   
+     res.render("manager_frontPage");
+ });
+app.get('/managerTables',checkEmployeeSignIn, function(req,res)
+{   
+    res.render("manager_tables");
+});
+app.get('/managerCharts', checkEmployeeSignIn, function(req,res)
+{   
+    res.render("manager_charts");
+});
+app.use('/managerFrontPage', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+app.use('/managerTables', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+app.use('/managerCharts', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
 
 
 //GIFT SHOP ROUTES
