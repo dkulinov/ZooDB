@@ -149,3 +149,57 @@ makeOnlinePurchase = function(order, callback){
 module.exports.makeOnlinePurchase = makeOnlinePurchase;
 
 
+
+
+getAllEmployees = function(callback){
+  var sql = "SELECT * FROM zoo_schema.employee;";
+
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getAllEmployees= getAllEmployees;
+
+
+getFoodStock = function(callback){
+  var sql = "SELECT * FROM zoo_schema.food_supply;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+
+module.exports.getFoodStock= getFoodStock;
+
+getMedicineStock = function(callback){
+  var sql = "SELECT * FROM zoo_schema.medicine_supply;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getMedicineStock= getMedicineStock;

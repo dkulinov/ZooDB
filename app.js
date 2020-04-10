@@ -197,7 +197,24 @@ app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  });
 app.get('/managerTables',checkEmployeeSignIn, function(req,res)
 {   
-    res.render("manager_tables");
+    var data = []
+    db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
+    {
+       data.employeeList = employees;
+        
+    });
+    db.getFoodStock(function(foodStock)  //get employees from db.js file and then call the function 
+    {
+        data.foodStock = foodStock;
+
+    });
+    db.getMedicineStock(function(medicineStock)  //get employees from db.js file and then call the function 
+    {
+        data.medicineStock = medicineStock;
+        console.log(data);
+        res.render("manager_tables", { data: data });
+    });
+
 });
 app.get('/managerCharts', checkEmployeeSignIn, function(req,res)
 {   
