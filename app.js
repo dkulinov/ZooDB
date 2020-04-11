@@ -145,12 +145,6 @@ app.get('/customerLogin', function(req, res){
 
 
 
-//inorder to access this page you need to be logged in as a customer 
-app.get('/protected', checkCustomerSignIn, function(req, res){
-   res.send("If you can see this then you are logged in as customer");
-});
-
-
 // ------------------------------------------------------------------------- //
 
 
@@ -184,13 +178,10 @@ function checkEmployeeSignIn(req, res, next){
       next(err);
    }
 }
-//if there is an error we call next(err) and it redirects back to customer login page
-app.use('/protected', function(err, req, res, next){
-    //User should be authenticated! Redirect him to log in.
-    res.redirect('/customerLogin');
- });
 
-//Manager page routes
+
+/* --------------------------------------- Manager Page Routes  ----------------------------------------- */
+
 app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  {   
      res.render("manager_frontPage");
@@ -234,8 +225,60 @@ app.use('/managerCharts', function(err, req, res, next){
     res.redirect('/employeeLogin');
 });
 
+//manager report routes
+app.get('/dailyReport', checkEmployeeSignIn, function(req,res)
+{   
+    var data = [];
+    db.getDailyRevenue(function(revenue)
+    {
+        data.dailyRevenue = revenue;
+        console.log(data);
+        res.render("dailyReport", {data: data});
+    });
 
-//GIFT SHOP ROUTES
+});
+app.get('/monthlyReport', checkEmployeeSignIn, function(req,res)
+{   
+    var data = [];
+    db.getMonthlyRevenue(function(revenue)
+    {
+        data.monthlyRevenue = revenue;
+        console.log(data);
+        res.render("monthlyReport", {data: data});
+    });
+});
+
+app.get('/cumulativeReport', checkEmployeeSignIn, function(req,res)
+{   
+    var data = [];
+    db.getCumulativeRevenue(function(revenue)
+    {
+        data.cumulativeRevenue = revenue;
+        console.log(data);
+        res.render("cumulativeReport", {data: data});
+    });
+
+});
+
+app.use('/dailyReport', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+app.use('/monthlyReport', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+app.use('/cumulativeReport', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+/*------------------------------------------------------------ */
+
+
+
+
+
+/* --------------------- Shop Routes  ------------------------- */
 app.get('/shop', function(req,res)
 {   
     var items = [];
@@ -261,6 +304,10 @@ app.post('/buy/:id/:size/:quantity/:total/', function(req,res)
         res.render("confirmation.ejs", {newID:newID});
     });
 });
+
+/*------------------------------------------------------------ */
+
+
 
 
 // catch all route that will notify the user that this page doesn't exist

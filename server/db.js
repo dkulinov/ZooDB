@@ -208,7 +208,7 @@ module.exports.getMedicineStock= getMedicineStock;
 
 //get the price_totals from orders table
 getMonthlyRevenue = function(callback){
-  var sql = "SELECT SUM(price_total) dailyRevenue FROM zoo_schema.order WHERE order_date BETWEEN (CURRENT_DATE() - INTERVAL 1 MONTH) AND CURRENT_DATE();";
+  var sql = "SELECT SUM(price_total) monthlyRevenue FROM zoo_schema.order WHERE order_date BETWEEN (CURRENT_DATE() - INTERVAL 1 MONTH) AND CURRENT_DATE();";
   
   pool.getConnection(function(err, connection){
     connection.release();
@@ -244,7 +244,7 @@ module.exports.getWeeklyRevenue= getWeeklyRevenue;
 
 
 getDailyRevenue = function(callback){
-  var sql = "SELECT SUM(price_total) dailyRevenue FROM zoo_schema.order WHERE order_date  = CURRENT_DATE();";
+  var sql = "SELECT SUM(price_total) AS dailyRevenue FROM zoo_schema.order WHERE date(order_date)  = date(now());";
   
   pool.getConnection(function(err, connection){
     connection.release();
@@ -259,6 +259,23 @@ getDailyRevenue = function(callback){
   });
 }
 module.exports.getDailyRevenue= getDailyRevenue;
+
+getCumulativeRevenue = function(callback){
+  var sql = "SELECT SUM(price_total) AS cumulativeRevenue FROM zoo_schema.order;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getCumulativeRevenue= getCumulativeRevenue;
 
 
 //returns each product and its frequency sold from the orders table.
@@ -280,20 +297,3 @@ getMostSoldProducts = function(callback){
 module.exports.getMostSoldProducts = getMostSoldProducts;
 
 
-
-getProductAlerts = function(callback){
-  var sql = "SELECT product_id, COUNT(product_id) AS MOST_FREQUENT FROM zoo_schema.order GROUP BY product_id ORDER BY COUNT(product_id) DESC";
-  
-  pool.getConnection(function(err, connection){
-    connection.release();
-    if(err) { console.log(err); callback(true); return; }
-  
-    connection.query(sql, function(err, res){
-      if(err) console.log(err);
-      else
-        callback(res);
-    });
-
-  });
-}
-module.exports.getProductAlerts= getProductAlerts;
