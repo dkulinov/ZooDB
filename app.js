@@ -197,21 +197,21 @@ app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  });
 app.get('/managerTables',checkEmployeeSignIn, function(req,res)
 {   
-    var data = []
+    var data = []   //used to pass to the manager_table ejs file
+
     db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
     {
        data.employeeList = employees;
         
     });
-    db.getFoodStock(function(foodStock)  //get employees from db.js file and then call the function 
+    db.getFoodStock(function(foodStock)  
     {
         data.foodStock = foodStock;
 
     });
-    db.getMedicineStock(function(medicineStock)  //get employees from db.js file and then call the function 
+    db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
     {
         data.medicineStock = medicineStock;
-        console.log(data);
         res.render("manager_tables", { data: data });
     });
 
@@ -220,6 +220,7 @@ app.get('/managerCharts', checkEmployeeSignIn, function(req,res)
 {   
     res.render("manager_charts");
 });
+//these 3 routes are if the user isnt logged in it redirects them to employeeLogin
 app.use('/managerFrontPage', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/employeeLogin');
