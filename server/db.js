@@ -150,6 +150,23 @@ module.exports.makeOnlinePurchase = makeOnlinePurchase;
 
 
 
+ringUpCustomer = function(order, callback)
+{
+  var sql = "INSERT INTO `order` (order_id, product_id, product_size, quantity, price_total, in_store, order_status) VALUES (null,";
+  sql += order.product_id; sql += ",'"; sql+= order.product_size; sql += "',"; sql += order.quantity; sql += ","; sql += order.total;sql += ","; sql += "1"; sql += ","; sql += "'NA');";
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.ringUpCustomer = ringUpCustomer;
+
 
 getAllEmployees = function(callback){
   var sql = "SELECT * FROM zoo_schema.employee;";
