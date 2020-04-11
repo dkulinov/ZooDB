@@ -247,19 +247,36 @@ app.get('/shop', function(req,res)
 app.post('/checkout/:id/:size/:price/:imagepath/', function(req,res)
 {
     var cart = {id: req.params.id, size: req.params.size, price: req.params.price, quantity: req.body.quantity, image_path: req.params.imagepath};
-    res.render("checkout.ejs", {cart: cart});
+    if(!req.session.user)
+        res.render("checkout.ejs", {cart: cart});
+    else if(req.session.user.role == "Employee")
+        res.render("in_storeCheckout.ejs",{cart: cart});
+    else
+        res.render("checkout.ejs",{cart: cart});
 });
 
-app.post('/buy/:id/:size/:quantity/:total/', function(req,res)
+app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
 {
     var newID;
-    var order = {product_id: req.params.id, product_size: req.params.size, quantity: req.params.quantity, total: req.params.total, email: req.body.email, address: req.body.address, city: req.body.city, state: req.body.state, zipcode: req.body.zip};
-    db.makeOnlinePurchase(order, function(response){
-        newID = response;
-        newID = newID.insertId;
-        res.render("confirmation.ejs", {newID:newID});
-    });
+    var order = {product_id: req.params.id, product_size: req.params.size, quantity: req.params.quantity, total: req.params.total, email: req.body.email, address: req.body.address, city: req.body.city, state: req.body.state, zipcode: req.body.zip, in_store : req.params.in_store};
+    if(order.in_store == 0)
+    {
+        db.makeOnlinePurchase(order, function(response){
+            newID = response;
+            newID = newID.insertId;
+            res.render("confirmation.ejs", {newID:newID});
+        });
+    }
+    else
+    {
+        db.ringUpCustomer(order, function(response){
+            newID = response;
+            newID = newID.insertId;
+            res.render("confirmation.ejs", {newID:newID});
+        });
+    }
 });
+
 
 
 // catch all route that will notify the user that this page doesn't exist
