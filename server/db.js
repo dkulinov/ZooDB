@@ -166,7 +166,50 @@ ringUpCustomer = function(order, callback)
 }
 module.exports.ringUpCustomer = ringUpCustomer;
 
-
+getEmployeeInfo = function(emp, callback, cb)
+{
+  var sql = "SELECT employee.department_id FROM employee WHERE employee.employee_id = ";
+  sql += emp.username;
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res1){
+      connection.release();
+      if(err) console.log(err);
+      else
+      {
+        pool.getConnection(function(err, connection){
+          if(err) { console.log(err); callback(true); return; }
+        var sql2 = "SELECT COUNT(*) AS isMgr FROM department WHERE manager_id = ";
+        sql2 += emp.username;
+        connection.query(sql2, function(err, res2)
+        {
+          connection.release();
+          if(err) console.log(err);
+          else
+          {
+            pool.getConnection(function(err, connection){
+              if(err) { console.log(err); callback(true); return; }
+            var sql3 = "SELECT COUNT(*) AS isCT FROM takes_care_of WHERE caretaker_id = ";
+            sql3 += emp.username;
+            connection.query(sql3, function(err, res3)
+            {
+              connection.release();
+              if(err) console.log(err);
+              else
+              {
+                callback(emp, res1[0].department_id, res2[0].isMgr, res3[0].isCT, cb);
+              }
+            })
+          });
+          }
+        });
+      });
+      }
+    });
+  });
+}
+module.exports.getEmployeeInfo = getEmployeeInfo;
 
 
 //manager page functions
