@@ -34,10 +34,24 @@ app.set('views', path.join(__dirname, './views'));
 
 
 //for creating a express session for each user 
-function user(username, role) {
+function user(username, role, dept=-1, isManager=false, isCareTaker=false) {
    this.username = username;
    this.role = role;  //is the user an employee or customer
+   this.dept = dept;
+   this.isManager = isManager;
+   this.isCareTaker = isCareTaker;
  }
+
+
+function assignEmployeeInfo(emp, dept, isM, isC, cb)
+{
+    emp.dept = dept;
+    if(isM > 0)
+        emp.isManager = true;
+    if(isC > 0)
+        emp.isCareTaker = true;
+    cb();
+}
 
 
 // ----------------------------- ROUTES -------------------------------- //
@@ -68,12 +82,10 @@ app.post('/signup', function(req, res){
   }); 
 });
 
-
- //on submit of the employee login form
+//on submit of the employee login form
  app.post('/employeeLogin', function(req, res){
     var username = req.body.username;
     var password = req.body.password;
-
     //either username or password is blank
     if(!username || !password){
        res.send("Error missing username or password");
@@ -84,7 +96,16 @@ app.post('/signup', function(req, res){
               
                 if(data === true){
                     req.session.user = new user(username, "Employee");
-                    res.redirect('/managerFrontPage');
+                    db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
+                    {
+                        if(req.session.user.isManager)   // will be for managers only
+                            res.redirect('/managerFrontPage');
+                        else if(req.session.user.isCareTaker || req.session.user.dept == 9)
+                            res.redirect('/caretakerAndVet'); // will be for caretakers and vets only
+                        else
+                            res.redirect('/regularEmployee'); // will be for regular employees
+                    });
+                    
                     
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
@@ -95,6 +116,7 @@ app.post('/signup', function(req, res){
         
     }
  });
+
 
  app.get('/employeeLogout', function(req, res){
     req.session.destroy(function(){
