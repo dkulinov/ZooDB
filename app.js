@@ -145,12 +145,6 @@ app.get('/customerLogin', function(req, res){
 
 
 
-//inorder to access this page you need to be logged in as a customer 
-app.get('/protected', checkCustomerSignIn, function(req, res){
-   res.send("If you can see this then you are logged in as customer");
-});
-
-
 // ------------------------------------------------------------------------- //
 
 
@@ -184,34 +178,31 @@ function checkEmployeeSignIn(req, res, next){
       next(err);
    }
 }
-//if there is an error we call next(err) and it redirects back to customer login page
-app.use('/protected', function(err, req, res, next){
-    //User should be authenticated! Redirect him to log in.
-    res.redirect('/customerLogin');
- });
 
-//Manager page routes
+
+/* --------------------------------------- Manager Page Routes  ----------------------------------------- */
+
 app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  {   
      res.render("manager_frontPage");
  });
 app.get('/managerTables',checkEmployeeSignIn, function(req,res)
 {   
-    var data = []
+    var data = []   //used to pass to the manager_table ejs file
+
     db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
     {
        data.employeeList = employees;
         
     });
-    db.getFoodStock(function(foodStock)  //get employees from db.js file and then call the function 
+    db.getFoodStock(function(foodStock)  
     {
         data.foodStock = foodStock;
 
     });
-    db.getMedicineStock(function(medicineStock)  //get employees from db.js file and then call the function 
+    db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
     {
         data.medicineStock = medicineStock;
-        console.log(data);
         res.render("manager_tables", { data: data });
     });
 
@@ -220,6 +211,7 @@ app.get('/managerCharts', checkEmployeeSignIn, function(req,res)
 {   
     res.render("manager_charts");
 });
+//these 3 routes are if the user isnt logged in it redirects them to employeeLogin
 app.use('/managerFrontPage', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/employeeLogin');
@@ -233,8 +225,60 @@ app.use('/managerCharts', function(err, req, res, next){
     res.redirect('/employeeLogin');
 });
 
+//manager report routes
+app.get('/dailyReport', checkEmployeeSignIn, function(req,res)
+{   
+    var data = [];
+    db.getDailyRevenue(function(revenue)
+    {
+        data.dailyRevenue = revenue;
+        console.log(data);
+        res.render("dailyReport", {data: data});
+    });
 
-//GIFT SHOP ROUTES
+});
+app.get('/monthlyReport', checkEmployeeSignIn, function(req,res)
+{   
+    var data = [];
+    db.getMonthlyRevenue(function(revenue)
+    {
+        data.monthlyRevenue = revenue;
+        console.log(data);
+        res.render("monthlyReport", {data: data});
+    });
+});
+
+app.get('/cumulativeReport', checkEmployeeSignIn, function(req,res)
+{   
+    var data = [];
+    db.getCumulativeRevenue(function(revenue)
+    {
+        data.cumulativeRevenue = revenue;
+        console.log(data);
+        res.render("cumulativeReport", {data: data});
+    });
+
+});
+
+app.use('/dailyReport', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+app.use('/monthlyReport', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+app.use('/cumulativeReport', function(err, req, res, next){
+    //User should be authenticated! Redirect him to log in.
+    res.redirect('/employeeLogin');
+});
+/*------------------------------------------------------------ */
+
+
+
+
+
+/* --------------------- Shop Routes  ------------------------- */
 app.get('/shop', function(req,res)
 {   
     var items = [];
@@ -276,6 +320,10 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
         });
     }
 });
+
+/*------------------------------------------------------------ */
+
+
 
 
 
