@@ -375,3 +375,120 @@ getMostSoldProducts = function(callback){
   });
 }
 module.exports.getMostSoldProducts = getMostSoldProducts;
+
+
+// functions for alerts 
+getCareTakerAlerts = function(employee, time, callback)
+{
+  var sql = "SELECT caretaker_alerts.animal_id AS animalID, animal.animal_name AS animalName, caretaker_alerts.new_health_status AS health, caretaker_alerts.date_generated AS `date`  FROM caretaker_alerts INNER JOIN animal ON caretaker_alerts.animal_id = animal.animal_id WHERE caretaker_id = ";
+  sql += employee.username;
+  if(time != "allTime")
+  {
+    var amt = 1;
+    if(time == "week")
+      amt = 7;
+    else if(time == "month")
+      amt = 31;
+    else if(time == "year")
+      amt = 365;
+    sql += " AND caretaker_alerts.date_generated >= (SELECT DATE(NOW()))-";
+    sql += amt;
+  }
+  sql += " ORDER BY caretaker_alerts.date_generated ASC";
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+});
+}
+module.exports.getCareTakerAlerts = getCareTakerAlerts;
+
+getVetAlerts = function(time, callback)
+{
+  var sql = "SELECT zoo_supply_alerts.*, medicine_supply.med_name AS medName FROM zoo_supply_alerts INNER JOIN medicine_supply ON zoo_supply_alerts.product_id = medicine_supply.med_id WHERE manager_id=10008";
+  if(time != "allTime")
+  {
+    var amt = 1;
+    if(time == "week")
+      amt = 7;
+    else if(time == "month")
+      amt = 31;
+    else if(time == "year")
+      amt = 365;
+    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
+    sql += amt;
+  }
+  sql += " ORDER BY date_generated ASC";
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+});
+}
+module.exports.getVetAlerts = getVetAlerts;
+
+getNutritionAlerts = function(time, callback)
+{
+  var sql = "SELECT zoo_supply_alerts.*, food_supply.food_name AS foodName FROM zoo_supply_alerts INNER JOIN food_supply ON zoo_supply_alerts.product_id = food_supply.food_id WHERE manager_id=10001";
+  if(time != "allTime")
+  {
+    var amt = 1;
+    if(time == "week")
+      amt = 7;
+    else if(time == "month")
+      amt = 31;
+    else if(time == "year")
+      amt = 365;
+    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
+    sql += amt;
+  }
+  sql += " ORDER BY date_generated ASC";
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+});
+}
+module.exports.getNutritionAlerts = getNutritionAlerts;
+
+
+getStoreManagersAlerts = function(id, time, callback)
+{
+  var sql = 'SELECT store_supply_alerts.*, product.product_name FROM store_supply_alerts INNER JOIN product ON store_supply_alerts.product_id = product.product_id WHERE store_supply_alerts.manager_id = ';
+  sql += id;
+  if(time != "allTime")
+  {
+    var amt = 1;
+    if(time == "week")
+      amt = 7;
+    else if(time == "month")
+      amt = 31;
+    else if(time == "year")
+      amt = 365;
+    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
+    sql += amt;
+  }
+  sql += " ORDER BY date_generated ASC";
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+});
+}
+module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
