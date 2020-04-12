@@ -376,6 +376,62 @@ getMostSoldProducts = function(callback){
 }
 module.exports.getMostSoldProducts = getMostSoldProducts;
 
+//returns each product and its frequency sold from the orders table for the past week.
+getMostSoldProductsLastWeek = function(callback){
+  var sql = "SELECT product_id, COUNT(product_id)  FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) AS past_week GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getMostSoldProductsLastWeek = getMostSoldProductsLastWeek;
+
+//returns each product and its frequency sold from the orders table from the past day
+getMostSoldProductsLastDay = function(callback){
+  var sql = "SELECT product_id, COUNT(product_id)  FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 1 DAY) AND NOW()) AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getMostSoldProductsLastDay = getMostSoldProductsLastDay;
+
+
+
+//returns each product and its frequency sold from the orders table from the past month
+getMostSoldProductsLastMonth = function(callback){
+  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) AS past_month GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getMostSoldProductsLastMonth = getMostSoldProductsLastMonth;
+
 
 // functions for alerts 
 getCareTakerAlerts = function(employee, time, callback)
