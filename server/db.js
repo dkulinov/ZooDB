@@ -39,7 +39,6 @@ authenticateEmployee = function(data, callback){
 module.exports.authenticateEmployee = authenticateEmployee;
 
 
-
 //to verify if employee user and password are correct when logging. It returns true/false 
 //if you need some help understanding https://www.mysqltutorial.org/mysql-nodejs/select/
 authenticateCustomer = function(data, callback){
@@ -68,8 +67,6 @@ authenticateCustomer = function(data, callback){
 
 }
 module.exports.authenticateCustomer = authenticateCustomer;
-
-
 
 
 //connects the sign up form to the database. It can handle errors but
@@ -114,6 +111,8 @@ signUpCustomer = function(data, callback){
 
 }
 module.exports.signUpCustomer = signUpCustomer;
+
+
 getProducts = function(callback){
 
   var sql = "SELECT * FROM product WHERE stock > 0 OR stock IS NULL ORDER BY gift_shop_id, product_id";
@@ -148,7 +147,6 @@ makeOnlinePurchase = function(order, callback){
 module.exports.makeOnlinePurchase = makeOnlinePurchase;
 
 
-
 ringUpCustomer = function(order, callback)
 {
   var sql = "INSERT INTO `order` (order_id, product_id, product_size, quantity, price_total, in_store, order_status) VALUES (null,";
@@ -165,6 +163,7 @@ ringUpCustomer = function(order, callback)
   });
 }
 module.exports.ringUpCustomer = ringUpCustomer;
+
 
 getEmployeeInfo = function(emp, callback, cb)
 {
@@ -212,6 +211,25 @@ getEmployeeInfo = function(emp, callback, cb)
 module.exports.getEmployeeInfo = getEmployeeInfo;
 
 
+//List of all the animals that are in care of a certain employee
+getEmployeesAnimals = function(data,callback){
+
+ var sql = "SELECT * FROM animal,takes_care_of WHERE animal.animal_id = takes_care_of.animal_id AND takes_care_of.caretaker_id = ";
+  sql += emp.employee_id;
+  var items=[];
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(res.length)
+        callback(res);
+    });
+  });
+}
+module.exports.getEmployeesAnimals = getEmployeesAnimals;
+
+
 //manager page functions
 getAllEmployees = function(callback){
   var sql = "SELECT * FROM zoo_schema.employee;";
@@ -246,8 +264,8 @@ getFoodStock = function(callback){
 
   });
 }
-
 module.exports.getFoodStock= getFoodStock;
+
 
 getMedicineStock = function(callback){
   var sql = "SELECT * FROM zoo_schema.medicine_supply;";
@@ -265,6 +283,7 @@ getMedicineStock = function(callback){
   });
 }
 module.exports.getMedicineStock= getMedicineStock;
+
 
 //get the price_totals from orders table
 getMonthlyRevenue = function(callback){
@@ -320,6 +339,7 @@ getDailyRevenue = function(callback){
 }
 module.exports.getDailyRevenue= getDailyRevenue;
 
+
 getCumulativeRevenue = function(callback){
   var sql = "SELECT SUM(price_total) AS cumulativeRevenue FROM zoo_schema.order;";
   
@@ -355,5 +375,3 @@ getMostSoldProducts = function(callback){
   });
 }
 module.exports.getMostSoldProducts = getMostSoldProducts;
-
-
