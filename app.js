@@ -254,7 +254,6 @@ app.get('/dailyReport', checkEmployeeSignIn, function(req,res)
     db.getDailyRevenue(function(revenue)
     {
         data.dailyRevenue = revenue;
-        console.log(data);
         res.render("dailyReport", {data: data});
     });
 
@@ -265,7 +264,9 @@ app.get('/monthlyReport', checkEmployeeSignIn, function(req,res)
     db.getMonthlyRevenue(function(revenue)
     {
         data.monthlyRevenue = revenue;
-        console.log(data);
+    });
+    db.getMostSoldProductsLastMonth(function(products){
+        data.mostSoldProducts = products;
         res.render("monthlyReport", {data: data});
     });
 });
@@ -275,8 +276,10 @@ app.get('/cumulativeReport', checkEmployeeSignIn, function(req,res)
     var data = [];
     db.getCumulativeRevenue(function(revenue)
     {
-        data.cumulativeRevenue = revenue;
-        console.log(data);
+        data.cumulativeRevenue = revenue;     
+    });
+    db.getMostSoldProducts(function(products){
+        data.mostSoldProducts = products;
         res.render("cumulativeReport", {data: data});
     });
 
