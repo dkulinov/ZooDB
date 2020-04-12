@@ -345,8 +345,67 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
 
 /*------------------------------------------------------------ */
 
+// routes for alerts
+
+app.get('/alertOptions/', function(req, res)
+{
+    if(!req.session.user)
+        res.send("You can't see this!");
+    else if(req.session.user.role == "Customer")
+        res.send("You can't see this!");
+    else if(req.session.user.role == "Employee")
+    {
+        if(req.session.user.isManager || req.session.user.isCareTaker || req.session.user.dept==9)
+            res.render('alertOptions.ejs');
+        else
+            res.send("Only managers, vets, and caretakers can view reports!");
+    }
+});
 
 
+app.post('/alert', function(req, res)
+{
+    if(req.session.user.dept == 9)
+    {
+        db.getVetAlerts(req.body.time, function(info)
+        {
+            console.log(info);
+            // res.render('vet_alerts.ejs', {info:info});
+        });
+    }
+    else if(req.session.user.isCareTaker)
+    {
+        // render caretaker report
+        db.getCareTakerAlerts(req.session.user, req.body.time, function(info)
+        {
+            console.log(info);
+            // res.render('caretaker_alerts.ejs', {info:info});
+        });
+    }
+    else if(req.session.user.isManager)
+    {
+        // render manager reports
+        // may have to differentiate based on departments
+        if(req.session.user.dept == 12)
+        {
+            db.getNutritionAlerts(req.body.time, function(info)
+            {
+                console.log(info);
+                // res.render('nutrition_alerts.ejs', {info:info});
+            });
+        }
+        else if(req.session.user.dept >=5 && req.session.user.dept <=7)
+        {
+            db.getStoreManagersAlerts(req.session.user.username, req.body.time, function(info)
+            {
+                console.log(info);
+                // res.render('manager_alerts.ejs', {info:info});
+            });
+        }
+        else
+            res.send("There are no alerts for you!"); // any other managers
+    }
+});
 
 
 // catch all route that will notify the user that this page doesn't exist
