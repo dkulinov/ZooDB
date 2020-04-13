@@ -88,7 +88,7 @@ app.post('/signup', function(req, res){
     var password = req.body.password;
     //either username or password is blank
     if(!username || !password){
-       res.send("Error missing username or password");
+        res.render('errorPage', {message: "Missing required fields"});
     } else {
         db.authenticateEmployee([username, password], function(err, data){
             if(err) {console.log("error"); return;}
@@ -98,12 +98,14 @@ app.post('/signup', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                        if(req.session.user.isManager)   // will be for managers only
+                        if(req.session.user.isManager){  // will be for managers only
                             res.redirect('/managerFrontPage');
-                        else if(req.session.user.isCareTaker || req.session.user.dept == 9)
+                        }else if(req.session.user.isCareTaker || req.session.user.dept == 9){
+                            console.log("careTaker logged in")
                             res.redirect('/caretakerAndVet'); // will be for caretakers and vets only
-                        else
+                        }else{
                             res.redirect('/regularEmployee'); // will be for regular employees
+                        }
                     });
                     
                     
@@ -138,7 +140,7 @@ app.get('/customerLogin', function(req, res){
 
     //either username or password is blank
     if(!username || !password){
-       res.send("Error missing username or password");
+        res.render('errorPage', {message: "Missing required fields"});
     } else {
         db.authenticateCustomer([username, password], function(err, data){
             if(err) {console.log("error"); return;}
@@ -258,9 +260,12 @@ app.get('/dailyReport', checkEmployeeSignIn, function(req,res)
     });
     db.getMostSoldProductsLastDay(function(products){
         data.mostSoldProducts = products;
+        
+    }); 
+    db.getOrdersLastDay(function(products){
+        data.orderTable = products;
         res.render("dailyReport", {data: data});
     }); 
-
 });
 app.get('/monthlyReport', checkEmployeeSignIn, function(req,res)
 {   
@@ -271,8 +276,11 @@ app.get('/monthlyReport', checkEmployeeSignIn, function(req,res)
     });
     db.getMostSoldProductsLastMonth(function(products){
         data.mostSoldProducts = products;
-        res.render("monthlyReport", {data: data});
     });
+    db.getOrdersLastMonth(function(products){
+        data.orderTable = products;
+        res.render("monthlyReport", {data: data});
+    });     
 });
 
 app.get('/cumulativeReport', checkEmployeeSignIn, function(req,res)
@@ -284,9 +292,12 @@ app.get('/cumulativeReport', checkEmployeeSignIn, function(req,res)
     });
     db.getMostSoldProducts(function(products){
         data.mostSoldProducts = products;
-        res.render("cumulativeReport", {data: data});
-    });
 
+    });
+    db.getOrdersCumulative(function(products){
+        data.orderTable = products;
+        res.render("cumulativeReport", {data: data});
+    }); 
 });
 
 app.use('/dailyReport', function(err, req, res, next){
@@ -463,6 +474,33 @@ app.get('/orderHistory', function(req, res)
         });
     }
 });
+
+/*  ------------------------------ VET PAGE ROUTES  ------------------------------- */
+
+app.post('/caretakerAndVet', function(req, res)
+{
+    res.render("errorPage", {message: "This is the caretaker page. Change the filename to what you want it to point to."})  
+});
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom

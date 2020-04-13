@@ -415,40 +415,54 @@
           <div class="row">
 
             <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
 
-              <!-- Project Card Example -->
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+
+              <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Customer Orders</h1>
+                <p class="mb-4">A list of customer orders placed.</p>
+      
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                  <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Orders</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                          <tr>
+                            <th>Order ID</th>
+                            <th>Product ID</th>
+                            <th>Order Date</th>
+                            <th>Total Price</th>
+                            <th>Email</th>
+
+                          </tr>
+                        </thead>
+      
+                        <tbody>
+                          <% for(var i=0; i< data.orderTable.length; i++) { %>
+                            <tr>
+                              <td><%= data.orderTable[i].order_id  %>  </td>
+                              <td><%= data.orderTable[i].product_id %> </td>
+                              <td><%= data.orderTable[i].order_date %> </td>
+                              <td><%= data.orderTable[i].price_total %> </td>
+                              <td><%= data.orderTable[i].email %> </td>
+                              
+                            </tr>
+                          <% } %>   
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Animal Database <span class="float-right">60%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
+      
+              </div>            
+            
+            
+        
 
               
 
@@ -546,6 +560,12 @@
   <script src="../assets/vendor/demo/chart-area-demo.js"></script>
   <script src="../assets/vendor/demo/chart-pie-demo.js"></script>
 
+
+  <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <!-- Page level custom scripts -->
+  <script src="../assets/vendor/demo/datatables-demo.js"></script>
+
     <!-- we put the script in the html file so we can use ejs data -->
   <script>
     // Set new default font family and font color to mimic Bootstrap's default styling
@@ -586,7 +606,7 @@
     var dataList = [];
     for(var i = 0; i < chartData.length; i++){
       labelList[i] = chartData[i].product_id;
-      dataList[i] = chartData[i].frequency;
+      dataList[i] = chartData[i].quantity;
     }
     console.log("labelList: ", labelList);
     console.log("dataList: ", dataList);
@@ -596,7 +616,7 @@
       data: {
         labels: labelList,
         datasets: [{
-          label: "Revenue",
+          label: "Quantity Sold",
           backgroundColor: "#4e73df",
           hoverBackgroundColor: "#2e59d9",
           borderColor: "#4e73df",
@@ -616,7 +636,7 @@
         scales: {
           xAxes: [{
             time: {
-              unit: 'month'
+              unit: 'Products'
             },
             gridLines: {
               display: false,
@@ -635,7 +655,7 @@
               padding: 10,
               // Include a dollar sign in the ticks
               callback: function(value, index, values) {
-                return '$' + number_format(value);
+                return number_format(value);
               }
             },
             gridLines: {
@@ -648,7 +668,7 @@
           }],
         },
         legend: {
-          display: false
+          display: true
         },
         tooltips: {
           titleMarginBottom: 10,
@@ -665,7 +685,7 @@
           callbacks: {
             label: function(tooltipItem, chart) {
               var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-              return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+              return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
             }
           }
         },
