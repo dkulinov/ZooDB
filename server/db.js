@@ -587,3 +587,21 @@ getCustomerInfo = function(email, callback)
   });
 }
 module.exports.getCustomerInfo = getCustomerInfo;
+
+
+getOrderHistory = function(email, callback)
+{
+  var sql = "SELECT `order`.order_id, `order`.product_id, `order`.order_date, `order`.price_total, `order`.quantity, `order`.product_size, `order`.order_status, DATE_FORMAT(`order`.order_date, '%d-%m-%Y') AS order_date, product.product_name, product.image_path FROM `order` JOIN product ON `order`.product_id=product.product_id WHERE email = '";
+  sql += email;
+  sql += "' ORDER BY order_date DESC;"
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.getOrderHistory = getOrderHistory;
