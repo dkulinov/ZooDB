@@ -550,3 +550,21 @@ getStoreManagersAlerts = function(id, time, callback)
 }
 module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
 
+
+searchOrder = function(number, zipcode, callback)
+{
+  var sql = "SELECT `order`.*, product.product_name, product.image_path FROM `order` JOIN product ON `order`.product_id=product.product_id WHERE order_id = ";
+  sql += number;
+  sql += " AND zipcode = ";
+  sql += zipcode;
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.searchOrder = searchOrder;
