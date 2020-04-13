@@ -354,6 +354,7 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
 
 // routes for alerts
 
+
 app.get('/alertOptions/', function(req, res)
 {
     if(!req.session.user)
@@ -377,7 +378,7 @@ app.post('/alert', function(req, res)
         db.getVetAlerts(req.body.time, function(info)
         {
             console.log(info);
-            // res.render('vet_alerts.ejs', {info:info});
+            res.render('vet_alerts.ejs', {data:[info, req.body.time]});
         });
     }
     else if(req.session.user.isCareTaker)
@@ -385,8 +386,7 @@ app.post('/alert', function(req, res)
         // render caretaker report
         db.getCareTakerAlerts(req.session.user, req.body.time, function(info)
         {
-            console.log(info);
-            // res.render('caretaker_alerts.ejs', {info:info});
+            res.render('caretaker_alerts.ejs', {data:[info, req.body.time]});
         });
     }
     else if(req.session.user.isManager)
@@ -397,16 +397,14 @@ app.post('/alert', function(req, res)
         {
             db.getNutritionAlerts(req.body.time, function(info)
             {
-                console.log(info);
-                // res.render('nutrition_alerts.ejs', {info:info});
+                res.render('nutrition_alerts.ejs', {data:[info, req.body.time]});
             });
         }
         else if(req.session.user.dept >=5 && req.session.user.dept <=7)
         {
             db.getStoreManagersAlerts(req.session.user.username, req.body.time, function(info)
             {
-                console.log(info);
-                // res.render('manager_alerts.ejs', {info:info});
+                res.render('manager_alerts.ejs', {data:[info, req.body.time]});
             });
         }
         else
