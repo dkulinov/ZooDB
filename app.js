@@ -146,7 +146,7 @@ app.get('/customerLogin', function(req, res){
 
                 if(data === true){
                     req.session.user = new user(username, "Customer");
-                    res.redirect("/");
+                    res.redirect("/customerFrontPage");
                     
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
@@ -412,6 +412,57 @@ app.post('/alert', function(req, res)
     }
 });
 
+
+// track orders
+
+// search 1 order
+app.get('/searchOrderStatus', function(req, res)
+{
+    res.render('searchOrderStatus.ejs');
+});
+
+app.post('/searchOrder', function(req, res)
+{
+    db.searchOrder(req.body.number, req.body.zip, function(data)
+    {
+        if(data != false)
+            res.render('order_status.ejs', {data:data});
+        else
+            res.send("Couldn't find your order");
+    })
+});
+
+
+app.get('/customerFrontPage', function(req, res)
+{
+    if(!req.session.user)
+        res.send("Please sign in or create an account");
+    else if(req.session.user.role == "Employee")
+        res.send("You're not a customer");
+    else if(req.session.user.role == "Customer")
+    {
+        db.getCustomerInfo(req.session.user.username, function(data)
+        {
+            res.render('customerFrontPage.ejs', {data:data});
+        });
+    }
+});
+
+
+app.get('/orderHistory', function(req, res)
+{
+    if(!req.session.user)
+        res.send("Please sign in or create an account");
+    else if(req.session.user.role == "Employee")
+        res.send("You're not a customer");
+    else if(req.session.user.role == "Customer")
+    {
+        db.getOrderHistory(req.session.user.username, function(data)
+        {
+            res.render('orderHistory.ejs', {data:data});
+        });
+    }
+});
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom

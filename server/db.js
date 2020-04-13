@@ -115,7 +115,7 @@ module.exports.signUpCustomer = signUpCustomer;
 
 getProducts = function(callback){
 
-  var sql = "SELECT * FROM product WHERE stock > 0 OR stock IS NULL ORDER BY gift_shop_id, product_id";
+  var sql = "SELECT * FROM product WHERE product_id != 37378708 AND (stock > 0 OR stock IS NULL) ORDER BY gift_shop_id, product_id";
   var items=[];
   pool.getConnection(function(err, connection){
     connection.release();
@@ -550,3 +550,58 @@ getStoreManagersAlerts = function(id, time, callback)
 }
 module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
 
+
+searchOrder = function(number, zipcode, callback)
+{
+  var sql = "SELECT `order`.*, product.product_name, product.image_path FROM `order` JOIN product ON `order`.product_id=product.product_id WHERE order_id = ";
+  sql += number;
+  sql += " AND zipcode = ";
+  sql += zipcode;
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.searchOrder = searchOrder;
+
+
+
+getCustomerInfo = function(email, callback)
+{
+  var sql = "SELECT f_name, isMember, DATE_FORMAT(memberUntil,'%d-%m-%Y') AS memberUntil, DATE_FORMAT(date_registered,'%d-%m-%Y') AS date_registered FROM customer WHERE email = '";
+  sql += email;
+  sql += "';"
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.getCustomerInfo = getCustomerInfo;
+
+
+getOrderHistory = function(email, callback)
+{
+  var sql = "SELECT `order`.order_id, `order`.product_id, `order`.order_date, `order`.price_total, `order`.quantity, `order`.product_size, `order`.order_status, DATE_FORMAT(`order`.order_date, '%d-%m-%Y') AS order_date, product.product_name, product.image_path FROM `order` JOIN product ON `order`.product_id=product.product_id WHERE email = '";
+  sql += email;
+  sql += "' ORDER BY order_date DESC;"
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.getOrderHistory = getOrderHistory;

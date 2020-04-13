@@ -57,17 +57,11 @@
             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
               <li class="active"><a href="index.html" class="nav-link">Home</a></li>
               <li><a href="/shop/#tickets" class="nav-link">Tickets</a></li>
+              <li><a href="/getMembership" class="nav-link">Become a Member</a></li>
               <li><a href="/shop/" class="./views/giftshops.html">Shop</a></li>
               <li><a href="/searchOrderStatus/" class="./views/giftshops.html">Track Order</a></li>
-
-              <li class="has-children">
-                <a href="#" class="nav-link">Login | Logout</a>
-                <ul class="dropdown">
-                  <li><a href="customerLogin" class="nav-link">Customer Login</a></li>
-                  <li><a href="employeeLogin" class="nav-link">Employee Login</a></li>
-                  <li><a href="customerLogout" class="nav-link">Logout</a></li>
-                </ul>
-              </li>
+              <li><a href="/orderHistory/" class="./views/giftshops.html">Order History</a></li>
+              <li><a href="customerLogout" class="nav-link">Logout</a></li>
 
             </ul>
           </nav>
@@ -105,8 +99,13 @@
         <div class="col-12 hero-text-image">
           <div class="row">
             <div class="col-lg-7 text-center text-lg-left">
-              <h1 data-aos="fade-right">Explore Your Wild Side</h1>
-              <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Visit us today and get half off your next purchase. Support us by becoming a member.</p>
+              <h1 data-aos="fade-right">Welcome back <%=data[0].f_name%>! Thanks for being a customer since <%=data[0].date_registered%>.</h1>
+              <% if(!data[0].isMember){%> 
+              <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Visit us today. Support us by becoming a <a href="/getMembership">member</a>.</p>
+              <%}else if(data[0].isMember) {%>
+              <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Thank you for being a member!</p>
+              <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Your membership is valid until <%=data[0].memberUntil%>.</p>
+              <% } %> 
               <p data-aos="fade-right" data-aos-delay="200" data-aos-offset="-500"><a href="/shop/#tickets" class="btn btn-outline-white">Get Tickets</a></p>
             </div>
             <div class="col-lg-5 iphone-wrap">
