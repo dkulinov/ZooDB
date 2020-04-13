@@ -98,10 +98,10 @@ app.post('/signup', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                        if(req.session.user.isManager)   // will be for managers only
+                       if(req.session.user.isCareTaker || req.session.user.dept == 9)// will be for caretakers and vets only
+                            res.redirect('/caretakerAndVet'); 
+                        else if(req.session.user.isManager)   // will be for managers only
                             res.redirect('/managerFrontPage');
-                        else if(req.session.user.isCareTaker || req.session.user.dept == 9)
-                            res.redirect('/caretakerAndVet'); // will be for caretakers and vets only
                         else
                             res.redirect('/regularEmployee'); // will be for regular employees
                     });
