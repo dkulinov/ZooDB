@@ -568,3 +568,22 @@ searchOrder = function(number, zipcode, callback)
   });
 }
 module.exports.searchOrder = searchOrder;
+
+
+
+getCustomerInfo = function(email, callback)
+{
+  var sql = "SELECT f_name, isMember, DATE_FORMAT(memberUntil,'%d-%m-%Y') AS memberUntil, DATE_FORMAT(date_registered,'%d-%m-%Y') AS date_registered FROM customer WHERE email = '";
+  sql += email;
+  sql += "';"
+  pool.getConnection(function(err, connection){
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.getCustomerInfo = getCustomerInfo;
