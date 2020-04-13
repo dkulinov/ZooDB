@@ -434,9 +434,10 @@ module.exports.getMostSoldProductsLastMonth = getMostSoldProductsLastMonth;
 
 
 // functions for alerts 
+
 getCareTakerAlerts = function(employee, time, callback)
 {
-  var sql = "SELECT caretaker_alerts.animal_id AS animalID, animal.animal_name AS animalName, caretaker_alerts.new_health_status AS health, caretaker_alerts.date_generated AS `date`  FROM caretaker_alerts INNER JOIN animal ON caretaker_alerts.animal_id = animal.animal_id WHERE caretaker_id = ";
+  var sql = "SELECT caretaker_alerts.animal_id AS animalID, animal.animal_name AS animalName, caretaker_alerts.new_health_status AS health, DATE_FORMAT(caretaker_alerts.date_generated, '%Y-%m-%d') AS `date`  FROM caretaker_alerts INNER JOIN animal ON caretaker_alerts.animal_id = animal.animal_id WHERE caretaker_id = ";
   sql += employee.username;
   if(time != "allTime")
   {
@@ -450,7 +451,7 @@ getCareTakerAlerts = function(employee, time, callback)
     sql += " AND caretaker_alerts.date_generated >= (SELECT DATE(NOW()))-";
     sql += amt;
   }
-  sql += " ORDER BY caretaker_alerts.date_generated ASC";
+  sql += " GROUP BY caretaker_alerts.new_health_status ORDER BY caretaker_alerts.date_generated ASC";
   pool.getConnection(function(err, connection){
     if(err) { console.log(err); callback(true); return; }
     connection.query(sql, function(err, res){
@@ -465,7 +466,7 @@ module.exports.getCareTakerAlerts = getCareTakerAlerts;
 
 getVetAlerts = function(time, callback)
 {
-  var sql = "SELECT zoo_supply_alerts.*, medicine_supply.med_name AS medName FROM zoo_supply_alerts INNER JOIN medicine_supply ON zoo_supply_alerts.product_id = medicine_supply.med_id WHERE manager_id=10008";
+  var sql = "SELECT zoo_supply_alerts.product_id, DATE_FORMAT(zoo_supply_alerts.date_generated, '%Y-%m-%d') AS date_generated, medicine_supply.med_name AS medName FROM zoo_supply_alerts INNER JOIN medicine_supply ON zoo_supply_alerts.product_id = medicine_supply.med_id WHERE manager_id=10008";
   if(time != "allTime")
   {
     var amt = 1;
@@ -493,7 +494,7 @@ module.exports.getVetAlerts = getVetAlerts;
 
 getNutritionAlerts = function(time, callback)
 {
-  var sql = "SELECT zoo_supply_alerts.*, food_supply.food_name AS foodName FROM zoo_supply_alerts INNER JOIN food_supply ON zoo_supply_alerts.product_id = food_supply.food_id WHERE manager_id=10001";
+  var sql = "SELECT zoo_supply_alerts.product_id, DATE_FORMAT(zoo_supply_alerts.date_generated, '%Y-%m-%d') AS date_generated, food_supply.food_name AS foodName FROM zoo_supply_alerts INNER JOIN food_supply ON zoo_supply_alerts.product_id = food_supply.food_id WHERE manager_id=10001";
   if(time != "allTime")
   {
     var amt = 1;
@@ -522,7 +523,7 @@ module.exports.getNutritionAlerts = getNutritionAlerts;
 
 getStoreManagersAlerts = function(id, time, callback)
 {
-  var sql = 'SELECT store_supply_alerts.*, product.product_name FROM store_supply_alerts INNER JOIN product ON store_supply_alerts.product_id = product.product_id WHERE store_supply_alerts.manager_id = ';
+  var sql = "SELECT store_supply_alerts.product_id,store_supply_alerts.product_size, DATE_FORMAT(store_supply_alerts.date_generated, '%Y-%m-%d') AS date_generated, product.product_name FROM store_supply_alerts INNER JOIN product ON store_supply_alerts.product_id = product.product_id WHERE store_supply_alerts.manager_id = ";
   sql += id;
   if(time != "allTime")
   {
@@ -548,3 +549,4 @@ getStoreManagersAlerts = function(id, time, callback)
 });
 }
 module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
+
