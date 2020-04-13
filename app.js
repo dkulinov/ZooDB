@@ -201,6 +201,13 @@ function checkEmployeeSignIn(req, res, next){
    }
 }
 
+/* --------------------------------------- Manager Page Routes  ----------------------------------------- */
+
+app.get('/caretakerAndVet', checkEmployeeSignIn, function(req,res)
+{
+  res.render("caretakerAndVet");
+});
+
 
 /* --------------------------------------- Manager Page Routes  ----------------------------------------- */
 
