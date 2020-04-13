@@ -254,8 +254,12 @@ app.get('/dailyReport', checkEmployeeSignIn, function(req,res)
     db.getDailyRevenue(function(revenue)
     {
         data.dailyRevenue = revenue;
-        res.render("dailyReport", {data: data});
+
     });
+    db.getMostSoldProductsLastDay(function(products){
+        data.mostSoldProducts = products;
+        res.render("dailyReport", {data: data});
+    }); 
 
 });
 app.get('/monthlyReport', checkEmployeeSignIn, function(req,res)
