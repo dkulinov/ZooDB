@@ -444,6 +444,22 @@ app.get('/customerFrontPage', function(req, res)
     }
 });
 
+
+app.get('/orderHistory', function(req, res)
+{
+    if(!req.session.user)
+        res.send("Please sign in or create an account");
+    else if(req.session.user.role == "Employee")
+        res.send("You're not a customer");
+    else if(req.session.user.role == "Customer")
+    {
+        db.getOrderHistory(req.session.user.username, function(data)
+        {
+            res.render('orderHistory.ejs', {data:data});
+        });
+    }
+});
+
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
 app.get('*', function(req, res){
