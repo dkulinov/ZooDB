@@ -212,17 +212,17 @@ module.exports.getEmployeeInfo = getEmployeeInfo;
 
 
 //List of all the animals that are in care of a certain employee
-getEmployeesAnimals = function(data,callback){
+getEmployeesAnimals = function(employee,callback){
 
- var sql = "SELECT * FROM animal,takes_care_of WHERE animal.animal_id = takes_care_of.animal_id AND takes_care_of.caretaker_id = ";
-  sql += emp.employee_id;
-  var items=[];
+  var sql = "SELECT * FROM zoo_schema.animal NATURAL JOIN zoo_schema.takes_care_of WHERE caretaker_id = ";
+  sql += employee.username, sql+= ";";
+  var animals = [];
   pool.getConnection(function(err, connection){
     connection.release();
     if(err) { console.log(err); callback(true); return; }
   
     connection.query(sql, function(err, res){
-      if(res.length)
+      if(err) console.log(err);
         callback(res);
     });
   });
@@ -230,7 +230,7 @@ getEmployeesAnimals = function(data,callback){
 module.exports.getEmployeesAnimals = getEmployeesAnimals;
 
 
-//manager page functions
+/* ------------------------------------- Manager Page functions ----------------------------------------- */
 getAllEmployees = function(callback){
   var sql = "SELECT * FROM zoo_schema.employee;";
 
@@ -285,155 +285,71 @@ getMedicineStock = function(callback){
 module.exports.getMedicineStock= getMedicineStock;
 
 
-//get the price_totals from orders table
-getMonthlyRevenue = function(callback){
-  var sql = "SELECT SUM(price_total) monthlyRevenue FROM zoo_schema.order WHERE order_date BETWEEN (CURRENT_DATE() - INTERVAL 1 MONTH) AND CURRENT_DATE();";
+
+
+//function that can get the revenue from a date window
+getRevenueTest = function(data, callback){
+
+  var sql = "SELECT SUM(price_total) revenue FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?;"
+  pool.getConnection(function(err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    
+
+    connection.query(sql, data, function(err, results) {
+      connection.release();
+      if(err) { console.log(err); callback(true); return; }
+      else{ callback(false, results); }
+    });
+
+  });
+
+}
+module.exports.getRevenueTest = getRevenueTest;
+
+
+getOrdersTest = function(data, callback){
+  var sql = "SELECT * FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?;";
   
   pool.getConnection(function(err, connection){
     connection.release();
     if(err) { console.log(err); callback(true); return; }
   
-    connection.query(sql, function(err, res){
+    connection.query(sql, data, function(err, res){
       if(err) console.log(err);
       else
-        callback(res);
+        callback(false, res);
     });
 
   });
 }
-module.exports.getMonthlyRevenue= getMonthlyRevenue;
+module.exports.getOrdersTest = getOrdersTest;
 
-
-getWeeklyRevenue = function(callback){
-  var sql = "SELECT SUM(price_total) weeklyRevenue FROM zoo_schema.order WHERE order_date BETWEEN (CURRENT_DATE() - INTERVAL 1 MONTH) AND CURRENT_DATE();";
+//returns each product and its frequency sold from the orders table from a date window
+getMostSoldProductsTest = function(data, callback){
+  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?)  AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
   
   pool.getConnection(function(err, connection){
     connection.release();
     if(err) { console.log(err); callback(true); return; }
   
-    connection.query(sql, function(err, res){
+    connection.query(sql, data, function(err, res){
       if(err) console.log(err);
       else
-        callback(res);
+        callback(false,res);
     });
 
   });
 }
-module.exports.getWeeklyRevenue= getWeeklyRevenue;
-
-
-getDailyRevenue = function(callback){
-  var sql = "SELECT SUM(price_total) AS dailyRevenue FROM zoo_schema.order WHERE date(order_date)  = date(now());";
-  
-  pool.getConnection(function(err, connection){
-    connection.release();
-    if(err) { console.log(err); callback(true); return; }
-  
-    connection.query(sql, function(err, res){
-      if(err) console.log(err);
-      else
-        callback(res);
-    });
-
-  });
-}
-module.exports.getDailyRevenue= getDailyRevenue;
-
-
-getCumulativeRevenue = function(callback){
-  var sql = "SELECT SUM(price_total) AS cumulativeRevenue FROM zoo_schema.order;";
-  
-  pool.getConnection(function(err, connection){
-    connection.release();
-    if(err) { console.log(err); callback(true); return; }
-  
-    connection.query(sql, function(err, res){
-      if(err) console.log(err);
-      else
-        callback(res);
-    });
-
-  });
-}
-module.exports.getCumulativeRevenue= getCumulativeRevenue;
-
-
-//returns each product and its frequency sold from the orders table.
-getMostSoldProducts = function(callback){
-  var sql = "SELECT product_id, COUNT(product_id) AS MOST_FREQUENT FROM zoo_schema.order GROUP BY product_id ORDER BY COUNT(product_id) DESC";
-  
-  pool.getConnection(function(err, connection){
-    connection.release();
-    if(err) { console.log(err); callback(true); return; }
-  
-    connection.query(sql, function(err, res){
-      if(err) console.log(err);
-      else
-        callback(res);
-    });
-
-  });
-}
-module.exports.getMostSoldProducts = getMostSoldProducts;
-
-//returns each product and its frequency sold from the orders table for the past week.
-getMostSoldProductsLastWeek = function(callback){
-  var sql = "SELECT product_id, COUNT(product_id)  FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) AS past_week GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
-  
-  pool.getConnection(function(err, connection){
-    connection.release();
-    if(err) { console.log(err); callback(true); return; }
-  
-    connection.query(sql, function(err, res){
-      if(err) console.log(err);
-      else
-        callback(res);
-    });
-
-  });
-}
-module.exports.getMostSoldProductsLastWeek = getMostSoldProductsLastWeek;
-
-//returns each product and its frequency sold from the orders table from the past day
-getMostSoldProductsLastDay = function(callback){
-  var sql = "SELECT product_id, COUNT(product_id)  FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 1 DAY) AND NOW()) AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
-  
-  pool.getConnection(function(err, connection){
-    connection.release();
-    if(err) { console.log(err); callback(true); return; }
-  
-    connection.query(sql, function(err, res){
-      if(err) console.log(err);
-      else
-        callback(res);
-    });
-
-  });
-}
-module.exports.getMostSoldProductsLastDay = getMostSoldProductsLastDay;
+module.exports.getMostSoldProductsTest = getMostSoldProductsTest;
+/* -------------------------------------------------------------------------- */
 
 
 
-//returns each product and its frequency sold from the orders table from the past month
-getMostSoldProductsLastMonth = function(callback){
-  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) AS past_month GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
-  
-  pool.getConnection(function(err, connection){
-    connection.release();
-    if(err) { console.log(err); callback(true); return; }
-  
-    connection.query(sql, function(err, res){
-      if(err) console.log(err);
-      else
-        callback(res);
-    });
-
-  });
-}
-module.exports.getMostSoldProductsLastMonth = getMostSoldProductsLastMonth;
 
 
-// functions for alerts 
+
+
+/* ------------------------ ALERT FUNCTIONS ----------------------------------*/
 
 getCareTakerAlerts = function(employee, time, callback)
 {
@@ -549,6 +465,9 @@ getStoreManagersAlerts = function(id, time, callback)
 });
 }
 module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
+
+
+/* --------------------------------------------------------------------------- */
 
 
 searchOrder = function(number, zipcode, callback)
