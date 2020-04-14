@@ -262,11 +262,6 @@ app.get('/managerTables',checkEmployeeSignIn, function(req,res)
 
 });
 
-app.get('/managerCharts', checkEmployeeSignIn, function(req,res)
-{   
-    res.render("manager_charts");
-});
-
 //these 3 routes are if the user isnt logged in it redirects them to employeeLogin
 app.use('/managerFrontPage', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
@@ -276,76 +271,41 @@ app.use('/managerTables', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/employeeLogin');
 });
-app.use('/managerCharts', function(err, req, res, next){
-    //User should be authenticated! Redirect him to log in.
-    res.redirect('/employeeLogin');
-});
 
-//manager report routes
-app.get('/dailyReport', checkEmployeeSignIn, function(req,res)
-{   
-    var data = [];
-    db.getDailyRevenue(function(revenue)
-    {
-        data.dailyRevenue = revenue;
 
-    });
-    db.getMostSoldProductsLastDay(function(products){
-        data.mostSoldProducts = products;
-        
-    }); 
-    db.getOrdersLastDay(function(products){
-        data.orderTable = products;
-        res.render("dailyReport", {data: data});
-    }); 
-});
+ app.post('/generateReport', function(req, res){
+    var startdate = req.body.startdate;
+    var enddate = req.body.enddate;
+ 
+    var data = []    
+    if(!startdate || !enddate){
+        res.render('errorPage', {message: "Missing required fields"});
+    } else {
+        db.getRevenueTest([startdate, enddate], function(err,revenue){
+            if(err) {console.log("error"); return;}
+            else{
+                data.revenue = revenue;
+           
+            }
+        });     
+ 
+        db.getMostSoldProductsTest([startdate, enddate], function(err,products){
+            if(err) {console.log("error"); return;}
+            else{
+                data.mostSoldProducts = products;
+            }
+        });  
+        db.getOrdersTest([startdate, enddate], function(err,orders){
+            if(err) {console.log("error"); return;}
+            else{
+                data.orderTable = orders;
+                res.render("financialReport", {data: data});
+            }
+        });  
+    }
+ });
 
-app.get('/monthlyReport', checkEmployeeSignIn, function(req,res)
-{   
-    var data = [];
-    db.getMonthlyRevenue(function(revenue)
-    {
-        data.monthlyRevenue = revenue;
-    });
-    db.getMostSoldProductsLastMonth(function(products){
-        data.mostSoldProducts = products;
-    });
-    db.getOrdersLastMonth(function(products){
-        data.orderTable = products;
-        res.render("monthlyReport", {data: data});
-    });     
-});
-
-app.get('/cumulativeReport', checkEmployeeSignIn, function(req,res)
-{   
-    var data = [];
-    db.getCumulativeRevenue(function(revenue)
-    {
-        data.cumulativeRevenue = revenue;     
-    });
-    db.getMostSoldProducts(function(products){
-        data.mostSoldProducts = products;
-
-    });
-    db.getOrdersCumulative(function(products){
-        data.orderTable = products;
-        res.render("cumulativeReport", {data: data});
-    }); 
-});
-
-app.use('/dailyReport', function(err, req, res, next){
-    //User should be authenticated! Redirect him to log in.
-    res.redirect('/employeeLogin');
-});
-app.use('/monthlyReport', function(err, req, res, next){
-    //User should be authenticated! Redirect him to log in.
-    res.redirect('/employeeLogin');
-});
-app.use('/cumulativeReport', function(err, req, res, next){
-    //User should be authenticated! Redirect him to log in.
-    res.redirect('/employeeLogin');
-});
-
+/*------------------------------------------------------------ */
 
 
 

@@ -43,7 +43,7 @@
       <li class="nav-item">
         <a class="nav-link" href="/managerFrontPage">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Daily Report</span></a>
+          <span>Home</span></a>
       </li>
 
       <!-- Divider 
@@ -91,58 +91,21 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Addons
+        Information
       </div>
-
-      <!-- Nav Item - Pages Collapse Menu 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>-->
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="/managerCharts">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="/managerTables">
           <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/dailyReport">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Daily Report</span></a>
+          <span>Data Tables</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/monthlyReport">
+        <a class="nav-link" href="#">
           <i class="fas fa-fw fa-table"></i>
-          <span>Monthly Report</span></a>
+          <span>Report</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/cumulativeReport">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Cumulative Report</span></a>
-      </li>
-      
+
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -153,6 +116,8 @@
 
     </ul>
     <!-- End of Sidebar -->
+
+
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -327,24 +292,26 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <h1 class="h3 mb-0 text-gray-800">Report</h1>
+            
           </div>
 
           <!-- Content Row -->
           <div class="row">
 
+
+
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$<%= data.monthlyRevenue[0].monthlyRevenue %></div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"> $<%= data.revenue[0].revenue %></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -352,13 +319,15 @@
             </div>
           </div>
 
+          <!-- Content Row -->
+
           <div class="row">
             <div class="col-xl-8 col-lg-7">
             <!-- Area Chart -->
               <!-- Bar Chart -->
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Spending Overview</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Most Sold Products</h6>
                 </div>
                 <div class="card-body">
                   <div class="chart-bar">
@@ -368,7 +337,6 @@
                 </div>
               </div>
             </div>
-
             <!-- Pie Chart -->
             <div class="col-xl-4 col-lg-5">
               <div class="card shadow mb-4">
@@ -409,14 +377,11 @@
             </div>
           </div>
 
-
-
-
-          
           <!-- Content Row -->
           <div class="row">
 
             <!-- Content Column -->
+
 
               <div class="container-fluid">
 
@@ -459,9 +424,13 @@
                     </div>
                   </div>
                 </div>
+      
+              </div>            
+            
+            
+        
 
               
-
 
             <div class="col-lg-6 mb-4">
 
@@ -557,14 +526,13 @@
   <script src="../assets/vendor/demo/chart-area-demo.js"></script>
   <script src="../assets/vendor/demo/chart-pie-demo.js"></script>
 
+
   <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
+  <!-- Page level custom scripts -->
   <script src="../assets/vendor/demo/datatables-demo.js"></script>
 
-
-
-  <!-- we put the script in the html file so we can use ejs data -->
+    <!-- we put the script in the html file so we can use ejs data -->
   <script>
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -648,7 +616,7 @@
           yAxes: [{
             ticks: {
               min: 0,
-              max: 100,
+              max: 30,
               maxTicksLimit: 20,
               padding: 10,
               // Include a dollar sign in the ticks
