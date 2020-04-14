@@ -104,7 +104,7 @@ app.post('/signup', function(req, res){
                             res.redirect('/managerFrontPage');
                         else
                             res.redirect('/regularEmployee'); // will be for regular employees
-                        }
+                        
                     });
                     
                     
@@ -476,7 +476,7 @@ app.get('/orderHistory', function(req, res)
 
 /*  ------------------------------ VET PAGE ROUTES  ------------------------------- */
 
-app.post('/caretakerAndVet', function(req, res)
+app.get('/caretakerAndVet', function(req, res)
 {
     res.render("errorPage", {message: "This is the caretaker page. Change the filename to what you want it to point to."})  
 });
