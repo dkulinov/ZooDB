@@ -5,7 +5,7 @@ AWS.config.region = process.env.REGION
 var express = require('express');
 var session = require('express-session');
 var app = express();
-var port = process.env.PORT || 3005;
+var port = process.env.PORT || 3000;
 var path = require('path');
 var db = require('./server/db.js'); 
 
