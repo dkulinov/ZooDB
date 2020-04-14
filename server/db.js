@@ -212,17 +212,17 @@ module.exports.getEmployeeInfo = getEmployeeInfo;
 
 
 //List of all the animals that are in care of a certain employee
-getEmployeesAnimals = function(data,callback){
+getEmployeesAnimals = function(employee,callback){
 
- var sql = "SELECT * FROM animal,takes_care_of WHERE animal.animal_id = takes_care_of.animal_id AND takes_care_of.caretaker_id = ";
-  sql += emp.employee_id;
-  var items=[];
+  var sql = "SELECT * FROM zoo_schema.animal NATURAL JOIN zoo_schema.takes_care_of WHERE caretaker_id = ";
+  sql += employee.username, sql+= ";";
+  var animals = [];
   pool.getConnection(function(err, connection){
     connection.release();
     if(err) { console.log(err); callback(true); return; }
   
     connection.query(sql, function(err, res){
-      if(res.length)
+      if(err) console.log(err);
         callback(res);
     });
   });
