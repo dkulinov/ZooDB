@@ -230,7 +230,7 @@ getEmployeesAnimals = function(employee,callback){
 module.exports.getEmployeesAnimals = getEmployeesAnimals;
 
 
-//manager page functions
+/* ------------------------------------- Manager Page functions ----------------------------------------- */
 getAllEmployees = function(callback){
   var sql = "SELECT * FROM zoo_schema.employee;";
 
@@ -378,7 +378,7 @@ module.exports.getMostSoldProducts = getMostSoldProducts;
 
 //returns each product and its frequency sold from the orders table for the past week.
 getMostSoldProductsLastWeek = function(callback){
-  var sql = "SELECT product_id, COUNT(product_id)  FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) AS past_week GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) AS past_week GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
   
   pool.getConnection(function(err, connection){
     connection.release();
@@ -396,7 +396,7 @@ module.exports.getMostSoldProductsLastWeek = getMostSoldProductsLastWeek;
 
 //returns each product and its frequency sold from the orders table from the past day
 getMostSoldProductsLastDay = function(callback){
-  var sql = "SELECT product_id, COUNT(product_id)  FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 1 DAY) AND NOW()) AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE date(order_date) = date(now()))  AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
   
   pool.getConnection(function(err, connection){
     connection.release();
@@ -432,8 +432,69 @@ getMostSoldProductsLastMonth = function(callback){
 }
 module.exports.getMostSoldProductsLastMonth = getMostSoldProductsLastMonth;
 
+//grabs all the orders and places in a table from last day
+getOrdersLastDay = function(callback){
+  var sql = "SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 1 Day) AND NOW();";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
 
-// functions for alerts 
+  });
+}
+module.exports.getOrdersLastDay = getOrdersLastDay;
+
+
+
+getOrdersLastMonth = function(callback){
+  var sql = "SELECT * FROM zoo_schema.order WHERE order_date BETWEEN (NOW() - INTERVAL 1 Month) AND NOW();";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getOrdersLastMonth = getOrdersLastMonth;
+
+getOrdersCumulative = function(callback){
+  var sql = "SELECT * FROM zoo_schema.order;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getOrdersCumulative = getOrdersCumulative;
+
+/* -------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+/* ------------------------ ALERT FUNCTIONS ----------------------------------*/
 
 getCareTakerAlerts = function(employee, time, callback)
 {
@@ -549,6 +610,9 @@ getStoreManagersAlerts = function(id, time, callback)
 });
 }
 module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
+
+
+/* --------------------------------------------------------------------------- */
 
 
 searchOrder = function(number, zipcode, callback)
