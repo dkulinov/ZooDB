@@ -102,11 +102,19 @@ app.post('/employeeLogin', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                       if(req.session.user.isCareTaker || req.session.user.dept === 9){// will be for caretakers and vets only
-                            res.redirect('/caretakerAndVet');
+                        if(req.session.user.isManager){
+                            if(req.session.user.dept==9) res.redirect('/vetManager');
+                            else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
+                            else res.redirect('/managerFrontPage');
                         }
-                        else if(req.session.user.isManager)   // will be for managers only
-                            res.redirect('/managerFrontPage');
+                        else if(req.session.user.isCareTaker){
+                            res.redirect('/caretaker');
+                        }
+                        else if(req.session.user.dept === 9){
+                            res.redirect('/vet');
+                        }
+                        /*else if(req.session.user.isManager)   // will be for managers only
+                            res.redirect('/managerFrontPage');*/
                         else
                             res.redirect('/regularEmployee'); // will be for regular employees
                         
@@ -219,16 +227,45 @@ function checkEmployeeSignIn(req, res, next){
 
 /*---------------------------------------- Caretaker and Vet Page Routes ----------------------------------*/
 
-app.get('/caretakerAndVet',checkEmployeeSignIn, function(req,res)
+app.get('/caretaker',checkEmployeeSignIn, function(req,res)
 {
     var username = req.session.user;
     const animals = [];
     db.getEmployeesAnimals(username,function(animals){
-        res.render("caretakerAndVet_page.ejs", { animals: animals });
+        res.render("caretaker.ejs", { animals: animals });
     });
      
 });
 
+app.get('/caretakerManager',checkEmployeeSignIn, function(req,res)
+{
+    var username = req.session.user;
+    const animals = [];
+    db.getEmployeesAnimals(username,function(animals){
+        res.render("caretakerManager.ejs", { animals: animals });
+    });
+     
+});
+
+app.get('/vet',checkEmployeeSignIn, function(req,res)
+{
+    var username = req.session.user;
+    const animals = [];
+    db.getEmployeesAnimals(username,function(animals){
+        res.render("vet.ejs", { animals: animals });
+    });
+     
+});
+
+app.get('/vetManager',checkEmployeeSignIn, function(req,res)
+{
+    var username = req.session.user;
+    const animals = [];
+    db.getEmployeesAnimals(username,function(animals){
+        res.render("vetManager.ejs", { animals: animals });
+    });
+     
+});
 
 
 
@@ -468,32 +505,6 @@ app.get('/orderHistory', function(req, res)
         });
     }
 });
-
-/*  ------------------------------ VET PAGE ROUTES  ------------------------------- */
-
-app.get('/caretakerAndVet', function(req, res)
-{
-    res.render("errorPage", {message: "This is the caretaker page. Change the filename to what you want it to point to."})  
-});
-
-
-
-
-
-
-
-
-
-
-/* ------------------------------------------------------------------------------- */
-
-
-
-
-
-
-
-
 
 
 // catch all route that will notify the user that this page doesn't exist
