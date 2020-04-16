@@ -403,7 +403,7 @@ module.exports.getMostSoldProductsTest = getMostSoldProductsTest;
 
 getCareTakerAlerts = function(employee, time, callback)
 {
-  var sql = "SELECT caretaker_alerts.animal_id AS animalID, animal.animal_name AS animalName, caretaker_alerts.new_health_status AS health, DATE_FORMAT(caretaker_alerts.date_generated, '%Y-%m-%d') AS `date`  FROM caretaker_alerts INNER JOIN animal ON caretaker_alerts.animal_id = animal.animal_id WHERE caretaker_id = ";
+  var sql = "SELECT COUNT(caretaker_alerts.new_health_status) AS numberInStatus, caretaker_alerts.animal_id AS animalID, animal.animal_name AS animalName, caretaker_alerts.new_health_status AS health, DATE_FORMAT(caretaker_alerts.date_generated, '%Y-%m-%d') AS `date`  FROM caretaker_alerts INNER JOIN animal ON caretaker_alerts.animal_id = animal.animal_id WHERE caretaker_id = ";
   sql += employee.username;
   if(time != "allTime")
   {
