@@ -414,8 +414,9 @@ getCareTakerAlerts = function(employee, time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND caretaker_alerts.date_generated >= (SELECT DATE(NOW()))-";
+    sql += " AND caretaker_alerts.date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
     sql += amt;
+    sql += " DAY ))";
   }
   sql += " GROUP BY caretaker_alerts.new_health_status ORDER BY caretaker_alerts.date_generated ASC";
   pool.getConnection(function(err, connection){
@@ -430,6 +431,7 @@ getCareTakerAlerts = function(employee, time, callback)
 }
 module.exports.getCareTakerAlerts = getCareTakerAlerts;
 
+
 getVetAlerts = function(time, callback)
 {
   var sql = "SELECT zoo_supply_alerts.product_id, DATE_FORMAT(zoo_supply_alerts.date_generated, '%Y-%m-%d') AS date_generated, medicine_supply.med_name AS medName FROM zoo_supply_alerts INNER JOIN medicine_supply ON zoo_supply_alerts.product_id = medicine_supply.med_id WHERE manager_id=10008";
@@ -442,8 +444,9 @@ getVetAlerts = function(time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
+    sql += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
     sql += amt;
+    sql += " DAY ))";
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
@@ -470,8 +473,9 @@ getNutritionAlerts = function(time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
+    sql += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
     sql += amt;
+    sql += " DAY ))";
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
@@ -500,8 +504,9 @@ getStoreManagersAlerts = function(id, time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
+    sql += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
     sql += amt;
+    sql += " DAY ))";
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
