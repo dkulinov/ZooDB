@@ -524,3 +524,19 @@ getOrderHistory = function(email, callback)
   });
 }
 module.exports.getOrderHistory = getOrderHistory;
+
+
+getMembership = function(callback)
+{
+  var sql = "SELECT * FROM product WHERE product_id = 37378708;"
+  pool.getConnection(function(err, connection){
+    if(err) {console.log(err); callback(true); return;}
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.getMembership = getMembership;
