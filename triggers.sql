@@ -69,14 +69,40 @@ CREATE TRIGGER animal_health_change
     NEW.`status` != OLD.`status` 
     THEN
 		  OPEN carers;
-        myLoop: LOOP
+      myLoop: LOOP
         FETCH carers INTO caretaker;
         IF exit_loop THEN 
           CLOSE carers;
           LEAVE myLoop;
 		    END IF;
 		    INSERT INTO caretaker_alerts VALUES(NEW.animal_id, caretaker, (SELECT DATE(now())), NEW.status);
-	      END LOOP myLoop;
+      END LOOP myLoop;
     END IF;
   END$$
 DELIMITER ;
+
+
+DELIMITER $$
+CREATE TRIGGER becameMember AFTER INSERT ON `order` FOR EACH ROW 
+BEGIN
+
+  IF NEW.product_id = 37378708
+  AND (SELECT customer.isMember FROM customer WHERE customer.email = NEW.email) = 0
+  THEN UPDATE customer SET isMember=1, memberUntil=(SELECT DATE(now())+365) WHERE customer.email = NEW.email;
+  END IF;
+
+  IF NEW.product_id = 37378708
+  AND (SELECT customer.isMember FROM customer WHERE customer.email = NEW.email) = 1
+  THEN UPDATE customer SET memberUntil = memberUntil + 365 WHERE customer.email = NEW.email;
+  END IF;
+
+END$$
+DELIMITER ;
+
+
+CREATE EVENT validateMembership
+  ON SCHEDULE
+    EVERY 1 DAY 
+    STARTS '2020-04-16 00:10:00' ON COMPLETION PRESERVE ENABLE  
+  DO
+    UPDATE customer SET isMember=0, memberUntil=null WHERE memberUntil<(SELECT DATE(NOW()));
