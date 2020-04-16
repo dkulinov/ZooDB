@@ -446,15 +446,15 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
 app.get('/alertOptions/', function(req, res)
 {
     if(!req.session.user)
-        res.send("You can't see this!");
+        res.render('errorPage', {message: "You don't have access to this page!"});
     else if(req.session.user.role == "Customer")
-        res.send("You can't see this!");
+        res.render('errorPage', {message: "You don't have access to this page!"});
     else if(req.session.user.role == "Employee")
     {
         if(req.session.user.isManager || req.session.user.isCareTaker || req.session.user.dept==9)
             res.render('alertOptions.ejs');
         else
-            res.send("Only managers, vets, and caretakers can view reports!");
+            res.render('errorPage', {message: "You don't have access to this page!"});
     }
 });
 
@@ -496,7 +496,7 @@ app.post('/alert', function(req, res)
             });
         }
         else
-            res.send("There are no alerts for you!"); // any other managers
+            res.render('errorPage', {message: "You don't have access to this page!"}); // any other managers
     }
 });
 
@@ -516,7 +516,7 @@ app.post('/searchOrder', function(req, res)
         if(data != false)
             res.render('order_status.ejs', {data:data});
         else
-            res.send("Couldn't find your order");
+            res.render('errorPage', {message: "We couldn't find your order!"});
     })
 });
 
@@ -524,9 +524,9 @@ app.post('/searchOrder', function(req, res)
 app.get('/customerFrontPage', function(req, res)
 {
     if(!req.session.user)
-        res.send("Please sign in or create an account");
+        res.render('errorPage', {message: "Please sign in or create an account"});
     else if(req.session.user.role == "Employee")
-        res.send("You're not a customer");
+        res.render('errorPage', {message: "You're not a customer"});
     else if(req.session.user.role == "Customer")
     {
         db.getCustomerInfo(req.session.user.username, function(data)
@@ -556,9 +556,9 @@ app.get('/orderHistory', function(req, res)
 app.get('/getMembership', function(req,res)
 {
     if(!req.session.user)
-        res.send("Please sign in or create an account");
+        res.render('errorPage', {message: "Please sign in or create an account"});
     else if(req.session.user.role == "Employee")
-        res.send("You're not a customer");
+        res.render('errorPage', {message:"You're not a customer"});
     else if(req.session.user.role == "Customer")
     {
         db.getMembership(function(data)
