@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Caretaker-Dashboard</title>
+  <title>Caretaker - Dashboard</title>
 
   <!-- Custom fonts for this template-->
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -207,7 +207,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> Logout</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <%= data.employee[0].first_name %> <%= data.employee[0].last_name %></span>
                 <img class="img-profile rounded-circle" src="https://d2r55xnwy6nx47.cloudfront.net/uploads/2019/07/Olivier_1500_Trptch.jpg">
               </a>
               <!-- Dropdown - User Information -->
@@ -236,16 +236,16 @@
             
               
           <div class="row row-cols-lg-3 justify-content-center">
-             <% for(var i=0; i< animals.length; i++){ var path = '../assets/img/' + animals[i].image_path; if(animals[i].image_path==null)animals[i].image_path="null"; %>
-            <div class="col mb-4" data-aos="fade-up" data-aos-delay="0">
-              <div class="card text-center h-100" style="box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);">
-                <img src="<%= path %>" class="card-img-top" alt="..." style = "padding: 10px;" height = "500px" width = "500px">
-                  <div class="card-body">
-                    <h5 class="card-title"><%= animals[i].animal_name %></h5>
-                    <p class="card-text"><%= animals[i].status %></p>
+             <% for(var i=0; i< data.animals.length; i++){ var path = '../assets/img/' + data.animals[i].image_path; if(data.animals[i].image_path==null)data.animals[i].image_path="null"; %>
+              <div class="col mb-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="card text-center h-100" style="box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);">
+                  <img src="<%= path %>" class="card-img-top" alt="..." style = "padding: 10px;" height = "500px" width = "500px">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= data.animals[i].animal_name %></h5>
+                      <p class="card-text"><%= data.animals[i].status %></p>
+                    </div>
                   </div>
                 </div>
-              </div>
               <% } %>
             </div>
         </div>
@@ -315,4 +315,3 @@
 </body>
 
 </html>
-

@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Manager-Dashboard</title>
+  <title>Manager - Dashboard</title>
 
   <!-- Custom fonts for this template-->
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -239,7 +239,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Andrew Jones</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= emp_name[0].first_name %> <%= emp_name[0].last_name %></span>
                 <img class="img-profile rounded-circle" src="https://d2r55xnwy6nx47.cloudfront.net/uploads/2019/07/Olivier_1500_Trptch.jpg">
               </a>
               <!-- Dropdown - User Information -->
@@ -274,7 +274,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Welcome Andrew!</h1>
+            <h1 class="h3 mb-0 text-gray-800">Welcome <%= emp_name[0].first_name  %>!</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 

@@ -40,10 +40,6 @@ function user(username, role, dept=-1, isManager=false, isCareTaker=false) {
    this.dept = dept;
    this.isManager = isManager;
    this.isCareTaker = isCareTaker;
-
-   function getUsername(){
-       return user.username;
-   }
  }
 
 
@@ -105,7 +101,7 @@ app.post('/employeeLogin', function(req, res){
                         if(req.session.user.isManager){
                             if(req.session.user.dept==9) res.redirect('/vetManager');
                             else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
-                            else res.redirect('/managerFrontPage');
+                            else res.redirect('/managerFrontPage',);
                         }
                         else if(req.session.user.isCareTaker){
                             res.redirect('/caretaker');
@@ -192,9 +188,7 @@ function checkCustomerSignIn(req, res, next){
       
       next();   //If session exists, proceed to page
    }else {
-      var err = new Error(
-
-"Not logged in!");
+      var err = new Error("Not logged in!");
       next(err);
    }
 }
@@ -229,42 +223,83 @@ function checkEmployeeSignIn(req, res, next){
 
 app.get('/caretaker',checkEmployeeSignIn, function(req,res)
 {
+    var data = [];
     var username = req.session.user;
-    const animals = [];
-    db.getEmployeesAnimals(username,function(animals){
-        res.render("caretaker.ejs", { animals: animals });
+
+    db.getEmployeeName(username, function(employee){
+        data.employee = employee;
+    });
+    
+    db.getEmployeesAnimals(username, function(animals){
+        data.animals = animals;
+        res.render("caretaker.ejs", { data: data });
     });
      
 });
 
 app.get('/caretakerManager',checkEmployeeSignIn, function(req,res)
 {
+    var data = [];
     var username = req.session.user;
-    const animals = [];
-    db.getEmployeesAnimals(username,function(animals){
-        res.render("caretakerManager.ejs", { animals: animals });
+
+    db.getEmployeeName(username,function(employee){
+        data.employee = employee;
+    });
+
+    db.getCareTakersInfo(function(caretakers){
+        data.caretakers = caretakers;
+        res.render("caretakerManager.ejs", { data: data });
     });
      
 });
 
 app.get('/vet',checkEmployeeSignIn, function(req,res)
 {
+    var data = [];
     var username = req.session.user;
-    const animals = [];
-    db.getEmployeesAnimals(username,function(animals){
-        res.render("vet.ejs", { animals: animals });
+
+    db.getEmployeeName(username,function(employee){
+        data.employee = employee;
+    });
+    
+    db.getAllAnimals(function(animals){
+        data.animals = animals;
+        res.render("vet.ejs", { data: data });
     });
      
 });
 
 app.get('/vetManager',checkEmployeeSignIn, function(req,res)
 {
+    var data = [];
     var username = req.session.user;
-    const animals = [];
+
+    db.getEmployeeName(username,function(employee){
+        data.employee = employee;
+    });
+    
     db.getEmployeesAnimals(username,function(animals){
-        res.render("vetManager.ejs", { animals: animals });
+        data.animals = animals;
+        res.render("vetManager.ejs", { data: data });
     });
      
+});
+
+app.get('/vetTables',checkEmployeeSignIn, function(req,res){
+    var data = [];
+    db.getEmployeeName(req.session.user,function(employee){
+        data.employee = employee;
+    });
+    db.getAllAnimals(function(animalList){
+        data.animalList = animalList;
+    });
+    db.getFoodStock(function(foodStock){
+        data.foodStock = foodStock;
+    });
+    db.getMedicineStock(function(medicineStock){
+        data.medicineStock = medicineStock;
+        res.render("vet_tables.ejs", {data :data});
+    });
 });
 
 
@@ -274,12 +309,17 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
 
 app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  {   
-     res.render("manager_frontPage");
+     var userid = req.session.user;
+     const emp_name = [];
+     db.getEmployeeName(userid, function(emp_name){
+         res.render("manager_frontPage", {emp_name: emp_name});
+     });
+    
  });
 
 app.get('/managerTables',checkEmployeeSignIn, function(req,res)
 {   
-    var data = []   //used to pass to the manager_table ejs file
+    var data = [];   //used to pass to the manager_table ejs file
 
     db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
     {
@@ -304,6 +344,7 @@ app.use('/managerFrontPage', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/employeeLogin');
 });
+
 app.use('/managerTables', function(err, req, res, next){
     //User should be authenticated! Redirect him to log in.
     res.redirect('/employeeLogin');
@@ -314,7 +355,7 @@ app.use('/managerTables', function(err, req, res, next){
     var startdate = req.body.startdate;
     var enddate = req.body.enddate;
  
-    var data = []    
+    var data = [];    
     if(!startdate || !enddate){
         res.render('errorPage', {message: "Missing required fields"});
     } else {

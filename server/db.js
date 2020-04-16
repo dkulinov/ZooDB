@@ -165,6 +165,24 @@ ringUpCustomer = function(order, callback)
 module.exports.ringUpCustomer = ringUpCustomer;
 
 
+getEmployeeName = function(employee,callback){
+
+  var sql = "SELECT first_name, last_name FROM zoo_schema.employee WHERE employee_id = ";
+  sql += employee.username;
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+        callback(res);
+    });
+  });
+}
+module.exports.getEmployeeName = getEmployeeName;
+
+
+
 getEmployeeInfo = function(emp, callback, cb)
 {
   var sql = "SELECT employee.department_id FROM employee WHERE employee.employee_id = ";
@@ -231,6 +249,7 @@ module.exports.getEmployeesAnimals = getEmployeesAnimals;
 
 
 /* ------------------------------------- Manager Page functions ----------------------------------------- */
+
 getAllEmployees = function(callback){
   var sql = "SELECT * FROM zoo_schema.employee;";
 
@@ -247,6 +266,41 @@ getAllEmployees = function(callback){
   });
 }
 module.exports.getAllEmployees= getAllEmployees;
+
+
+getAllAnimals = function(callback){
+  var sql = "SELECT * FROM zoo_schema.animal;";
+
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getAllAnimals= getAllAnimals;
+
+
+getCareTakersInfo = function(callback){
+  var sql = "SELECT * FROM zoo_schema.takes_care_of NATURAL JOIN zoo_schema.animal;"
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getCareTakersInfo= getCareTakersInfo;
 
 
 getFoodStock = function(callback){
@@ -283,8 +337,6 @@ getMedicineStock = function(callback){
   });
 }
 module.exports.getMedicineStock= getMedicineStock;
-
-
 
 
 //function that can get the revenue from a date window
@@ -324,6 +376,7 @@ getOrdersTest = function(data, callback){
 }
 module.exports.getOrdersTest = getOrdersTest;
 
+
 //returns each product and its frequency sold from the orders table from a date window
 getMostSoldProductsTest = function(data, callback){
   var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?)  AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
@@ -341,9 +394,6 @@ getMostSoldProductsTest = function(data, callback){
   });
 }
 module.exports.getMostSoldProductsTest = getMostSoldProductsTest;
-/* -------------------------------------------------------------------------- */
-
-
 
 
 
@@ -467,8 +517,10 @@ getStoreManagersAlerts = function(id, time, callback)
 module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
 
 
-/* --------------------------------------------------------------------------- */
 
+
+
+/* --------------------------------------------------------------------------- */
 
 searchOrder = function(number, zipcode, callback)
 {
@@ -487,7 +539,6 @@ searchOrder = function(number, zipcode, callback)
   });
 }
 module.exports.searchOrder = searchOrder;
-
 
 
 getCustomerInfo = function(email, callback)
