@@ -88,17 +88,17 @@ BEGIN
 
   IF NEW.product_id = 37378708
   AND (SELECT customer.isMember FROM customer WHERE customer.email = NEW.email) = 0
-  THEN UPDATE customer SET isMember=1, memberUntil=(SELECT DATE(now())+365) WHERE customer.email = NEW.email;
+  THEN UPDATE customer SET isMember=1, memberUntil=DATE_ADD(DATE(now()), INTERVAL 1 YEAR) WHERE customer.email = NEW.email;
   END IF;
 
   IF NEW.product_id = 37378708
   AND (SELECT customer.isMember FROM customer WHERE customer.email = NEW.email) = 1
-  THEN UPDATE customer SET memberUntil = memberUntil + 365 WHERE customer.email = NEW.email;
+  THEN UPDATE customer SET memberUntil = DATE_ADD(memberUntil, INTERVAL 1 YEAR) WHERE customer.email = NEW.email;
   END IF;
 
 END$$
 DELIMITER ;
-
+							    
 
 CREATE EVENT validateMembership
   ON SCHEDULE
