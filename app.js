@@ -548,6 +548,22 @@ app.get('/orderHistory', function(req, res)
 });
 
 
+app.get('/getMembership', function(req,res)
+{
+    if(!req.session.user)
+        res.send("Please sign in or create an account");
+    else if(req.session.user.role == "Employee")
+        res.send("You're not a customer");
+    else if(req.session.user.role == "Customer")
+    {
+        db.getMembership(function(data)
+        {
+            res.render('becomeMember.ejs', {data:data});
+        });
+    }
+});
+
+
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
 app.get('*', function(req, res){

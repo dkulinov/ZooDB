@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Membership</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/../assets/img/favicon.png" rel="icon">
+  <link href="/../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/../assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="/../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/../assets/vendor/line-awesome/css/line-awesome.min.css" rel="stylesheet">
+  <link href="/../assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/../assets/css/style.css" rel="stylesheet">
+
+
+</head>
+
+<body">
+
+  <!-- ======= Mobile Menu ======= -->
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span class="icofont-close js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+  <!-- ======= Header ======= -->
+  
+  <header class="site-navbar site-navbar-target js-sticky-header bg-dark" role="banner" style="min-height:10px">
+
+    <div class="container">
+      <div class="row align-items-center">
+
+        <div class="col-6 col-lg-2">
+          <h1 class="mb-0 site-logo"  style="padding-top: 7%; padding-bottom: 10%;"><a href="/../index.html" class="mb-0"><img src = "/../assets/img/zoologo2.png" width = "152px" height = "40px"></a></h1>
+        </div>
+
+        <div class="col-12 col-md-10 d-none d-lg-block">
+          <nav class="site-navigation position-relative text-right navbar-dark" role="navigation">
+
+            <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+              <li class="nav-item active"><a href="/../index.html" class="nav-link" style="padding-top: 0%; padding-bottom: 0%;">Home</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <div class="col-6 d-inline-block d-lg-none ml-md-0 py-3" style="position: relative; top: 3px;">
+
+          <a href="#" class="burger site-menu-toggle js-menu-toggle" data-toggle="collapse" data-target="#main-navbar">
+            <span></span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </header>
+
+
+  <main id="main">
+
+    <!-- ======= Home Section ======= -->
+    <section class="section" style="padding-bottom: 0px; padding-top: 75px;">
+      <div class="container">
+
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-md-10" data-aos="">
+            <h2 class="section-heading" style="padding-top: 20px;">Become a Member</h2>
+          </div>
+        </div>
+
+        <div class="row justify-content-center text-center mb-5">
+            <div class="col-md-10" data-aos="">
+              <h2 class="section-heading" id="tickets">Please see the item you are buying:</h2>
+            </div>
+        </div>
+
+        <div class="row row-cols-1 justify-content-center">
+
+        <% var path = '/../assets/img/' + data[0].image_path; %> 
+
+          <div class="col mb-4" data-aos="fade-up" data-aos-delay="0">
+            <div class="card text-center h-100 border-success" style="border-width: 3px;">
+              <img src="<%= path %>" class="card-img-top" alt="...">
+              <div class="card-body" style="color:black">
+                <h5 class="card-title">$<%= data[0].price %></h5>
+                <p class="card-text"><%= data[0].product_name %></p>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="row justify-content-center text-center mb-5">
+        <div class="col-md-10" data-aos="">
+          <h2 class="section-heading" id="tickets">Please fill out the info below:</h2>
+        </div>
+
+    <div class="row row-cols-1 justify-content-center">  
+        <div class="col mb-4" data-aos="fade-up" data-aos-delay="0">
+          <div class="card text-center h-100 border-success" style="border-width: 3px;">
+            <div class="card-body" style="color:black">
+      <!-- source: https://www.w3schools.com/howto/howto_css_checkout_form.asp -->
+    <form method="POST" action="/buy/<%= data[0].product_id%>/<%= data[0].product_size %>/1/<%=data[0].price%>/0/">
+        <div class="row card-text row-cols-1">
+            <div class="justify-content-center text-center">
+              <h3>Shipping Address</h3>
+              <p class="card-text">
+                <label for="fname">Full Name</label>
+                <input type="text" id="fname" name="firstname" placeholder="John M. Doe" required>
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="john@example.com" required>
+              </p>
+              <p class="card-text">
+                <label for="adr">Address</label>
+                <input type="text" id="adr" name="address" placeholder="542 W. 15th Street" required>
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" placeholder="New York" required>
+                <label for="state">State</label>
+                <input type="text" id="state" name="state" placeholder="NY" required>
+                <label for="zip">Zip</label>
+                <input type="text" id="zip" name="zip" placeholder="10001" required>
+            </p>
+            </div>
+  
+            <div class="row card-text row-cols-1 justify-content-center text-center">
+              <h3>Payment</h3>
+              <p class="card-text">
+                <label for="cname">Name on Card</label>
+                <input type="text" id="cname" name="cardname" placeholder="John More Doe" required>
+                <label for="ccnum">Credit card number</label>
+                <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" required>
+              </p>
+              <p class="card-text">
+                <label for="expmonth">Exp Month</label>
+                <input type="text" id="expmonth" name="expmonth" placeholder="September" required>
+                <label for="expyear">Exp Year</label>
+                <input type="text" id="expyear" name="expyear" placeholder="2018" required>
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="352" required>
+                </p>
+              </div>
+            </div>
+  
+          </div>
+        <p>
+          <button class="btn btn-primary" style="margin-top: 10px;">Submit</button>
+        </p>
+    </form>
+      </div>
+      </div>
+      </div>
+      </div>
+    </section>
+
+  
+</main><!-- End #main -->
+  
+
+      <div class="row justify-content-center text-center">
+        <div class="col-md-7">
+          <p class="copyright">&copy; Copyright SoftLand. All Rights Reserved</p>
+          <div class="credits">
+            <!--
+            All the links in the footer should remain intact.
+            You can delete the links only if you purchased the pro version.
+            Licensing information: https://bootstrapmade.com/license/
+            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=SoftLand
+          -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+  
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/../assets/vendor/jquery/jquery.min.js"></script>
+  <script src="/../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/../assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="/../assets/vendor/php-email-form/validate.js"></script>
+  <script src="/../assets/vendor/aos/aos.js"></script>
+  <script src="/../assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+  <script src="/../assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/../assets/js/main.js"></script>
+
+</body>
+
+</html>

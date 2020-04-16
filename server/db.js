@@ -574,4 +574,24 @@ getOrderHistory = function(email, callback)
     });
   });
 }
+<<<<<<< HEAD
 module.exports.getOrderHistory = getOrderHistory;
+=======
+module.exports.getOrderHistory = getOrderHistory;
+
+
+getMembership = function(callback)
+{
+  var sql = "SELECT * FROM product WHERE product_id = 37378708;"
+  pool.getConnection(function(err, connection){
+    if(err) {console.log(err); callback(true); return;}
+    connection.query(sql, function(err, res){
+      connection.release();
+      if(err) callback(false);
+      else
+        callback(res);
+    });
+  });
+}
+module.exports.getMembership = getMembership;
+>>>>>>> 788b0eaa5e0fa1183d9d0dfac5ee920e05c46846
