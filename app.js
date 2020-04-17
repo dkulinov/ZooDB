@@ -286,6 +286,17 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
      
 });
 
+app.get('/vetManager',checkEmployeeSignIn, function(req,res)
+{
+    var data = [];
+
+    db.getEmployeesAnimals(function(animals){
+        data.animals = animals;
+        res.render("vetManager.ejs", { data: data });
+    });
+     
+});
+
 app.get('/vetTables',checkEmployeeSignIn, function(req,res){
     var data = [];
     db.getEmployeeName(req.session.user,function(employee){
@@ -302,6 +313,8 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
         res.render("vet_tables.ejs", {data :data});
     });
 });
+
+
 
 
 
