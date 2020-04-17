@@ -474,7 +474,7 @@ app.post('/alert', function(req, res)
         // render caretaker report
         db.getCareTakerAlerts(req.session.user, req.body.time, function(info)
         {
-            res.render('caretaker_alerts.ejs', {data:[info, req.body.time]});
+            res.render('caretaker_alerts.ejs', {data:[alerts, req.body.time, numHealthy, numSick, numPregnant,numDeceased]});
         });
     }
     else if(req.session.user.isManager)
