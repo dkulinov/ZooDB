@@ -29,14 +29,14 @@
 
           <!-- Page Heading -->
           <% var sum=data[0].length;  var time = 1; if(data[1]=="week")time=7;else if(data[1]=="month")time=30;else if(data[1]=="year")time=365;%> 
-          <% var healthy=0; var sick=0; var dead=0; var pregnant=0; %> 
+          
           <h1 class="h3 mb-2 text-gray-800">Caretaker Alerts in the past <%=data[1]%>:</h1>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-dark" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <td style="font-weight: bold; font-size: larger;">Animal Name</th>
@@ -47,7 +47,7 @@
                   </thead>
                   <tbody>
                     
-                    <% for(var i=0; i< data[0].length; i++) { if(data[0][i].health=="healthy")healthy++;else if(data[0][i].health=="sick")sick++;else if(data[0][i].health=="pregnant")pregnant++;else if(data[0][i].health=="deceased")dead++;%>
+                    <% for(var i=0; i< data[0].length; i++) { %>
                       <tr>
                         <td><%= data[0][i].animalName %>  </td>
                         <td><%= data[0][i].animalID %> </td>
@@ -62,30 +62,30 @@
           </div>
         <div class = "card">
             <div class ="card-body">
-                        <p class="card-text" style="font-weight: bold;">Total healthy: <%=healthy%></p>
+                        <p class="card-text" style="font-weight: bold;">Total healthy: <%=data[2][0].numHealthy%></p>
                     
-                        <p class="card-text" style="font-weight: bold;">Total sick: <%=sick%></p>
+                        <p class="card-text" style="font-weight: bold;">Total sick: <%=data[3][0].numSick%></p>
                     
-                        <p class="card-text" style="font-weight: bold;">Total pregnant: <%=pregnant%></p>
+                        <p class="card-text" style="font-weight: bold;">Total pregnant: <%=data[4][0].numPregnant%></p>
                     
-                        <p class="card-text" style="font-weight: bold;">Total deceased: <%=dead%></p>
+                        <p class="card-text" style="font-weight: bold;">Total deceased: <%=data[5][0].numDeceased%></p>
                    
                         <p class="card-text" style="font-weight: bold;">Total alerts: <%=sum%></p>
                      
                         <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Healthy/day: <%=(healthy/time).toFixed(3)%></p>
+                            <p class="card-text" style="font-weight: bold;">Healthy/day: <%=(data[2][0].numHealthy/time).toFixed(3)%></p>
                             <% } %> 
                       
                         <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Sick/day: <%=(sick/time).toFixed(3)%></p>
+                            <p class="card-text" style="font-weight: bold;">Sick/day: <%=(data[3][0].numSick/time).toFixed(3)%></p>
                             <% } %> 
                       
                         <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Pregnant/day: <%=(pregnant/time).toFixed(3)%></p>
+                            <p class="card-text" style="font-weight: bold;">Pregnant/day: <%=(data[4][0].numPregnant/time).toFixed(3)%></p>
                             <% } %> 
                       
                         <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Dead/day: <%=(dead/time).toFixed(3)%></p>
+                            <p class="card-text" style="font-weight: bold;">Dead/day: <%=(data[5][0].numDeceased/time).toFixed(3)%></p>
                             <% } %> 
                       
                         <% if(data[1] != "allTime") {%>
