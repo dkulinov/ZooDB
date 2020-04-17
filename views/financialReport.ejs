@@ -43,11 +43,7 @@
       <li class="nav-item">
         <a class="nav-link" href="/managerFrontPage">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-<<<<<<< HEAD:views/dailyReport.ejs
           <span>Dashboard</span></a>
-=======
-          <span>Home</span></a>
->>>>>>> 4c56f4cec55c26dbcde83dfb7901b6f75405f49c:views/financialReport.ejs
       </li>
 
       <!-- Divider 
@@ -98,7 +94,6 @@
         Information
       </div>
 
-<<<<<<< HEAD:views/dailyReport.ejs
       <!-- Nav Item - Pages Collapse Menu 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -126,8 +121,6 @@
           <span>Charts</span></a>
       </li>-->
 
-=======
->>>>>>> 4c56f4cec55c26dbcde83dfb7901b6f75405f49c:views/financialReport.ejs
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="/managerTables">
@@ -220,13 +213,10 @@
                       <i class="fas fa-file-alt text-white"></i>
                     </div>
                   </div>
-                  <div>
-                    <div class="small text-gray-500">December 12, 2019</div>
-                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
+
                 </a>
 
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                <a class="dropdown-item text-center small text-gray-500" href="/alertOptions">See Alerts</a>
               </div>
             </li>
 
@@ -504,13 +494,7 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; HoustonZoo 2020</span>
-          </div>
-        </div>
-      </footer>
+
       <!-- End of Footer -->
 
     </div>
@@ -605,11 +589,10 @@
     var labelList = [];
     var dataList = [];
     for(var i = 0; i < chartData.length; i++){
-      labelList[i] = chartData[i].product_id;
+      labelList[i] = chartData[i].product_name;
       dataList[i] = chartData[i].quantity;
     }
-    console.log("labelList: ", labelList);
-    console.log("dataList: ", dataList);
+    
 
     var myBarChart = new Chart(ctx, {
       type: 'bar',

@@ -378,8 +378,9 @@ module.exports.getOrdersTest = getOrdersTest;
 
 
 //returns each product and its frequency sold from the orders table from a date window
+// SELECT zoo_schema.order.product_id, zoo_schema.product.product_name FROM zoo_schema.order JOIN zoo_schema.product ON zoo_schema.order.product_id = zoo_schema.product.product_id WHERE zoo_schema.order.order_date BETWEEN '2020-04-01' AND '2020-04-14';
 getMostSoldProductsTest = function(data, callback){
-  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?)  AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  var sql = "SELECT zoo_schema.order.product_id, zoo_schema.product.product_name, COUNT(zoo_schema.order.product_id) AS quantity FROM zoo_schema.order JOIN zoo_schema.product ON zoo_schema.order.product_id = zoo_schema.product.product_id GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
   
   pool.getConnection(function(err, connection){
     connection.release();
@@ -574,9 +575,6 @@ getOrderHistory = function(email, callback)
     });
   });
 }
-<<<<<<< HEAD
-module.exports.getOrderHistory = getOrderHistory;
-=======
 module.exports.getOrderHistory = getOrderHistory;
 
 
@@ -594,4 +592,3 @@ getMembership = function(callback)
   });
 }
 module.exports.getMembership = getMembership;
->>>>>>> 788b0eaa5e0fa1183d9d0dfac5ee920e05c46846

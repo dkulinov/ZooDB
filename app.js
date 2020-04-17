@@ -311,6 +311,7 @@ app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  {   
      var userid = req.session.user;
      const emp_name = [];
+
      db.getEmployeeName(userid, function(emp_name){
          res.render("manager_frontPage", {emp_name: emp_name});
      });
@@ -350,7 +351,7 @@ app.use('/managerTables', function(err, req, res, next){
     res.redirect('/employeeLogin');
 });
 
-
+//this route generates a report between a start date and end date which comes from an html form
  app.post('/generateReport', function(req, res){
     var startdate = req.body.startdate;
     var enddate = req.body.enddate;
@@ -359,27 +360,28 @@ app.use('/managerTables', function(err, req, res, next){
     if(!startdate || !enddate){
         res.render('errorPage', {message: "Missing required fields"});
     } else {
+
         db.getRevenueTest([startdate, enddate], function(err,revenue){
             if(err) {console.log("error"); return;}
             else{
                 data.revenue = revenue;
-           
+                db.getOrdersTest([startdate, enddate], function(err,orders){
+                    if(err) {console.log("error"); return;}
+                    else{
+                        data.orderTable = orders;
+                        db.getMostSoldProductsTest([startdate, enddate], function(err,products){
+                            if(err) {console.log("error"); return;}
+                            else{
+                                data.mostSoldProducts = products;
+                                res.render("financialReport", {data: data});
+                            }
+                        });
+                    }
+                }); 
             }
         });     
+  
  
-        db.getMostSoldProductsTest([startdate, enddate], function(err,products){
-            if(err) {console.log("error"); return;}
-            else{
-                data.mostSoldProducts = products;
-            }
-        });  
-        db.getOrdersTest([startdate, enddate], function(err,orders){
-            if(err) {console.log("error"); return;}
-            else{
-                data.orderTable = orders;
-                res.render("financialReport", {data: data});
-            }
-        });  
     }
  });
 
@@ -441,15 +443,15 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
 app.get('/alertOptions/', function(req, res)
 {
     if(!req.session.user)
-        res.send("You can't see this!");
+        res.render("errorPage", {message: "You dont have access to this page!" });
     else if(req.session.user.role == "Customer")
-        res.send("You can't see this!");
+        res.render("errorPage", {message: "You dont have access to this page!" });
     else if(req.session.user.role == "Employee")
     {
         if(req.session.user.isManager || req.session.user.isCareTaker || req.session.user.dept==9)
             res.render('alertOptions.ejs');
         else
-            res.send("Only managers, vets, and caretakers can view reports!");
+        res.render("errorPage", {message: "Only managers, vets, and caretakers can view this page!" });
     }
 });
 
