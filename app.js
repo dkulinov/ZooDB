@@ -56,11 +56,8 @@ function assignEmployeeInfo(emp, dept, isM, isC, cb)
 
 // ----------------------------- ROUTES -------------------------------- //
 //default route will point to index.html which is the homepage
-app.get((req, res) => res.sendFile("index.html"));
 
-app.get('/employeeLogin', function(req, res){
-    res.render('employeeLogin');
- });
+app.get('/', (req, res) => res.sendFile(index.html));
 
 
 app.post('/signup', function(req, res){
@@ -82,6 +79,10 @@ app.post('/signup', function(req, res){
   }); 
 });
 
+app.get('/employeeLogin', function(req, res){
+    res.render('employeeLogin');
+ });
+
 //on submit of the employee login form
 app.post('/employeeLogin', function(req, res){
     var username = req.body.username;
@@ -98,24 +99,23 @@ app.post('/employeeLogin', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                        if(req.session.user.isManager){
-                            if(req.session.user.dept==9) res.redirect('/vetManager');
-                            else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
-                            else res.redirect('/managerFrontPage',);
-                        }
+                         if(req.session.user.isManager){
+                           if(req.session.user.dept==9) res.redirect('/vetManager');
+                           else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
+                           else res.redirect('/managerFrontPage',);
+                          }
                         else if(req.session.user.isCareTaker){
-                            res.redirect('/caretaker');
+                           res.redirect('/caretaker');
                         }
                         else if(req.session.user.dept === 9){
-                            res.redirect('/vet');
+                           res.redirect('/vet');
                         }
-                        /*else if(req.session.user.isManager)   // will be for managers only
-                            res.redirect('/managerFrontPage');*/
-                        else
-                            res.redirect('/regularEmployee'); // will be for regular employees
-                        
-                    });
-                    
+                         /*else if(req.session.user.isManager)   // will be for managers only
+                             res.redirect('/managerFrontPage');*/
+                         else
+                             res.redirect('/regularEmployee'); // will be for regular employees                        
+                                         });
+
                     
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
@@ -125,6 +125,7 @@ app.post('/employeeLogin', function(req, res){
         });
     }
  });
+
 
 
 app.get('/employeeLogout', function(req, res){
@@ -285,6 +286,17 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
      
 });
 
+app.get('/vetManager',checkEmployeeSignIn, function(req,res)
+{
+    var data = [];
+
+    db.getEmployeesAnimals(function(animals){
+        data.animals = animals;
+        res.render("vetManager.ejs", { data: data });
+    });
+     
+});
+
 app.get('/vetTables',checkEmployeeSignIn, function(req,res){
     var data = [];
     db.getEmployeeName(req.session.user,function(employee){
@@ -301,6 +313,8 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
         res.render("vet_tables.ejs", {data :data});
     });
 });
+
+
 
 
 
@@ -449,15 +463,15 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
 app.get('/alertOptions/', function(req, res)
 {
     if(!req.session.user)
-        res.render("errorPage", {message: "You dont have access to this page!" });
+        res.render('errorPage', {message: "You don't have access to this page!"});
     else if(req.session.user.role == "Customer")
-        res.render("errorPage", {message: "You dont have access to this page!" });
+        res.render('errorPage', {message: "You don't have access to this page!"});
     else if(req.session.user.role == "Employee")
     {
         if(req.session.user.isManager || req.session.user.isCareTaker || req.session.user.dept==9)
             res.render('alertOptions.ejs');
         else
-        res.render("errorPage", {message: "Only managers, vets, and caretakers can view this page!" });
+            res.render('errorPage', {message: "You don't have access to this page!"});
     }
 });
 
@@ -477,7 +491,7 @@ app.post('/alert', function(req, res)
         // render caretaker report
         db.getCareTakerAlerts(req.session.user, req.body.time, function(info)
         {
-            res.render('caretaker_alerts.ejs', {data:[info, req.body.time]});
+            res.render('caretaker_alerts.ejs', {data:[alerts, req.body.time, numHealthy, numSick, numPregnant,numDeceased]});
         });
     }
     else if(req.session.user.isManager)
@@ -499,7 +513,7 @@ app.post('/alert', function(req, res)
             });
         }
         else
-            res.send("There are no alerts for you!"); // any other managers
+            res.render('errorPage', {message: "You don't have access to this page!"}); // any other managers
     }
 });
 
@@ -519,7 +533,7 @@ app.post('/searchOrder', function(req, res)
         if(data != false)
             res.render('order_status.ejs', {data:data});
         else
-            res.send("Couldn't find your order");
+            res.render('errorPage', {message: "We couldn't find your order!"});
     })
 });
 
@@ -527,9 +541,9 @@ app.post('/searchOrder', function(req, res)
 app.get('/customerFrontPage', function(req, res)
 {
     if(!req.session.user)
-        res.send("Please sign in or create an account");
+        res.render('errorPage', {message: "Please sign in or create an account"});
     else if(req.session.user.role == "Employee")
-        res.send("You're not a customer");
+        res.render('errorPage', {message: "You're not a customer"});
     else if(req.session.user.role == "Customer")
     {
         db.getCustomerInfo(req.session.user.username, function(data)
@@ -559,9 +573,9 @@ app.get('/orderHistory', function(req, res)
 app.get('/getMembership', function(req,res)
 {
     if(!req.session.user)
-        res.send("Please sign in or create an account");
+        res.render('errorPage', {message: "Please sign in or create an account"});
     else if(req.session.user.role == "Employee")
-        res.send("You're not a customer");
+        res.render('errorPage', {message:"You're not a customer"});
     else if(req.session.user.role == "Customer")
     {
         db.getMembership(function(data)
