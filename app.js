@@ -61,6 +61,8 @@ app.get('/', function(req, res)
 {
     if(!req.session.user)
         res.sendFile(index.html);
+   else if(req.session.user.role == "Customer")
+        res.redirect('/customerFrontPage');
     else if(req.session.user.isManager){
         if(req.session.user.dept==9) res.redirect('/vetManager');
         else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
