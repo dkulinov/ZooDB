@@ -373,7 +373,13 @@ app.use('/managerTables', function(err, req, res, next){
                             if(err) {console.log("error"); return;}
                             else{
                                 data.mostSoldProducts = products;
-                                res.render("financialReport", {data: data});
+                                db.getTicketDistribution([startdate, enddate], function(err,tickets){
+                                    if(err) {console.log("error"); return;}
+                                    else{
+                                        data.ticketDistribution = tickets;
+                                        res.render("financialReport", {data: data});
+                                    }
+                                });
                             }
                         });
                     }
