@@ -378,8 +378,9 @@ module.exports.getOrdersTest = getOrdersTest;
 
 
 //returns each product and its frequency sold from the orders table from a date window
+
 getMostSoldProductsTest = function(data, callback){
-  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?)  AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  var sql = "SELECT zoo_schema.order.product_id, zoo_schema.product.product_name, COUNT(zoo_schema.order.product_id) AS quantity FROM zoo_schema.order JOIN zoo_schema.product ON zoo_schema.order.product_id = zoo_schema.product.product_id WHERE order_date BETWEEN ? AND ? GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
   
   pool.getConnection(function(err, connection){
     connection.release();
@@ -396,8 +397,24 @@ getMostSoldProductsTest = function(data, callback){
 module.exports.getMostSoldProductsTest = getMostSoldProductsTest;
 
 
+//
 
+getTicketDistribution = function(data, callback){
+  var sql = "SELECT zoo_schema.order.product_id, zoo_schema.product.product_name, COUNT(zoo_schema.order.product_id) AS quantity FROM zoo_schema.order JOIN zoo_schema.product ON zoo_schema.order.product_id = zoo_schema.product.product_id WHERE order_date BETWEEN ? AND ? AND order.product_id <= 1000006 GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, data, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(false,res);
+    });
 
+  });
+}
+module.exports.getTicketDistribution = getTicketDistribution;
 
 /* ------------------------ ALERT FUNCTIONS ----------------------------------*/
 

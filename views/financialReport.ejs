@@ -33,7 +33,7 @@
         <!--<div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>-->
-        <div class="sidebar-brand-text mx-3">Houston Zoo Admin</div>
+        <div class="sidebar-brand-text mx-3">Houston Zoo Manager</div>
       </a>
 
       <!-- Divider -->
@@ -43,11 +43,7 @@
       <li class="nav-item">
         <a class="nav-link" href="/managerFrontPage">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-<<<<<<< HEAD:views/dailyReport.ejs
           <span>Dashboard</span></a>
-=======
-          <span>Home</span></a>
->>>>>>> 4c56f4cec55c26dbcde83dfb7901b6f75405f49c:views/financialReport.ejs
       </li>
 
       <!-- Divider 
@@ -98,7 +94,6 @@
         Information
       </div>
 
-<<<<<<< HEAD:views/dailyReport.ejs
       <!-- Nav Item - Pages Collapse Menu 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
@@ -126,8 +121,6 @@
           <span>Charts</span></a>
       </li>-->
 
-=======
->>>>>>> 4c56f4cec55c26dbcde83dfb7901b6f75405f49c:views/financialReport.ejs
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="/managerTables">
@@ -207,26 +200,16 @@
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+                <span class="badge badge-danger badge-counter"></span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 12, 2019</div>
-                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
-                </a>
 
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+
+                <a class="dropdown-item text-center small text-gray-500" href="/alertOptions">See Alerts</a>
               </div>
             </li>
 
@@ -376,7 +359,7 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Ticket Distribution</h6>
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -397,14 +380,9 @@
                   </div>
                   <div class="mt-4 text-center small">
                     <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Entrance ticket
+                      <i class="fas fa-circle"></i> Percent of Total Tickets Sold
                     </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Attraction
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Gift shop
-                    </span>
+
                   </div>
                 </div>
               </div>
@@ -504,13 +482,7 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; HoustonZoo 2020</span>
-          </div>
-        </div>
-      </footer>
+
       <!-- End of Footer -->
 
     </div>
@@ -558,7 +530,7 @@
 
   <!-- Page level custom scripts -->
   <script src="../assets/vendor/demo/chart-area-demo.js"></script>
-  <script src="../assets/vendor/demo/chart-pie-demo.js"></script>
+
 
 
   <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
@@ -605,11 +577,10 @@
     var labelList = [];
     var dataList = [];
     for(var i = 0; i < chartData.length; i++){
-      labelList[i] = chartData[i].product_id;
+      labelList[i] = chartData[i].product_name;
       dataList[i] = chartData[i].quantity;
     }
-    console.log("labelList: ", labelList);
-    console.log("dataList: ", dataList);
+    
 
     var myBarChart = new Chart(ctx, {
       type: 'bar',
@@ -617,9 +588,41 @@
         labels: labelList,
         datasets: [{
           label: "Quantity Sold",
-          backgroundColor: "#4e73df",
+          backgroundColor:[  
+            "rgb(255, 99, 132)",
+            "rgb(255, 159, 64)",
+            "rgb(255, 205, 86)",
+            "rgb(75, 192, 192)",
+            "rgb(54, 162, 235)",
+            "rgb(153, 102, 255)",
+            "rgb(201, 203, 207)",
+            "rgb(255, 99, 132)",
+            "rgb(255, 159, 64)",
+            "rgb(255, 205, 86)",
+            "rgb(75, 192, 192)",
+            "rgb(54, 162, 235)",
+            "rgb(153, 102, 255)",
+            "rgb(201, 203, 207)"
+
+         ],
           hoverBackgroundColor: "#2e59d9",
-          borderColor: "#4e73df",
+          borderColor:[  
+          "rgba(255, 99, 132, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 205, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(201, 203, 207, 0.2)",
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+            "rgba(255, 205, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(201, 203, 207, 0.2)"
+         ],
+          borderWidth:1,
           data: dataList,
         }],
       },
@@ -650,9 +653,10 @@
           yAxes: [{
             ticks: {
               min: 0,
-              max: 30,
-              maxTicksLimit: 20,
+              suggestedMax: dataList[0].quantity,
+              maxTicksLimit: dataList[0].quantity,
               padding: 10,
+              stepSize: 1,
               // Include a dollar sign in the ticks
               callback: function(value, index, values) {
                 return number_format(value);
@@ -690,6 +694,55 @@
           }
         },
       }
+    });
+
+
+
+
+    // Pie Chart Example
+    var chartData = <%- JSON.stringify(data.ticketDistribution) %>
+    console.log(chartData);
+    var categoriesList = [];
+    var percentList = [];
+    var sum = 0;
+    for(var i = 0; i < chartData.length; i++){
+      sum+= chartData[i].quantity;
+    }
+    console.log("Sum: ", sum);
+    for(var i = 0; i < chartData.length; i++){
+      categoriesList[i] = chartData[i].product_name;
+      percentList[i] = (chartData[i].quantity / sum) * 100;
+    }
+    console.log("percentList: ", percentList);
+    var ctx = document.getElementById("myPieChart");
+    var myPieChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: categoriesList,
+        datasets: [{
+          data: percentList,
+          backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+          hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+          hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          caretPadding: 10,
+        },
+        legend: {
+          display: false
+        },
+        cutoutPercentage: 80,
+      },
     });
   </script>
 </body>
