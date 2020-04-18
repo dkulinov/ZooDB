@@ -503,7 +503,7 @@ app.post('/alert', function(req, res)
     else if(req.session.user.isCareTaker)
     {
         // render caretaker report
-        db.getCareTakerAlerts(req.session.user, req.body.time, function(info)
+        db.getCareTakerAlerts(req.session.user, req.body.time, function(alerts, numHealthy, numSick, numPregnant, numDeceased)
         {
             res.render('caretaker_alerts.ejs', {data:[alerts, req.body.time, numHealthy, numSick, numPregnant,numDeceased]});
         });
