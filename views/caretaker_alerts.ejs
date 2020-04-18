@@ -23,107 +23,106 @@
 
 </head>
 
-<body id="page-top">
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <% var sum=data[0].length;  var time = 1; if(data[1]=="week")time=7;else if(data[1]=="month")time=30;else if(data[1]=="year")time=365;%> 
-          
-          <h1 class="h3 mb-2 text-gray-800">Caretaker Alerts in the past <%=data[1]%>:</h1>
+<body id="page-top" style="background-image: url(/../assets/img/heroimg.jpg);background-repeat: no-repeat; background-size: cover;">
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-dark" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <td style="font-weight: bold; font-size: larger;">Animal Name</th>
-                      <td style="font-weight: bold;font-size: larger;">Animal ID</th>
-                      <td style="font-weight: bold;font-size: larger;">Health Changed To</th>  
-                      <td style="font-weight: bold;font-size: larger;">Date of Alert</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-                    <% for(var i=0; i< data[0].length; i++) { %>
-                      <tr>
-                        <td><%= data[0][i].animalName %>  </td>
-                        <td><%= data[0][i].animalID %> </td>
-                        <td><%= data[0][i].health %> </td>
-                        <td> <%= data[0][i].date %> </td>
-                      </tr>
-                    <% } %>  
-                </tbody>
-                </table> 
-                </div>
-            </div>
-          </div>
-        <div class = "card">
-            <div class ="card-body">
-                        <p class="card-text" style="font-weight: bold;">Total healthy: <%=data[2][0].numHealthy%></p>
-                    
-                        <p class="card-text" style="font-weight: bold;">Total sick: <%=data[3][0].numSick%></p>
-                    
-                        <p class="card-text" style="font-weight: bold;">Total pregnant: <%=data[4][0].numPregnant%></p>
-                    
-                        <p class="card-text" style="font-weight: bold;">Total deceased: <%=data[5][0].numDeceased%></p>
-                   
-                        <p class="card-text" style="font-weight: bold;">Total alerts: <%=sum%></p>
-                     
-                        <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Healthy/day: <%=(data[2][0].numHealthy/time).toFixed(3)%></p>
-                            <% } %> 
-                      
-                        <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Sick/day: <%=(data[3][0].numSick/time).toFixed(3)%></p>
-                            <% } %> 
-                      
-                        <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Pregnant/day: <%=(data[4][0].numPregnant/time).toFixed(3)%></p>
-                            <% } %> 
-                      
-                        <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Dead/day: <%=(data[5][0].numDeceased/time).toFixed(3)%></p>
-                            <% } %> 
-                      
-                        <% if(data[1] != "allTime") {%>
-                            <p class="card-text" style="font-weight: bold;">Alerts/day: <%=(sum/time).toFixed(3)%></p>
-                            <% } %> 
-                      
-                 
-              </div>
-            </div>
-          </div>
-
-        </div>  
-
-
+<!-- ======= Mobile Menu ======= -->
+<div class="site-mobile-menu site-navbar-target">
+  <div class="site-mobile-menu-header">
+    <div class="site-mobile-menu-close mt-3">
+      <span class="icofont-close js-menu-toggle"></span>
     </div>
-    <!-- End of Content Wrapper -->
-
   </div>
-  <!-- End of Page Wrapper -->
+  <div class="site-mobile-menu-body"></div>
+</div>
+
+<!-- ======= Header ======= -->
+
+
+
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <a class="btn btn-primary" href="/">Home</a>
+  <!-- Page Heading -->
+  <%var sum=data[0].length;  var time = 1; if(data[1]=="week")time=7;else if(data[1]=="month")time=30;else if(data[1]=="year")time=365;%> 
+  
+  <h1 class="h3 mb-2 text-gray-800">Caretaker Alerts in the past <%=data[1]%>:</h1>
+  <a class="btn btn-primary" href="/alertOptions">Change time period</a>
+  <!-- DataTales Example -->
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-dark" id="" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <td style="font-weight: bold; font-size: larger;">Total healthy</th>
+              <td style="font-weight: bold; font-size: larger;">Total sick</th>
+              <td style="font-weight: bold; font-size: larger;">Total pregnant</th>  
+              <td style="font-weight: bold; font-size: larger;">Total deceased</th>
+              <td style="font-weight: bold; font-size: larger;">Total alerts</th>
+              <td style="font-weight: bold; font-size: larger;">Healthy/day</th>
+              <td style="font-weight: bold; font-size: larger;">Sick/day</th>  
+              <td style="font-weight: bold; font-size: larger;">Pregnant/day</th>
+              <td style="font-weight: bold; font-size: larger;">Deceased/day</th>
+              <td style="font-weight: bold; font-size: larger;">Alerts/day</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td><%= data[2][0].numHealthy %>  </td>
+                <td><%= data[3][0].numSick %> </td>
+                <td><%= data[4][0].numPregnant %> </td>
+                <td><%= data[5][0].numDeceased %> </td>
+                <td><%= sum %></td>
+                <td><%= (data[2][0].numHealthy/time).toFixed(3) %></td>
+                <td><%= (data[3][0].numSick/time).toFixed(3) %></td>
+                <td><%= (data[4][0].numPregnant/time).toFixed(3) %></td>
+                <td><%= (data[5][0].numDeceased/time).toFixed(3) %></td>
+                <td><%= (sum/time).toFixed(3) %></td>
+              </tr>
+        </tbody>
+        </table> 
+        </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-dark" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <td style="font-weight: bold; font-size: larger;">Animal Name</th>
+              <td style="font-weight: bold;font-size: larger;">Animal ID</th>
+              <td style="font-weight: bold;font-size: larger;">Health Changed To</th>  
+              <td style="font-weight: bold;font-size: larger;">Date of Alert</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <% for(var i=0; i< data[0].length; i++) { %>
+              <tr>
+                <td><%= data[0][i].animalName %>  </td>
+                <td><%= data[0][i].animalID %> </td>
+                <td><%= data[0][i].health %> </td>
+                <td> <%= data[0][i].date %> </td>
+              </tr>
+            <% } %>  
+        </tbody>
+        </table> 
+        </div>
+    </div>
+  </div>
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <a class="btn btn-primary" href="/alertOptions">Change time period</a>
-          <h5 class="modal-title" style="justify-content: center;" id="exampleModalLabel">Ready to Leave?</h5>
-          <a class="btn btn-primary" href="/">Home</a>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/../assets/vendor/jquery/jquery.min.js"></script>
