@@ -425,7 +425,10 @@ app.get('/shop', function(req,res)
     var items = [];
     db.getProducts(function(items)
     {
-        res.render("shop.ejs", {items: items});
+        if(!req.session.user)
+            res.render("shop.ejs", {items: [items, false]});
+        else
+            res.render("shop.ejs", {items: [items, req.session.user.isMember]});
     });
 });
 
