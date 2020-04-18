@@ -295,8 +295,6 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
             data.animals = animals;
             db.getEmployeesAnimals(username,function(animals){
                 data.animalsList = animals;
-                //delete the log when your done testing
-                console.log(data);
                 res.render("vetManager.ejs", { data });
             });
         });

@@ -26,11 +26,9 @@
 <body id="page-top" style="background-image: url(/../assets/img/heroimg.jpg);background-repeat: no-repeat; background-size: cover;">
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          <a class="btn btn-primary" href="/">Home</a>
           <!-- Page Heading -->
           <% var sum=data[0].length;  var time = 1; if(data[1]=="week")time=7;else if(data[1]=="month")time=30;else if(data[1]=="year")time=365;%> 
           <h1 class="h3 mb-2 text-gray-800">Nutrition Manager Alerts in the past <%=data[1]%>:</h1>
-          <a class="btn btn-primary" href="/alertOptions">Change time period</a>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -63,6 +61,8 @@
                       </tr>
                   </tbody>
                 </table>
+                <a class="btn btn-primary" href="/">Home</a>
+                <a class="btn btn-primary" href="/alertOptions">Change time period</a>
               </div>
             </div>
           </div>
