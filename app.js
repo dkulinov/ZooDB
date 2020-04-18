@@ -57,7 +57,36 @@ function assignEmployeeInfo(emp, dept, isM, isC, cb)
 // ----------------------------- ROUTES -------------------------------- //
 //default route will point to index.html which is the homepage
 
-app.get('/', (req, res) => res.sendFile(index.html));
+app.get('/', function(req, res){
+    
+    if(!req.session.user)
+    {
+        console.log('hello');
+        res.sendFile(path.join(__dirname,'/main.html'));
+    }
+    else if(req.session.user.role == "Customer")
+        res.redirect('/customerFrontPage');
+    else if(req.session.user.role == "Employee"){
+        if(req.session.user.isManager)
+        {
+            if(req.session.user.dept==9) 
+                res.redirect('/vetManager');
+            else if(req.session.user.isCareTaker) 
+                res.redirect('/caretakerManager');
+            else 
+                res.redirect('/managerFrontPage',);
+        }
+        else if(req.session.user.isCareTaker)
+        {
+                res.redirect('/caretaker');
+        }
+        else if(req.session.user.dept === 9){
+            res.redirect('/vet');
+        }
+        else
+            res.redirect('/regularEmployee');
+    }
+});
 
 
 app.post('/signup', function(req, res){
@@ -99,23 +128,8 @@ app.post('/employeeLogin', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                         if(req.session.user.isManager){
-                           if(req.session.user.dept==9) res.redirect('/vetManager');
-                           else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
-                           else res.redirect('/managerFrontPage',);
-                          }
-                        else if(req.session.user.isCareTaker){
-                           res.redirect('/caretaker');
-                        }
-                        else if(req.session.user.dept === 9){
-                           res.redirect('/vet');
-                        }
-                         /*else if(req.session.user.isManager)   // will be for managers only
-                             res.redirect('/managerFrontPage');*/
-                         else
-                             res.redirect('/regularEmployee'); // will be for regular employees                        
-                                         });
-
+                        res.redirect('/');                        
+                    });
                     
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
