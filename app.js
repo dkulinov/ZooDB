@@ -99,8 +99,23 @@ app.post('/employeeLogin', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                        res.redirect('/');                        
-                    });
+                         if(req.session.user.isManager){
+                           if(req.session.user.dept==9) res.redirect('/vetManager');
+                           else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
+                           else res.redirect('/managerFrontPage',);
+                          }
+                        else if(req.session.user.isCareTaker){
+                           res.redirect('/caretaker');
+                        }
+                        else if(req.session.user.dept === 9){
+                           res.redirect('/vet');
+                        }
+                         /*else if(req.session.user.isManager)   // will be for managers only
+                             res.redirect('/managerFrontPage');*/
+                         else
+                             res.redirect('/regularEmployee'); // will be for regular employees                        
+                                         });
+
                     
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
@@ -216,6 +231,7 @@ app.get('/caretaker',checkEmployeeSignIn, function(req,res)
         data.employee = employee;
     });
     
+
     db.getEmployeesAnimals(username, function(animals){
         data.animals = animals;
         res.render("caretaker.ejs", { data: data });
@@ -257,30 +273,26 @@ app.get('/vet',checkEmployeeSignIn, function(req,res)
 
 app.get('/vetManager',checkEmployeeSignIn, function(req,res)
 {
-    var data = [];
+    var data = {};
     var username = req.session.user;
 
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
     });
+
+    db.getAllAnimals(function(animals){
+        data.animals = animals;
+        console.log(data);
+    });
     
     db.getEmployeesAnimals(username,function(animals){
         data.animals = animals;
-        res.render("vetManager.ejs", { data: data });
+        console.log(data.animals)
+        res.render("vetManager.ejs", { data });
     });
      
 });
 
-app.get('/vetManager',checkEmployeeSignIn, function(req,res)
-{
-    var data = [];
-
-    db.getEmployeesAnimals(function(animals){
-        data.animals = animals;
-        res.render("vetManager.ejs", { data: data });
-    });
-     
-});
 
 app.get('/vetTables',checkEmployeeSignIn, function(req,res){
     var data = [];
@@ -474,7 +486,7 @@ app.post('/alert', function(req, res)
     else if(req.session.user.isCareTaker)
     {
         // render caretaker report
-        db.getCareTakerAlerts(req.session.user, req.body.time, function(alerts, numHealthy, numSick, numPregnant, numDeceased)
+        db.getCareTakerAlerts(req.session.user, req.body.time, function(info)
         {
             res.render('caretaker_alerts.ejs', {data:[alerts, req.body.time, numHealthy, numSick, numPregnant,numDeceased]});
         });
