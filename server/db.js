@@ -681,3 +681,39 @@ getMembership = function(callback)
   });
 }
 module.exports.getMembership = getMembership;
+
+//allows employees to update product stock
+getProductsForUpdate = function(dept, callback){
+  var sql = "SELECT * FROM product WHERE gift_shop_id = ";
+  sql += dept;
+  sql += " GROUP BY product_id";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err,res){
+      if(err){callback(false);}
+      if(res.length)
+        callback(res);
+      else
+        callback(false);
+    });
+  });
+}
+module.exports.getProductsForUpdate = getProductsForUpdate;
+
+updateStock = function(id, size, quantity, callback){
+  var sql = "UPDATE product SET stock = stock + ";
+  sql += quantity;
+  sql += " WHERE product_id = ";
+  sql += id;
+  sql += " AND product_size = '";
+  sql += size;
+  sql += "';";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err,res){
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.updateStock = updateStock;
