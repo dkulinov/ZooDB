@@ -347,9 +347,10 @@
     <div class="form-group">
       <label for="exampleFormControlSelect1">Animal selection</label>
       <select class="form-control" id="exampleFormControlSelect1">
-        <%for(var i = 0; i<data.animals; i++){ %>
-          <option>
-            <%= animals[i].animal_name %>
+        <!-- Make sure you use data.object.property format to reference the data -->
+        <% for(var i = 0; i< data.animals.length; i++) { %>
+          <option value = "<%= data.animals[i].animal_name %>">
+            <%= data.animals[i].animal_name %>
           </option>
         <% } %>
       </select>
@@ -370,18 +371,7 @@
     </div> -->
   </form>
   
-    <!--<form action="" method="POST"> 
-    <div class="form-group">
-      <label for="exampleFormControlSelect1">Animal selection</label>
-      <select class="form-control" id="exampleFormControlSelect1">      <select name="animal" class="custom-select">
-        <%for(var i = 0; i<data.animalList.length; i++){ %>
-          <option>
-            <%= animalList[i].animal_name %>
-          </option>
-        <% } %>
-      </select>
-    </div>
-  </form>-->
+
 
 
   <!-- Fade In Utility -->

@@ -285,22 +285,21 @@ app.get('/vet',checkEmployeeSignIn, function(req,res)
 
 app.get('/vetManager',checkEmployeeSignIn, function(req,res)
 {
-    var data = {};
+    var data = [];
     var username = req.session.user;
-
+    //if you nest the functions then they will always run in order
+    // otherwise you may get unexpected behavior like some data not loading
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
-    });
-
-    db.getAllAnimals(function(animals){
-        data.animals = animals;
-        console.log(data);
-    });
-    
-    db.getEmployeesAnimals(username,function(animals){
-        data.animals = animals;
-        console.log(data.animals)
-        res.render("vetManager.ejs", { data });
+        db.getAllAnimals(function(animals){
+            data.animals = animals;
+            db.getEmployeesAnimals(username,function(animals){
+                data.animalsList = animals;
+                //delete the log when your done testing
+                console.log(data);
+                res.render("vetManager.ejs", { data });
+            });
+        });
     });
      
 });
