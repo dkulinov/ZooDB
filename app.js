@@ -57,32 +57,7 @@ function assignEmployeeInfo(emp, dept, isM, isC, cb)
 // ----------------------------- ROUTES -------------------------------- //
 //default route will point to index.html which is the homepage
 
-app.get('/', function(req, res)
-{
-    if(!req.session.user)
-        res.sendFile(index.html);
-   else if(req.session.user.role == "Customer")
-        res.redirect('/customerFrontPage');
-    else if(req.session.user.isManager){
-        if(req.session.user.dept==9) res.redirect('/vetManager');
-        else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
-        else res.redirect('/managerFrontPage',);
-    }
-    else if(req.session.user.isCareTaker){
-        res.redirect('/caretaker');
-    }
-    else if(req.session.user.dept === 9){
-        res.redirect('/vet');
-    }
-    /*else if(req.session.user.isManager)   // will be for managers only
-        res.redirect('/managerFrontPage');*/
-    else
-        res.redirect('/regularEmployee'); // will be for regular employees
-});
-
-app.get('/employeeLogin', function(req, res){
-    res.render('employeeLogin');
- });
+app.get('/', (req, res) => res.sendFile(index.html));
 
 
 app.post('/signup', function(req, res){
@@ -104,6 +79,10 @@ app.post('/signup', function(req, res){
   }); 
 });
 
+app.get('/employeeLogin', function(req, res){
+    res.render('employeeLogin');
+ });
+
 //on submit of the employee login form
 app.post('/employeeLogin', function(req, res){
     var username = req.body.username;
@@ -120,9 +99,23 @@ app.post('/employeeLogin', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                        res.redirect('/');                        
-                    });
-                    
+                         if(req.session.user.isManager){
+                           if(req.session.user.dept==9) res.redirect('/vetManager');
+                           else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
+                           else res.redirect('/managerFrontPage',);
+                          }
+                        else if(req.session.user.isCareTaker){
+                           res.redirect('/caretaker');
+                        }
+                        else if(req.session.user.dept === 9){
+                           res.redirect('/vet');
+                        }
+                         /*else if(req.session.user.isManager)   // will be for managers only
+                             res.redirect('/managerFrontPage');*/
+                         else
+                             res.redirect('/regularEmployee'); // will be for regular employees                        
+                                         });
+
                     
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
@@ -132,6 +125,7 @@ app.post('/employeeLogin', function(req, res){
         });
     }
  });
+
 
 
 app.get('/employeeLogout', function(req, res){
@@ -292,6 +286,17 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
      
 });
 
+app.get('/vetManager',checkEmployeeSignIn, function(req,res)
+{
+    var data = [];
+
+    db.getEmployeesAnimals(function(animals){
+        data.animals = animals;
+        res.render("vetManager.ejs", { data: data });
+    });
+     
+});
+
 app.get('/vetTables',checkEmployeeSignIn, function(req,res){
     var data = [];
     db.getEmployeeName(req.session.user,function(employee){
@@ -312,12 +317,15 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
 
 
 
+
+
 /* --------------------------------------- Manager Page Routes  ----------------------------------------- */
 
 app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  {   
      var userid = req.session.user;
      const emp_name = [];
+
      db.getEmployeeName(userid, function(emp_name){
          res.render("manager_frontPage", {emp_name: emp_name});
      });
@@ -357,7 +365,7 @@ app.use('/managerTables', function(err, req, res, next){
     res.redirect('/employeeLogin');
 });
 
-
+//this route generates a report between a start date and end date which comes from an html form
  app.post('/generateReport', function(req, res){
     var startdate = req.body.startdate;
     var enddate = req.body.enddate;
@@ -366,27 +374,34 @@ app.use('/managerTables', function(err, req, res, next){
     if(!startdate || !enddate){
         res.render('errorPage', {message: "Missing required fields"});
     } else {
+
         db.getRevenueTest([startdate, enddate], function(err,revenue){
             if(err) {console.log("error"); return;}
             else{
                 data.revenue = revenue;
-           
+                db.getOrdersTest([startdate, enddate], function(err,orders){
+                    if(err) {console.log("error"); return;}
+                    else{
+                        data.orderTable = orders;
+                        db.getMostSoldProductsTest([startdate, enddate], function(err,products){
+                            if(err) {console.log("error"); return;}
+                            else{
+                                data.mostSoldProducts = products;
+                                db.getTicketDistribution([startdate, enddate], function(err,tickets){
+                                    if(err) {console.log("error"); return;}
+                                    else{
+                                        data.ticketDistribution = tickets;
+                                        res.render("financialReport", {data: data});
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }); 
             }
         });     
+  
  
-        db.getMostSoldProductsTest([startdate, enddate], function(err,products){
-            if(err) {console.log("error"); return;}
-            else{
-                data.mostSoldProducts = products;
-            }
-        });  
-        db.getOrdersTest([startdate, enddate], function(err,orders){
-            if(err) {console.log("error"); return;}
-            else{
-                data.orderTable = orders;
-                res.render("financialReport", {data: data});
-            }
-        });  
     }
  });
 

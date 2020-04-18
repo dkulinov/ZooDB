@@ -378,8 +378,9 @@ module.exports.getOrdersTest = getOrdersTest;
 
 
 //returns each product and its frequency sold from the orders table from a date window
+
 getMostSoldProductsTest = function(data, callback){
-  var sql = "SELECT product_id, COUNT(product_id) AS quantity FROM (SELECT * FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?)  AS past_day GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  var sql = "SELECT zoo_schema.order.product_id, zoo_schema.product.product_name, COUNT(zoo_schema.order.product_id) AS quantity FROM zoo_schema.order JOIN zoo_schema.product ON zoo_schema.order.product_id = zoo_schema.product.product_id WHERE order_date BETWEEN ? AND ? GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
   
   pool.getConnection(function(err, connection){
     connection.release();
@@ -396,15 +397,30 @@ getMostSoldProductsTest = function(data, callback){
 module.exports.getMostSoldProductsTest = getMostSoldProductsTest;
 
 
+//
 
+getTicketDistribution = function(data, callback){
+  var sql = "SELECT zoo_schema.order.product_id, zoo_schema.product.product_name, COUNT(zoo_schema.order.product_id) AS quantity FROM zoo_schema.order JOIN zoo_schema.product ON zoo_schema.order.product_id = zoo_schema.product.product_id WHERE order_date BETWEEN ? AND ? AND order.product_id <= 1000006 GROUP BY product_id ORDER BY COUNT(product_id) DESC;";
+  
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, data, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(false,res);
+    });
 
+  });
+}
+module.exports.getTicketDistribution = getTicketDistribution;
 
 /* ------------------------ ALERT FUNCTIONS ----------------------------------*/
 
-
 getCareTakerAlerts = function(employee, time, callback)
 {
-  var sql = "SELECT caretaker_alerts.animal_id AS animalID, animal.animal_name AS animalName, animal.species AS species, caretaker_alerts.new_health_status AS health, DATE_FORMAT(caretaker_alerts.date_generated, '%Y-%m-%d') AS `date`  FROM caretaker_alerts INNER JOIN animal ON caretaker_alerts.animal_id = animal.animal_id WHERE caretaker_id = ";
+  var sql = "SELECT caretaker_alerts.animal_id AS animalID, animal.animal_name AS animalName, caretaker_alerts.new_health_status AS health, DATE_FORMAT(caretaker_alerts.date_generated, '%Y-%m-%d') AS `date`  FROM caretaker_alerts INNER JOIN animal ON caretaker_alerts.animal_id = animal.animal_id WHERE caretaker_id = ";
   sql += employee.username;
   if(time != "allTime")
   {
@@ -415,94 +431,21 @@ getCareTakerAlerts = function(employee, time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND caretaker_alerts.date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
+    sql += " AND caretaker_alerts.date_generated >= (SELECT DATE(NOW()))-";
     sql += amt;
-    sql += " DAY ))";
   }
-  sql += " ORDER BY caretaker_alerts.date_generated ASC";
+  sql += " GROUP BY caretaker_alerts.new_health_status ORDER BY caretaker_alerts.date_generated ASC";
   pool.getConnection(function(err, connection){
     if(err) { console.log(err); callback(true); return; }
     connection.query(sql, function(err, res){
       connection.release();
       if(err) console.log(err);
       else
-      {
-        var sql2 = "SELECT COUNT(*) AS numHealthy FROM caretaker_alerts WHERE new_health_status='healthy' AND caretaker_id = ";
-        sql2 += employee.username;
-        if(time != "allTime")
-        {
-          sql2 += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
-          sql2 += amt;
-          sql2 += " DAY ))";
-        }
-        pool.getConnection(function(err, connection){
-          connection.query(sql2, function(err, res2){
-            connection.release();
-            if(err) console.log(err);
-            else
-            {
-              var sql3 = "SELECT COUNT(*) AS numSick FROM caretaker_alerts WHERE new_health_status='sick' AND caretaker_id = ";
-              sql3 += employee.username;
-              if(time != "allTime")
-              {
-                sql3 += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
-                sql3 += amt;
-                sql3 += " DAY ))";
-              }
-              pool.getConnection(function(err, connection){
-                connection.query(sql3, function(err, res3){
-                  connection.release();
-                  if(err) console.log(err);
-                  else
-                  {
-                    var sql4 = "SELECT COUNT(*) AS numPregnant FROM caretaker_alerts WHERE new_health_status='pregnant' AND caretaker_id = ";
-                    sql4 += employee.username;
-                    if(time != "allTime")
-                    {
-                      sql4 += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
-                      sql4 += amt;
-                      sql4 += " DAY ))";
-                    }
-                    pool.getConnection(function(err, connection){
-                      connection.query(sql4, function(err, res4){
-                        connection.release();
-                        if(err) console.log(err);
-                        else
-                        {
-                          var sql5 = "SELECT COUNT(*) AS numDeceased FROM caretaker_alerts WHERE new_health_status='deceased' AND caretaker_id = ";
-                          sql5 += employee.username;
-                          if(time != "allTime")
-                          {
-                            sql5 += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
-                            sql5 += amt;
-                            sql5 += " DAY ))";
-                          }
-                          pool.getConnection(function(err, connection){
-                            connection.query(sql5, function(err, res5){
-                              connection.release();
-                              if(err) console.log(err);
-                              else
-                              {
-                                callback(res, res2, res3, res4, res5);
-                              }
-                            })
-                          });
-                        }
-                      });
-                    });
-                  }
-            });
-          });
-        }
-      });
+        callback(res);
     });
-}
-});
 });
 }
 module.exports.getCareTakerAlerts = getCareTakerAlerts;
-
-
 
 getVetAlerts = function(time, callback)
 {
@@ -516,9 +459,8 @@ getVetAlerts = function(time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
+    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
     sql += amt;
-    sql += " DAY ))";
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
@@ -545,9 +487,8 @@ getNutritionAlerts = function(time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
+    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
     sql += amt;
-    sql += " DAY ))";
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
@@ -576,9 +517,8 @@ getStoreManagersAlerts = function(id, time, callback)
       amt = 31;
     else if(time == "year")
       amt = 365;
-    sql += " AND date_generated >= (SELECT DATE_SUB(DATE(NOW()), INTERVAL ";
+    sql += " AND date_generated >= (SELECT DATE(NOW()))-";
     sql += amt;
-    sql += " DAY ))";
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
@@ -652,20 +592,3 @@ getOrderHistory = function(email, callback)
   });
 }
 module.exports.getOrderHistory = getOrderHistory;
-
-
-getMembership = function(callback)
-{
-  var sql = "SELECT * FROM product WHERE product_id = 37378708;"
-  pool.getConnection(function(err, connection){
-    if(err) {console.log(err); callback(true); return;}
-    connection.query(sql, function(err, res){
-      connection.release();
-      if(err) callback(false);
-      else
-        callback(res);
-    });
-  });
-}
-module.exports.getMembership = getMembership;
->>>>>>> 788b0eaa5e0fa1183d9d0dfac5ee920e05c46846
