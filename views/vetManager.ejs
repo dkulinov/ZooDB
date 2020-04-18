@@ -347,9 +347,9 @@
     <div class="form-group">
       <label for="exampleFormControlSelect1">Animal selection</label>
       <select class="form-control" id="exampleFormControlSelect1">
-        <%for(var i = 0; i<data.animals; i++){ %>
+        <%for(var i = 0; i<data.animals.length; i++){ %>
           <option>
-            <%= animals[i].animal_name %>
+            <%= data.animals[i].animal_name %>
           </option>
         <% } %>
       </select>
@@ -369,19 +369,6 @@
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
     </div> -->
   </form>
-  
-    <!--<form action="" method="POST"> 
-    <div class="form-group">
-      <label for="exampleFormControlSelect1">Animal selection</label>
-      <select class="form-control" id="exampleFormControlSelect1">      <select name="animal" class="custom-select">
-        <%for(var i = 0; i<data.animalList.length; i++){ %>
-          <option>
-            <%= animalList[i].animal_name %>
-          </option>
-        <% } %>
-      </select>
-    </div>
-  </form>-->
 
 
   <!-- Fade In Utility -->
