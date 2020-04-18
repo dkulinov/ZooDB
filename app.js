@@ -61,7 +61,6 @@ app.get('/', function(req, res){
     
     if(!req.session.user)
     {
-        console.log('hello');
         res.sendFile(path.join(__dirname,'/main.html'));
     }
     else if(req.session.user.role == "Customer")
