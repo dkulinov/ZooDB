@@ -465,9 +465,30 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
     }
 });
 
+// lets employees update stock 
+app.get('/updateStock', function(req, res)
+{
+    if(!req.session.user)
+        res.render('errorPage', {message: "You don't have access to this page"});
+    else if(req.session.user.dept == 5 ||  req.session.user.dept== 6 || req.session.user.dept==7)
+    {
+        db.getProductsForUpdate(req.session.user.dept, function(data){
+            if(data!=false)
+                res.render('updateStock', {data:data});
+            else
+                res.render('errorPage', {message:"We had a problem"});
+        });
+    }
+    else 
+        res.render('errorPage', {message: "You don't have access to this page"});
+});
 
-
-
+app.post('/updateStock/:id/:size', function(req, res){
+    db.updateStock(req.params.id, req.params.size, req.body.quantity, function(data)
+    {
+        res.redirect('/updateStock');
+    });
+});
 
 
 /* --------------------- Alert Routes  ----------------------- */
