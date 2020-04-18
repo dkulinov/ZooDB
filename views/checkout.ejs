@@ -127,7 +127,7 @@
                 <label for="fname">Full Name:</label>
                 <input type="text" id="fname" name="firstname" placeholder="John M. Doe" required>
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" placeholder="john@example.com" required>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required>
               </p>
               <p class="card-text">
                 <label for="adr">Address:</label>
@@ -137,7 +137,7 @@
                 <label for="state">State:</label>
                 <input type="text" id="state" name="state" placeholder="NY" required>
                 <label for="zip">Zip:</label>
-                <input type="text" id="zip" name="zip" placeholder="10001" required>
+                <input type="text" id="zip" name="zip" placeholder="10001" min="10000" max="99999" required>
             </p>
             </div>
   
@@ -147,15 +147,14 @@
                 <label for="cname">Name on Card:</label>
                 <input type="text" id="cname" name="cardname" placeholder="John More Doe" required>
                 <label for="ccnum">Credit card number:</label>
-                <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" required>
+                <input type="number" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" min="1000000000000000" max="9999999999999999" required>
               </p>
               <p class="card-text">
-                <label for="expmonth">Exp Month:</label>
-                <input type="text" id="expmonth" name="expmonth" placeholder="September" required>
-                <label for="expyear">Exp Year:</label>
-                <input type="text" id="expyear" name="expyear" placeholder="2018" required>
+                <% var today = new Date(); %> 
+                <label for="expmonth">Exp Month and Year:</label>
+                <input type="month" id="expmonth" name="expmonth" placeholder="September" min="2020-04" max="2027-04"required>
                 <label for="cvv">CVV:</label>
-                <input type="text" id="cvv" name="cvv" placeholder="352" required>
+                <input type="number" id="cvv" name="cvv" placeholder="352" min="100" max="9999" required>
                 </p>
               </div>
             </div>
