@@ -57,6 +57,9 @@
 
             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
               <li class="nav-item active"><a href="/" class="nav-link" style="padding-top: 0%; padding-bottom: 0%;">Home</a></li>
+              <% if(items[3]==5 || items[3]==6 || items[3]==7){ %> 
+              <li class="nav-item active"><a href="/updateStock" class="nav-link" style="padding-top: 0%; padding-bottom: 0%;">Update Stock</a></li>
+              <% } %>  
               <% if(items[3] == -1){ %> 
               <li class="nav-item active"><a href="#tickets" class="nav-link" style="padding-top: 0%; padding-bottom: 0%;">Tickets</a></li>
               <li class="nav-item active"><a href="#clothes" class="nav-link" style="padding-top: 0%; padding-bottom: 0%;">Clothes</a></li>
