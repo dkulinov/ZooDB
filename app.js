@@ -426,9 +426,9 @@ app.get('/shop', function(req,res)
     db.getProducts(function(items)
     {
         if(!req.session.user)
-            res.render("shop.ejs", {items: [items, false]});
+            res.render("shop.ejs", {items: [items, false, "none"]});
         else
-            res.render("shop.ejs", {items: [items, req.session.user.isMember]});
+            res.render("shop.ejs", {items: [items, req.session.user.isMember, req.session.user.role]});
     });
 });
 
