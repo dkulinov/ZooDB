@@ -215,7 +215,7 @@ getEmployeeInfo = function(emp, callback, cb)
               if(err) console.log(err);
               else
               {
-                callback(emp, res1[0].department_id, res2[0].isMgr, res3[0].isCT, cb);
+                callback(emp, res1[0].department_id, res2[0].isMgr, res3[0].isCT, false, cb);
               }
             })
           });
