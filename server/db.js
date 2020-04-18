@@ -651,9 +651,6 @@ getOrderHistory = function(email, callback)
     });
   });
 }
-<<<<<<< HEAD
-module.exports.getOrderHistory = getOrderHistory;
-=======
 module.exports.getOrderHistory = getOrderHistory;
 
 
