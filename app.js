@@ -556,6 +556,7 @@ app.get('/customerFrontPage', function(req, res)
     {
         db.getCustomerInfo(req.session.user.username, function(data)
         {
+            req.session.user.isMember = data[0].isMember;
             res.render('customerFrontPage.ejs', {data:data});
         });
     }
