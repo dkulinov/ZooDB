@@ -85,7 +85,7 @@ app.get('/', function(req, res){
             res.redirect('/vet');
         }
         else
-            res.redirect('/regularEmployee');
+            res.redirect('/shop'); // for shop employees
     }
 });
 
@@ -426,9 +426,9 @@ app.get('/shop', function(req,res)
     db.getProducts(function(items)
     {
         if(!req.session.user)
-            res.render("shop.ejs", {items: [items, false, "none"]});
+            res.render("shop.ejs", {items: [items, false, "none", -1]});
         else
-            res.render("shop.ejs", {items: [items, req.session.user.isMember, req.session.user.role]});
+            res.render("shop.ejs", {items: [items, req.session.user.isMember, req.session.user.role, req.session.user.dept]});
     });
 });
 
