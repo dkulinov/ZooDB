@@ -85,7 +85,11 @@
 
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-10" data-aos="">
-            <h1 style="padding-top: 40px;  padding-bottom: 120px;">Welcome to our online store!</12>
+            <% if(items[2]=="Employee"){ %> 
+              <h1 style="padding-top: 40px;  padding-bottom: 120px;">Gift Shop</h1>
+            <% }else{ %> 
+              <h1 style="padding-top: 40px;  padding-bottom: 120px;">Welcome to our online store!</h1>
+            <% } %> 
             <img src = "../assets/img/lion.svg" height = "100px" width = "100px">
           </div>
         </div>
