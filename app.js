@@ -34,22 +34,24 @@ app.set('views', path.join(__dirname, './views'));
 
 
 //for creating a express session for each user 
-function user(username, role, dept=-1, isManager=false, isCareTaker=false) {
+function user(username, role, dept=-1, isManager=false, isCareTaker=false, isMember=false) {
    this.username = username;
    this.role = role;  //is the user an employee or customer
    this.dept = dept;
    this.isManager = isManager;
    this.isCareTaker = isCareTaker;
+   this.isMember = isMember;
  }
 
 
-function assignEmployeeInfo(emp, dept, isM, isC, cb)
+function assignEmployeeInfo(emp, dept, isM, isC, isMem, cb)
 {
     emp.dept = dept;
     if(isM > 0)
         emp.isManager = true;
     if(isC > 0)
         emp.isCareTaker = true;
+   emp.isMember = isMem;
     cb();
 }
 
