@@ -96,6 +96,7 @@
           <thead>
             <tr>
               <td style="font-weight: bold; font-size: larger;">Animal Name</th>
+              <td style="font-weight: bold; font-size: larger;">Species</th>
               <td style="font-weight: bold;font-size: larger;">Animal ID</th>
               <td style="font-weight: bold;font-size: larger;">Health Changed To</th>  
               <td style="font-weight: bold;font-size: larger;">Date of Alert</th>
@@ -106,6 +107,7 @@
             <% for(var i=0; i< data[0].length; i++) { %>
               <tr>
                 <td><%= data[0][i].animalName %>  </td>
+                <td><%= data[0][i].species %>  </td>
                 <td><%= data[0][i].animalID %> </td>
                 <td><%= data[0][i].health %> </td>
                 <td> <%= data[0][i].date %> </td>
