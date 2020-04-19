@@ -684,6 +684,54 @@ app.post('/giveFood/:id/:servingAmount/:animal', function(req, res){
     });
 });
 
+// routes to let caretaker manager assign animals to caretakers
+app.get('/assignAnimal', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.isManager && req.session.user.dept==15)
+    {
+        db.getAllAnimals(function(animals)
+        {
+            if(animals != false)
+                res.render('viewAnimals', {data:animals});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.get('/assignCaretaker/:animal', function(req,res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.isManager && req.session.user.dept==15)
+    {
+        db.getAllCaretakers(function(caretakers)
+        {
+            if(caretakers != false)
+                res.render('viewCaretakers', {data:[caretakers, req.params.animal]});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/assign/:animal/:caretaker', function(req, res){
+    db.assignAnimalToCaretaker(req.params.animal, req.params.caretaker, function(result)
+    {
+        if(result != false)
+            res.redirect('/');
+        else
+            res.render('errorPage', {message: 'That caretaker is already assigned to that animal'});
+    });
+});
+
+
+
+
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
 app.get('*', function(req, res){
