@@ -348,8 +348,14 @@
       <label for="exampleFormControlSelect1">Animal selection</label>
       <select class="form-control" id="exampleFormControlSelect1">
 <<<<<<< HEAD
+<<<<<<< HEAD
         <%for(var i = 0; i<data.animals.length; i++){ %>
           <option>
+=======
+        <!-- Make sure you use data.object.property format to reference the data -->
+        <% for(var i = 0; i< data.animals.length; i++) { %>
+          <option value = "<%= data.animals[i].animal_name %>">
+>>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
 =======
         <!-- Make sure you use data.object.property format to reference the data -->
         <% for(var i = 0; i< data.animals.length; i++) { %>
@@ -379,6 +385,9 @@
 =======
   
 
+<<<<<<< HEAD
+>>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
+=======
 >>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
 
 

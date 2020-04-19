@@ -294,6 +294,7 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
 <<<<<<< HEAD
+<<<<<<< HEAD
     });
 
     db.getAllAnimals(function(animals){
@@ -312,6 +313,8 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
         console.log(data.animals)
         res.render("vetManager.ejs", { data });
 =======
+=======
+>>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
         db.getAllAnimals(function(animals){
             data.animals = animals;
             db.getEmployeesAnimals(username,function(animals){
@@ -319,6 +322,9 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
                 res.render("vetManager.ejs", { data });
             });
         });
+<<<<<<< HEAD
+>>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
+=======
 >>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
     });
      
