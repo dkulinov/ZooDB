@@ -842,3 +842,32 @@ assignAnimalToCaretaker = function(animal, caretaker, callback)
   });
 }
 module.exports.assignAnimalToCaretaker = assignAnimalToCaretaker;
+
+
+// allows a vet to prescribe medicine to animals
+prescribeMedicine = function(animal, medicine, dose, frequency, duration, disease, callback)
+{
+  var sql = "INSERT INTO animals_on_medicine(animal_id, med_id, dose_amount_mg, dose_frequency, last_prescribed, duration_days,disease) VALUES(";
+  sql += animal;
+  sql += ",";
+  sql += medicine;
+  sql += ",";
+  sql += dose;
+  sql += ",'";
+  sql += frequency;
+  sql += "',";
+  sql += "DATE(NOW()),";
+  sql += duration;
+  sql += ",'";
+  sql += disease;
+  sql += "');";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.prescribeMedicine = prescribeMedicine;
