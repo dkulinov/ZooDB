@@ -644,6 +644,24 @@ app.get('/getMembership', function(req,res)
     }
 });
 
+app.get('/getMedicine/:animalID', function(req, res){
+    db.getMedicine(req.params.animalID, function(med){
+        if(med != false)
+            res.render('giveMed.ejs', {data:med});
+        else
+            res.render('errorPage.ejs', {message: "This animal doesn't take any medicine"});
+    });
+});
+
+// routes for vets to see animal medicine info and update medicine stock
+app.post('/giveMedicine/:id/:doseAmount/:animal', function(req,res){
+    db.giveMedicine(req.params.id, req.body.doses, req.params.doseAmount, function(info){
+        if(info != false)
+            res.redirect('/getMedicine/' + req.params.animal);
+        else
+            res.render('errorPage', {message:"Something went wrong"});
+    });
+});
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
