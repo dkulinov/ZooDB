@@ -242,15 +242,12 @@ app.get('/caretaker',checkEmployeeSignIn, function(req,res)
     var username = req.session.user;
 
     db.getEmployeeName(username, function(employee){
-        data.employee = employee;
-    });
-    
-
-    db.getEmployeesAnimals(username, function(animals){
-        data.animals = animals;
-        res.render("caretaker.ejs", { data: data });
-    });
-     
+        data.employee = employee;  
+        db.getEmployeesAnimals(username, function(animals){
+            data.animals = animals;
+            res.render("caretaker.ejs", { data: data });
+        });
+    });  
 });
 
 app.get('/caretakerManager',checkEmployeeSignIn, function(req,res)
@@ -260,13 +257,11 @@ app.get('/caretakerManager',checkEmployeeSignIn, function(req,res)
 
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
-    });
-
-    db.getCareTakersInfo(function(caretakers){
-        data.caretakers = caretakers;
-        res.render("caretakerManager.ejs", { data: data });
-    });
-     
+        db.getCareTakersInfo(function(caretakers){
+            data.caretakers = caretakers;
+            res.render("caretakerManager.ejs", { data: data });
+      });
+   }); 
 });
 
 app.get('/vet',checkEmployeeSignIn, function(req,res)
@@ -276,13 +271,11 @@ app.get('/vet',checkEmployeeSignIn, function(req,res)
 
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
-    });
-    
-    db.getAllAnimals(function(animals){
-        data.animals = animals;
-        res.render("vet.ejs", { data: data });
-    });
-     
+        db.getAllAnimals(function(animals){
+            data.animals = animals;
+            res.render("vet.ejs", { data: data });
+      });
+    });   
 });
 
 app.get('/vetManager',checkEmployeeSignIn, function(req,res)
@@ -293,23 +286,19 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
     // otherwise you may get unexpected behavior like some data not loading
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
-
-    });
-
-
-    db.getEmployeesAnimals(username,function(animals){
-        data.animals = animals;
-        console.log(data.animals)
-        db.getAllAnimals(function(animals){
+        db.getEmployeesAnimals(username,function(animals){
             data.animals = animals;
-            db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
-            {
-               data.employeeList = employees;
-               res.render("vetManager.ejs", { data });
-            });
-        });
-    });
-     
+            console.log(data.animals)
+            db.getAllAnimals(function(animals){
+               data.animals = animals;
+               db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
+               {
+                  data.employeeList = employees;
+                  res.render("vetManager.ejs", { data });
+               });
+         });
+      });
+   });  
 });
 
 
@@ -317,17 +306,17 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
     var data = [];
     db.getEmployeeName(req.session.user,function(employee){
         data.employee = employee;
-    });
-    db.getAllAnimals(function(animalList){
-        data.animalList = animalList;
-    });
-    db.getFoodStock(function(foodStock){
-        data.foodStock = foodStock;
-    });
-    db.getMedicineStock(function(medicineStock){
-        data.medicineStock = medicineStock;
-        res.render("vet_tables.ejs", {data :data});
-    });
+        db.getAllAnimals(function(animalList){
+         data.animalList = animalList;
+         db.getFoodStock(function(foodStock){
+            data.foodStock = foodStock;
+            db.getMedicineStock(function(medicineStock){
+               data.medicineStock = medicineStock;
+               res.render("vet_tables.ejs", {data :data});
+            });
+         });
+      });
+   }); 
 });
 
 
@@ -355,19 +344,16 @@ app.get('/managerTables',checkEmployeeSignIn, function(req,res)
     db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
     {
        data.employeeList = employees;
-        
-    });
-    db.getFoodStock(function(foodStock)  
-    {
+       db.getFoodStock(function(foodStock)  
+       {
         data.foodStock = foodStock;
-
+         db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
+         {
+            data.medicineStock = medicineStock;
+            res.render("manager_tables", { data: data });
+         });
+       });
     });
-    db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
-    {
-        data.medicineStock = medicineStock;
-        res.render("manager_tables", { data: data });
-    });
-
 });
 
 //these 3 routes are if the user isnt logged in it redirects them to employeeLogin
