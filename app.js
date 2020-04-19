@@ -729,7 +729,32 @@ app.post('/assign/:animal/:caretaker', function(req, res){
     });
 });
 
+// routes that allow vets to prescribe medicine
+app.get('/prescribeMedicine/:animal', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept==9)
+    {
+        db.getMedicineStock(function(medicines)
+        {
+            if(medicines != false)
+                res.render('viewMedicine', {data: [medicines, req.params.animal]});
+            else
+                res.render('errorPage', {message:"Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
 
+app.post('/prescribeMedicine/:animal/:medicine', function(req, res){
+    db.prescribeMedicine(req.params.animal, req.params.medicine, req.body.dose, req.body.frequency, req.body.duration, req.body.disease, function(result){
+        if(result != false)
+            res.redirect('/getMedicine/' + req.params.animal);
+        else
+            res.render('errorPage', {message:"This animal is already taking this medicine"});
+    });
+});
 
 
 // catch all route that will notify the user that this page doesn't exist
