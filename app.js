@@ -332,6 +332,27 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
 
 
 
+app.get('/insertNewAnimal', function(req, res)
+{
+    res.render("insertAnimal.ejs");
+});
+
+
+//conenct html form to this route and send all the data like animalname, species etc...
+app.post('/insertNewAnimal', function(req, res)
+{
+    var data = [req.body.animalname, req.body.species, req.body.dob, req.body.gender, req.body.enclosure, req.body.status, req.body.feedings, req.body.imagepath]
+    db.insertNewAnimal(data, function(err,response)
+    {
+        if(err === true){
+            res.render("errorPage.ejs", {message: "Error animal not inserted"});
+        }else{
+            res.redirect("/caretakerManager");
+        }
+    })
+});
+
+
 
 
 
@@ -355,19 +376,16 @@ app.get('/managerTables',checkEmployeeSignIn, function(req,res)
     db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
     {
        data.employeeList = employees;
-        
+       db.getFoodStock(function(foodStock)  
+       {
+           data.foodStock = foodStock;
+           db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
+           {
+               data.medicineStock = medicineStock;
+               res.render("manager_tables", { data: data });
+           });   
+       });      
     });
-    db.getFoodStock(function(foodStock)  
-    {
-        data.foodStock = foodStock;
-
-    });
-    db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
-    {
-        data.medicineStock = medicineStock;
-        res.render("manager_tables", { data: data });
-    });
-
 });
 
 //these 3 routes are if the user isnt logged in it redirects them to employeeLogin
@@ -416,8 +434,6 @@ app.use('/managerTables', function(err, req, res, next){
                 }); 
             }
         });     
-  
- 
     }
  });
 

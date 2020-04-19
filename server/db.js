@@ -303,6 +303,29 @@ getCareTakersInfo = function(callback){
 module.exports.getCareTakersInfo= getCareTakersInfo;
 
 
+//insert into zoo_schema.animal values (LPAD(FLOOR(RAND() * 999999.99), 7, '0'), 'Kai', 'Lion', current_date(), '2016-05-02', 'M', '111113', 'healthy', NULL, 2, 'lion.jpg');
+insertNewAnimal = function(data, callback){
+
+  pool.getConnection(function(err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    
+    var sql = "INSERT INTO zoo_schema.animal values (LPAD(FLOOR(RAND() * 999999.99), 8, '0'), ?, ?, current_date(), ?, ?, ?, ?, NULL, ?, ?);";
+
+
+    connection.query(sql, data, function(err, results) {
+        connection.release();
+        if(err) { console.log(err); callback(true); return; }
+
+        callback(false, true);  //no error return to app.js       
+
+           
+    });
+  });
+}
+module.exports.insertNewAnimal= insertNewAnimal;
+
+
+
 getFoodStock = function(callback){
   var sql = "SELECT * FROM zoo_schema.food_supply;";
   
