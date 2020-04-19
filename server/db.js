@@ -808,3 +808,37 @@ giveFood = function(id, servings, servingAmount, callback)
   });
 }
 module.exports.giveFood = giveFood;
+
+
+// functions to let caretaker manager assign caretakers to animals
+getAllCaretakers = function(callback)
+{
+  var sql = "SELECT employee_id, first_name, last_name FROM employee WHERE department_id = 15";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.getAllCaretakers = getAllCaretakers;
+
+assignAnimalToCaretaker = function(animal, caretaker, callback)
+{
+  var sql = "INSERT INTO takes_care_of(caretaker_id, animal_id) VALUES (";
+  sql += caretaker;
+  sql += ",";
+  sql += animal;
+  sql += ");"
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.assignAnimalToCaretaker = assignAnimalToCaretaker;
