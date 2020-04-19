@@ -752,29 +752,36 @@ giveMedicine = function(id, doses, doseAmount, callback)
 }
 module.exports.giveMedicine = giveMedicine;
 
-// routes for caretakers to update food stock by feeding animals
-app.get('/getFood/:animalID', function(req, res)
-{
-    if(!req.session.user)
-        res.render('errorPage', {message: "You don't have access to this page"});
-    else if(req.session.user.dept == 15)
-    {
-        db.getFood(req.params.animalID, function(food){
-            if(food != false)
-                res.render('giveFood.ejs', {data:food});
-            else
-                res.render('errorPage', {message: "This animal doesn't have any food listed for them in the database"});
-        });
-    }
-    else
-        res.render('errorPage', {message: "You don't have access to this page"});
-});
+// functions for caretakers to update food stock by feeding animals
 
-app.post('/giveFood/:id/:servingAmount/:animal', function(req, res){
-    db.giveFood(req.params.id, req.body.servings, req.params.servingAmount, function(info){
-        if(info != false)
-            res.redirect('/getFood/' + req.params.animal);
-        else
-            res.render('errorPage', {message:"Something went wrong"});
+getFood = function(id, callback)
+{
+  var sql = "SELECT animal_diet.*, food_supply.food_name, food_supply.stock,food_supply.target_stock, animal.animal_name FROM animal_diet JOIN food_supply ON animal_diet.food_id = food_supply.food_id JOIN animal ON animal_diet.animal_id = animal.animal_id WHERE animal_diet.animal_id = ";
+  sql += id;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
     });
-});
+  });
+}
+module.exports.getFood = getFood;
+
+giveFood = function(id, servings, servingAmount, callback)
+{
+  var sql = "UPDATE food_supply SET stock = stock - ";
+  sql += servings * servingAmount;
+  sql += " WHERE food_id = ";
+  sql += id;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.giveFood = giveFood;
