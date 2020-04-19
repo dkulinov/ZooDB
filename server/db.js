@@ -774,3 +774,37 @@ giveMedicine = function(id, doses, doseAmount, callback)
   });
 }
 module.exports.giveMedicine = giveMedicine;
+
+// functions for caretakers to update food stock by feeding animals
+
+getFood = function(id, callback)
+{
+  var sql = "SELECT animal_diet.*, food_supply.food_name, food_supply.stock,food_supply.target_stock, animal.animal_name FROM animal_diet JOIN food_supply ON animal_diet.food_id = food_supply.food_id JOIN animal ON animal_diet.animal_id = animal.animal_id WHERE animal_diet.animal_id = ";
+  sql += id;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.getFood = getFood;
+
+giveFood = function(id, servings, servingAmount, callback)
+{
+  var sql = "UPDATE food_supply SET stock = stock - ";
+  sql += servings * servingAmount;
+  sql += " WHERE food_id = ";
+  sql += id;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.giveFood = giveFood;
