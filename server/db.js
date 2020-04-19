@@ -751,3 +751,30 @@ giveMedicine = function(id, doses, doseAmount, callback)
   });
 }
 module.exports.giveMedicine = giveMedicine;
+
+// routes for caretakers to update food stock by feeding animals
+app.get('/getFood/:animalID', function(req, res)
+{
+    if(!req.session.user)
+        res.render('errorPage', {message: "You don't have access to this page"});
+    else if(req.session.user.dept == 15)
+    {
+        db.getFood(req.params.animalID, function(food){
+            if(food != false)
+                res.render('giveFood.ejs', {data:food});
+            else
+                res.render('errorPage', {message: "This animal doesn't have any food listed for them in the database"});
+        });
+    }
+    else
+        res.render('errorPage', {message: "You don't have access to this page"});
+});
+
+app.post('/giveFood/:id/:servingAmount/:animal', function(req, res){
+    db.giveFood(req.params.id, req.body.servings, req.params.servingAmount, function(info){
+        if(info != false)
+            res.redirect('/getFood/' + req.params.animal);
+        else
+            res.render('errorPage', {message:"Something went wrong"});
+    });
+});
