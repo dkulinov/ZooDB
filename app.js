@@ -280,7 +280,7 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
     });
     
     db.getEmployeesAnimals(username,function(animals){
-        data.animals = animals;
+        data.animalList = animals;
         res.render("vetManager.ejs", { data: data });
     });
      
