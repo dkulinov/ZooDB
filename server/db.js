@@ -871,3 +871,39 @@ prescribeMedicine = function(animal, medicine, dose, frequency, duration, diseas
   });
 }
 module.exports.prescribeMedicine = prescribeMedicine;
+
+
+// functions that update food and med stock
+updateMedStock = function(med, quantity, callback)
+{
+  var sql = "UPDATE medicine_supply SET stock = stock + ";
+  sql += quantity;
+  sql += " WHERE med_id = ";
+  sql += med;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.updateMedStock = updateMedStock;
+
+updateFoodStock = function(food, quantity, callback)
+{
+  var sql = "UPDATE food_supply SET stock = stock + ";
+  sql += quantity;
+  sql += " WHERE food_id = ";
+  sql += food;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.updateFoodStock = updateFoodStock;
