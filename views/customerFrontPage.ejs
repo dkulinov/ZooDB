@@ -99,9 +99,9 @@
         <div class="col-12 hero-text-image">
           <div class="row">
             <div class="col-lg-7 text-center text-lg-left">
-              <h1 data-aos="fade-right">Welcome back <%=data[0].f_name%>! Thanks for being a customer since <%=data[0].date_registered%>.</h1>
+              <h1 data-aos="fade-right">Welcome back <%=data[0].f_name%>! </h1>
               <% if(!data[0].isMember){%> 
-              <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Visit us today. Support us by becoming a <a href="/getMembership">member</a>.</p>
+              <p class="mb-5" data-aos="fade-right" data-aos-delay="100"> Thanks for being a customer since <%=data[0].date_registered%>. Support us by becoming a <a href="/getMembership">member</a>.</p>
               <%}else if(data[0].isMember) {%>
               <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Thank you for being a member!</p>
               <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Your membership is valid until <%=data[0].memberUntil%>.</p>

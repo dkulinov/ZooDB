@@ -176,7 +176,7 @@
                     Spending Alert: We've noticed unusually high spending for your account.
                   </div>
                 </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                <a class="dropdown-item text-center small text-gray-500" href="/alertOptions">Show All Alerts</a>
               </div>
             </li>
 
@@ -347,8 +347,14 @@
     <div class="form-group">
       <label for="exampleFormControlSelect1">Animal selection</label>
       <select class="form-control" id="exampleFormControlSelect1">
+<<<<<<< HEAD
         <%for(var i = 0; i<data.animals.length; i++){ %>
           <option>
+=======
+        <!-- Make sure you use data.object.property format to reference the data -->
+        <% for(var i = 0; i< data.animals.length; i++) { %>
+          <option value = "<%= data.animals[i].animal_name %>">
+>>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
             <%= data.animals[i].animal_name %>
           </option>
         <% } %> QQA
@@ -369,6 +375,11 @@
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
     </div> -->
   </form>
+<<<<<<< HEAD
+=======
+  
+
+>>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
 
 
   <!-- Fade In Utility -->
@@ -409,13 +420,7 @@
 
 
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; HoustonZoo 2020</span>
-          </div>
-        </div>
-      </footer>
+
       <!-- End of Footer -->
 
     </div>

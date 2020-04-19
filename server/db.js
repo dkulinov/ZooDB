@@ -86,7 +86,7 @@ signUpCustomer = function(data, callback){
       if(err) { console.log(err); callback(true); return; }
 
       //if there are results then another user exists with the same email so we should not add the user
-      if(results){
+      if(results[0]){
         if(results[0].email === data[2]){
           connection.release();
           callback(false, false);  //there is a user with same email in the database
@@ -95,7 +95,7 @@ signUpCustomer = function(data, callback){
       }else{
         
         // this command actually inserts the new user into the db only if there is no user with the same email existing
-        var sql = "INSERT INTO zoo_schema.customer (f_name, l_name, email, pswd, date_registered, isMember, membership_expiration) VALUES (?,?,?,?, CURDATE(), 0, NULL);"
+        var sql = "INSERT INTO zoo_schema.customer (f_name, l_name, email, pswd, date_registered, isMember, memberUntil) VALUES (?,?,?,?, CURDATE(), 0, NULL);"
         connection.query(sql, data, function(err, results) {
           connection.release();
           if(err) { console.log(err); callback(true); return; }
@@ -215,7 +215,7 @@ getEmployeeInfo = function(emp, callback, cb)
               if(err) console.log(err);
               else
               {
-                callback(emp, res1[0].department_id, res2[0].isMgr, res3[0].isCT, cb);
+                callback(emp, res1[0].department_id, res2[0].isMgr, res3[0].isCT, false, cb);
               }
             })
           });
@@ -681,3 +681,39 @@ getMembership = function(callback)
   });
 }
 module.exports.getMembership = getMembership;
+
+//allows employees to update product stock
+getProductsForUpdate = function(dept, callback){
+  var sql = "SELECT * FROM product WHERE gift_shop_id = ";
+  sql += dept;
+  sql += " GROUP BY product_id";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err,res){
+      if(err){callback(false);}
+      if(res.length)
+        callback(res);
+      else
+        callback(false);
+    });
+  });
+}
+module.exports.getProductsForUpdate = getProductsForUpdate;
+
+updateStock = function(id, size, quantity, callback){
+  var sql = "UPDATE product SET stock = stock + ";
+  sql += quantity;
+  sql += " WHERE product_id = ";
+  sql += id;
+  sql += " AND product_size = '";
+  sql += size;
+  sql += "';";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(true); return; }
+    connection.query(sql, function(err,res){
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.updateStock = updateStock;

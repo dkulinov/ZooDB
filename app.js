@@ -34,22 +34,24 @@ app.set('views', path.join(__dirname, './views'));
 
 
 //for creating a express session for each user 
-function user(username, role, dept=-1, isManager=false, isCareTaker=false) {
+function user(username, role, dept=-1, isManager=false, isCareTaker=false, isMember=false) {
    this.username = username;
    this.role = role;  //is the user an employee or customer
    this.dept = dept;
    this.isManager = isManager;
    this.isCareTaker = isCareTaker;
+   this.isMember = isMember;
  }
 
 
-function assignEmployeeInfo(emp, dept, isM, isC, cb)
+function assignEmployeeInfo(emp, dept, isM, isC, isMem, cb)
 {
     emp.dept = dept;
     if(isM > 0)
         emp.isManager = true;
     if(isC > 0)
         emp.isCareTaker = true;
+   emp.isMember = isMem;
     cb();
 }
 
@@ -61,7 +63,6 @@ app.get('/', function(req, res){
     
     if(!req.session.user)
     {
-        console.log('hello');
         res.sendFile(path.join(__dirname,'/main.html'));
     }
     else if(req.session.user.role == "Customer")
@@ -84,7 +85,7 @@ app.get('/', function(req, res){
             res.redirect('/vet');
         }
         else
-            res.redirect('/regularEmployee');
+            res.redirect('/shop'); // for shop employees
     }
 });
 
@@ -286,11 +287,13 @@ app.get('/vet',checkEmployeeSignIn, function(req,res)
 
 app.get('/vetManager',checkEmployeeSignIn, function(req,res)
 {
-    var data = {};
+    var data = [];
     var username = req.session.user;
-
+    //if you nest the functions then they will always run in order
+    // otherwise you may get unexpected behavior like some data not loading
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
+<<<<<<< HEAD
     });
 
     db.getAllAnimals(function(animals){
@@ -308,6 +311,15 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
         data.animals = animals;
         console.log(data.animals)
         res.render("vetManager.ejs", { data });
+=======
+        db.getAllAnimals(function(animals){
+            data.animals = animals;
+            db.getEmployeesAnimals(username,function(animals){
+                data.animalsList = animals;
+                res.render("vetManager.ejs", { data });
+            });
+        });
+>>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
     });
      
 });
@@ -433,7 +445,10 @@ app.get('/shop', function(req,res)
     var items = [];
     db.getProducts(function(items)
     {
-        res.render("shop.ejs", {items: items});
+        if(!req.session.user)
+            res.render("shop.ejs", {items: [items, false, "none", -1]});
+        else
+            res.render("shop.ejs", {items: [items, req.session.user.isMember, req.session.user.role, req.session.user.dept]});
     });
 });
 
@@ -470,9 +485,30 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
     }
 });
 
+// lets employees update stock 
+app.get('/updateStock', function(req, res)
+{
+    if(!req.session.user)
+        res.render('errorPage', {message: "You don't have access to this page"});
+    else if(req.session.user.dept == 5 ||  req.session.user.dept== 6 || req.session.user.dept==7)
+    {
+        db.getProductsForUpdate(req.session.user.dept, function(data){
+            if(data!=false)
+                res.render('updateStock', {data:data});
+            else
+                res.render('errorPage', {message:"We had a problem"});
+        });
+    }
+    else 
+        res.render('errorPage', {message: "You don't have access to this page"});
+});
 
-
-
+app.post('/updateStock/:id/:size', function(req, res){
+    db.updateStock(req.params.id, req.params.size, req.body.quantity, function(data)
+    {
+        res.redirect('/updateStock');
+    });
+});
 
 
 /* --------------------- Alert Routes  ----------------------- */
@@ -564,6 +600,7 @@ app.get('/customerFrontPage', function(req, res)
     {
         db.getCustomerInfo(req.session.user.username, function(data)
         {
+            req.session.user.isMember = data[0].isMember;
             res.render('customerFrontPage.ejs', {data:data});
         });
     }

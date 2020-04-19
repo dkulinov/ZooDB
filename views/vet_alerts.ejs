@@ -23,13 +23,16 @@
 
 </head>
 
-<body id="page-top">
+<body id="page-top" style="background-image: url(/../assets/img/heroimg.jpg);background-repeat: no-repeat; background-size: cover;">
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
+  
           <!-- Page Heading -->
           <% var sum=data[0].length;  var time = 1; if(data[1]=="week")time=7;else if(data[1]=="month")time=30;else if(data[1]=="year")time=365;%> 
           <h1 class="h3 mb-2 text-gray-800">Vet Alerts in the past <%=data[1]%>:</h1>
+
+  
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -62,36 +65,16 @@
                       </tr>
                   </tbody>
                 </table>
+                <a class="btn btn-primary" href="/">Home</a>
+                <a class="btn btn-primary" href="/alertOptions">Change time period</a>
               </div>
             </div>
           </div>
-
-        </div>  
-
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <a class="btn btn-primary" href="/alertOptions">Change time period</a>
-          <h5 class="modal-title" style="justify-content: center;" id="exampleModalLabel">Ready to Leave?</h5>
-          <a class="btn btn-primary" href="/">Home</a>
-        </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Bootstrap core JavaScript-->
