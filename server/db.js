@@ -717,3 +717,37 @@ updateStock = function(id, size, quantity, callback){
   });
 }
 module.exports.updateStock = updateStock;
+
+// updating medicine stock
+getMedicine = function(id, callback)
+{
+  var sql = "SELECT animals_on_medicine.*, DATE_FORMAT(DATE_ADD(animals_on_medicine.last_prescribed, INTERVAL duration_days DAY), '%M-%d-%Y') AS takeUntil, medicine_supply.med_name, medicine_supply.stock,medicine_supply.target_stock, animal.animal_name FROM animals_on_medicine JOIN medicine_supply ON animals_on_medicine.med_id = medicine_supply.med_id JOIN animal ON animals_on_medicine.animal_id = animal.animal_id WHERE DATE_ADD(animals_on_medicine.last_prescribed, INTERVAL duration_days DAY)>=DATE(NOW()) AND animals_on_medicine.animal_id = ";
+  sql += id; 
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.getMedicine = getMedicine;
+
+
+giveMedicine = function(id, doses, doseAmount, callback)
+{
+  var sql = "UPDATE medicine_supply SET stock = stock - ";
+  sql += doses * doseAmount;
+  sql += " WHERE med_id = ";
+  sql += id;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.giveMedicine = giveMedicine;
