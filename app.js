@@ -645,12 +645,19 @@ app.get('/getMembership', function(req,res)
 });
 
 app.get('/getMedicine/:animalID', function(req, res){
-    db.getMedicine(req.params.animalID, function(med){
-        if(med != false)
-            res.render('giveMed.ejs', {data:med});
-        else
-            res.render('errorPage.ejs', {message: "This animal doesn't take any medicine"});
-    });
+    if(!req.session.user)
+        res.render('errorPage', {message: "You don't have access to this page"});
+    else if(req.session.user.dept == 9)
+    {
+        db.getMedicine(req.params.animalID, function(med){
+            if(med != false)
+                res.render('giveMed.ejs', {data:med});
+            else
+                res.render('errorPage', {message: "This animal doesn't take any medicine"});
+        });
+    }
+    else
+        res.render('errorPage', {message: "You don't have access to this page"});
 });
 
 // routes for vets to see animal medicine info and update medicine stock
