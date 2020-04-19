@@ -34,22 +34,24 @@ app.set('views', path.join(__dirname, './views'));
 
 
 //for creating a express session for each user 
-function user(username, role, dept=-1, isManager=false, isCareTaker=false) {
+function user(username, role, dept=-1, isManager=false, isCareTaker=false, isMember=false) {
    this.username = username;
    this.role = role;  //is the user an employee or customer
    this.dept = dept;
    this.isManager = isManager;
    this.isCareTaker = isCareTaker;
+   this.isMember = isMember;
  }
 
 
-function assignEmployeeInfo(emp, dept, isM, isC, cb)
+function assignEmployeeInfo(emp, dept, isM, isC, isMem, cb)
 {
     emp.dept = dept;
     if(isM > 0)
         emp.isManager = true;
     if(isC > 0)
         emp.isCareTaker = true;
+   emp.isMember = isMem;
     cb();
 }
 
@@ -57,7 +59,35 @@ function assignEmployeeInfo(emp, dept, isM, isC, cb)
 // ----------------------------- ROUTES -------------------------------- //
 //default route will point to index.html which is the homepage
 
-app.get('/', (req, res) => res.sendFile(index.html));
+app.get('/', function(req, res){
+    
+    if(!req.session.user)
+    {
+        res.sendFile(path.join(__dirname,'/main.html'));
+    }
+    else if(req.session.user.role == "Customer")
+        res.redirect('/customerFrontPage');
+    else if(req.session.user.role == "Employee"){
+        if(req.session.user.isManager)
+        {
+            if(req.session.user.dept==9) 
+                res.redirect('/vetManager');
+            else if(req.session.user.isCareTaker) 
+                res.redirect('/caretakerManager');
+            else 
+                res.redirect('/managerFrontPage',);
+        }
+        else if(req.session.user.isCareTaker)
+        {
+                res.redirect('/caretaker');
+        }
+        else if(req.session.user.dept === 9){
+            res.redirect('/vet');
+        }
+        else
+            res.redirect('/shop'); // for shop employees
+    }
+});
 
 
 app.post('/signup', function(req, res){
@@ -99,24 +129,8 @@ app.post('/employeeLogin', function(req, res){
                     req.session.user = new user(username, "Employee");
                     db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
                     {
-                         if(req.session.user.isManager){
-                           if(req.session.user.dept==9) res.redirect('/vetManager');
-                           else if(req.session.user.isCareTaker) res.redirect('/caretakerManager');
-                           else res.redirect('/managerFrontPage',);
-                          }
-                        else if(req.session.user.isCareTaker){
-                           res.redirect('/caretaker');
-                        }
-                        else if(req.session.user.dept === 9){
-                           res.redirect('/vet');
-                        }
-                         /*else if(req.session.user.isManager)   // will be for managers only
-                             res.redirect('/managerFrontPage');*/
-                         else
-                             res.redirect('/regularEmployee'); // will be for regular employees                        
-                                         });
-
-                    
+                        res.redirect('/');             
+                    });
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
                     
@@ -231,6 +245,7 @@ app.get('/caretaker',checkEmployeeSignIn, function(req,res)
         data.employee = employee;
     });
     
+
     db.getEmployeesAnimals(username, function(animals){
         data.animals = animals;
         res.render("caretaker.ejs", { data: data });
@@ -274,28 +289,29 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
 {
     var data = [];
     var username = req.session.user;
-
+    //if you nest the functions then they will always run in order
+    // otherwise you may get unexpected behavior like some data not loading
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
+
     });
-    
+
+
     db.getEmployeesAnimals(username,function(animals){
-        data.animalList = animals;
-        res.render("vetManager.ejs", { data: data });
-    });
-     
-});
-
-app.get('/vetManager',checkEmployeeSignIn, function(req,res)
-{
-    var data = [];
-
-    db.getEmployeesAnimals(function(animals){
         data.animals = animals;
-        res.render("vetManager.ejs", { data: data });
+        console.log(data.animals)
+        db.getAllAnimals(function(animals){
+            data.animals = animals;
+            db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
+            {
+               data.employeeList = employees;
+               res.render("vetManager.ejs", { data });
+            });
+        });
     });
      
 });
+
 
 app.get('/vetTables',checkEmployeeSignIn, function(req,res){
     var data = [];
@@ -417,7 +433,10 @@ app.get('/shop', function(req,res)
     var items = [];
     db.getProducts(function(items)
     {
-        res.render("shop.ejs", {items: items});
+        if(!req.session.user)
+            res.render("shop.ejs", {items: [items, false, "none", -1]});
+        else
+            res.render("shop.ejs", {items: [items, req.session.user.isMember, req.session.user.role, req.session.user.dept]});
     });
 });
 
@@ -454,9 +473,30 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
     }
 });
 
+// lets employees update stock 
+app.get('/updateStock', function(req, res)
+{
+    if(!req.session.user)
+        res.render('errorPage', {message: "You don't have access to this page"});
+    else if(req.session.user.dept == 5 ||  req.session.user.dept== 6 || req.session.user.dept==7)
+    {
+        db.getProductsForUpdate(req.session.user.dept, function(data){
+            if(data!=false)
+                res.render('updateStock', {data:data});
+            else
+                res.render('errorPage', {message:"We had a problem"});
+        });
+    }
+    else 
+        res.render('errorPage', {message: "You don't have access to this page"});
+});
 
-
-
+app.post('/updateStock/:id/:size', function(req, res){
+    db.updateStock(req.params.id, req.params.size, req.body.quantity, function(data)
+    {
+        res.redirect('/updateStock');
+    });
+});
 
 
 /* --------------------- Alert Routes  ----------------------- */
@@ -489,7 +529,7 @@ app.post('/alert', function(req, res)
     else if(req.session.user.isCareTaker)
     {
         // render caretaker report
-        db.getCareTakerAlerts(req.session.user, req.body.time, function(info)
+        db.getCareTakerAlerts(req.session.user, req.body.time, function(alerts, numHealthy, numSick, numPregnant, numDeceased)
         {
             res.render('caretaker_alerts.ejs', {data:[alerts, req.body.time, numHealthy, numSick, numPregnant,numDeceased]});
         });
@@ -548,6 +588,7 @@ app.get('/customerFrontPage', function(req, res)
     {
         db.getCustomerInfo(req.session.user.username, function(data)
         {
+            req.session.user.isMember = data[0].isMember;
             res.render('customerFrontPage.ejs', {data:data});
         });
     }
@@ -585,6 +626,31 @@ app.get('/getMembership', function(req,res)
     }
 });
 
+app.get('/getMedicine/:animalID', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message: "You don't have access to this page"});
+    else if(req.session.user.dept == 9)
+    {
+        db.getMedicine(req.params.animalID, function(med){
+            if(med != false)
+                res.render('giveMed.ejs', {data:med});
+            else
+                res.render('errorPage', {message: "This animal doesn't take any medicine"});
+        });
+    }
+    else
+        res.render('errorPage', {message: "You don't have access to this page"});
+});
+
+// routes for vets to see animal medicine info and update medicine stock
+app.post('/giveMedicine/:id/:doseAmount/:animal', function(req,res){
+    db.giveMedicine(req.params.id, req.body.doses, req.params.doseAmount, function(info){
+        if(info != false)
+            res.redirect('/getMedicine/' + req.params.animal);
+        else
+            res.render('errorPage', {message:"Something went wrong"});
+    });
+});
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom

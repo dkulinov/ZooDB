@@ -49,14 +49,14 @@
       <div class="row align-items-center">
 
         <div class="col-6 col-lg-2">
-          <h1 class="mb-0 site-logo"  style="padding-top: 7%; padding-bottom: 10%;"><a href="/../index.html" class="mb-0"><img src = "/../assets/img/zoologo2.png" width = "152px" height = "40px"></a></h1>
+          <h1 class="mb-0 site-logo"  style="padding-top: 7%; padding-bottom: 10%;"><a href="/" class="mb-0"><img src = "/../assets/img/zoologo2.png" width = "152px" height = "40px"></a></h1>
         </div>
 
         <div class="col-12 col-md-10 d-none d-lg-block">
           <nav class="site-navigation position-relative text-right navbar-dark" role="navigation">
 
             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-              <li class="nav-item active"><a href="/../index.html" class="nav-link" style="padding-top: 0%; padding-bottom: 0%;">Home</a></li>
+              <li class="nav-item active"><a href="/" class="nav-link" style="padding-top: 0%; padding-bottom: 0%;">Home</a></li>
             </ul>
           </nav>
         </div>
@@ -127,7 +127,7 @@
                 <label for="fname">Full Name:</label>
                 <input type="text" id="fname" name="firstname" placeholder="John M. Doe" required>
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" placeholder="john@example.com" required>
+                <input type="email" id="email" name="email" placeholder="john@example.com" required>
               </p>
               <p class="card-text">
                 <label for="adr">Address:</label>
@@ -137,7 +137,7 @@
                 <label for="state">State:</label>
                 <input type="text" id="state" name="state" placeholder="NY" required>
                 <label for="zip">Zip:</label>
-                <input type="text" id="zip" name="zip" placeholder="10001" required>
+                <input type="text" id="zip" name="zip" placeholder="10001" min="10000" max="99999" required>
             </p>
             </div>
   
@@ -147,15 +147,14 @@
                 <label for="cname">Name on Card:</label>
                 <input type="text" id="cname" name="cardname" placeholder="John More Doe" required>
                 <label for="ccnum">Credit card number:</label>
-                <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" required>
+                <input type="number" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" min="1000000000000000" max="9999999999999999" required>
               </p>
               <p class="card-text">
-                <label for="expmonth">Exp Month:</label>
-                <input type="text" id="expmonth" name="expmonth" placeholder="September" required>
-                <label for="expyear">Exp Year:</label>
-                <input type="text" id="expyear" name="expyear" placeholder="2018" required>
+                <% var today = new Date(); %> 
+                <label for="expmonth">Exp Month and Year:</label>
+                <input type="month" id="expmonth" name="expmonth" placeholder="September" min="2020-04" max="2027-04"required>
                 <label for="cvv">CVV:</label>
-                <input type="text" id="cvv" name="cvv" placeholder="352" required>
+                <input type="number" id="cvv" name="cvv" placeholder="352" min="100" max="9999" required>
                 </p>
               </div>
             </div>
