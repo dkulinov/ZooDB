@@ -293,39 +293,21 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
     // otherwise you may get unexpected behavior like some data not loading
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     });
 
-    db.getAllAnimals(function(animals){
-        data.animals = animals;
-        console.log(data);
-    });
 
-    db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
-    {
-       data.employeeList = employees;
-        
-    });
-    
     db.getEmployeesAnimals(username,function(animals){
         data.animals = animals;
         console.log(data.animals)
-        res.render("vetManager.ejs", { data });
-=======
-=======
->>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
         db.getAllAnimals(function(animals){
             data.animals = animals;
-            db.getEmployeesAnimals(username,function(animals){
-                data.animalsList = animals;
-                res.render("vetManager.ejs", { data });
+            db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
+            {
+               data.employeeList = employees;
+               res.render("vetManager.ejs", { data });
             });
         });
-<<<<<<< HEAD
->>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
-=======
->>>>>>> a6b5fc6838f4dd23dae3b70e3a7b350eb787b65e
     });
      
 });
