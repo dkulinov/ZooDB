@@ -297,6 +297,12 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
         data.animals = animals;
         console.log(data);
     });
+
+    db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
+    {
+       data.employeeList = employees;
+        
+    });
     
     db.getEmployeesAnimals(username,function(animals){
         data.animals = animals;
