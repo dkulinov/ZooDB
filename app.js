@@ -756,6 +756,57 @@ app.post('/prescribeMedicine/:animal/:medicine', function(req, res){
     });
 });
 
+// allow vets to update medicine stock
+app.get('/updateMedStock', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept==9)
+    {
+        db.getMedicineStock(function(medicine){
+            if(medicine!=false)
+                res.render('medStock', {data:medicine});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/updateMedStock/:medicine', function(req, res){
+    db.updateMedStock(req.params.medicine, req.body.quantity, function(result){
+        if(result != false)
+            res.redirect('/updateMedStock');
+        else
+            res.render('errorPage', {message: "We encountered an error"});
+    })
+});
+
+// allow caretakers to update food stock
+app.get('/updateFoodStock', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept==15)
+    {
+        db.getFoodStock(function(food){
+            if(food != false)
+                res.render('foodStock', {data:food});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/updateFoodStock/:food', function(req, res){
+    db.updateFoodStock(req.params.food, req.body.quantity, function(result){
+        if(result != false)
+            res.redirect('/updateFoodStock');
+        else
+        res.render('errorPage', {message: "Something went wrong"});
+    });
+});
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
