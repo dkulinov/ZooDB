@@ -662,7 +662,7 @@ app.get('/getFood/:animalID', function(req, res)
 {
     if(!req.session.user)
         res.render('errorPage', {message: "You don't have access to this page"});
-    else if(req.session.user.dept == 15)
+    else if(req.session.user.dept == 15 || req.session.user.dept == 9)
     {
         db.getFood(req.params.animalID, function(food){
             if(food != false)
