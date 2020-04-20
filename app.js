@@ -808,6 +808,34 @@ app.post('/updateFoodStock/:food', function(req, res){
     });
 });
 
+// routes to allow vets assign food to animals
+app.get('/assignFood/:animal', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept == 9)
+    {
+        db.getFoodStock(function(food){
+            if(food != false)
+                res.render('viewFood', {data:[food, req.params.animal]});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/assignFood/:animal/:food', function(req, res){
+    db.assignFood(req.params.animal, req.params.food, req.body.serving, req.body.frequency, function(result)
+    {
+        if(result != false)
+            res.redirect('/getFood/' + req.params.animal);
+        else
+            res.render('errorPage', {message:"This animal is already eating this food"});
+    });
+});
+
+
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
 app.get('*', function(req, res){
