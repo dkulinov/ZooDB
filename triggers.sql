@@ -8,7 +8,7 @@ CREATE TRIGGER updateProductStock AFTER INSERT ON `order`
     END IF $$
 delimiter ;
 
--- inserts into the store_supply_alerts table (update this in db!!!!!!!!)
+-- inserts into the store_supply_alerts table
 DELIMITER $$
 CREATE TRIGGER low_store_supplies 
 AFTER UPDATE ON `product` FOR EACH ROW
@@ -99,6 +99,19 @@ BEGIN
 END$$
 DELIMITER ;
 							    
+
+-- assigns correct product id in product table
+DELIMITER $$
+CREATE TRIGGER assign_product_id BEFORE INSERT ON product FOR EACH ROW
+BEGIN
+	IF((SELECT COUNT(*) FROM product WHERE product_name=NEW.product_name)>0) THEN
+		SET NEW.product_id=(SELECT product_id FROM product WHERE product_name=NEW.product_name LIMIT 1);
+    ELSE
+		SET NEW.product_id=(SELECT max(product_id) from product)+1;    
+    END IF;
+END$$
+delimiter ;
+
 
 CREATE EVENT validateMembership
   ON SCHEDULE
