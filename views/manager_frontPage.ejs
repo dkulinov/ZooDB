@@ -89,6 +89,27 @@
           <span>General Reports</span></a>
       </li>
 
+      <% if(data.employee[0].first_name=="Andrew" && data.employee[0].last_name=="Jones") {%>
+      <li class="nav-item">
+        <a class="nav-link" href="/updateFoodStock">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Update Food Stock</span></a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/addNew/Food">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Add a New Food</span></a>
+      </li>
+
+    <% } %> 
+
+    <li class="nav-item">
+      <a class="nav-link" href="/alertOptions">
+        <i class="fas fa-fw fa-table"></i>
+        <span>See alerts</span></a>
+    </li>
+
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
