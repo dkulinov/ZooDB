@@ -668,12 +668,19 @@ app.get('/getFood/:animalID', function(req, res)
         res.render('errorPage', {message: "You don't have access to this page"});
     else if(req.session.user.dept == 15 || req.session.user.dept == 9)
     {
-        db.getFood(req.params.animalID, function(food){
-            if(food != false)
-                res.render('giveFood.ejs', {data:food});
+      var data = [];
+        db.getEmployeeName(req.session.user,function(employee){
+          data.employee = employee;
+          db.getFood(req.params.animalID, function(food){
+            if(food != false){
+                data.food = food;
+                res.render('giveFood.ejs', {data:data});
+            }
             else
                 res.render('errorPage', {message: "This animal doesn't have any food listed for them in the database"});
-        });
+          });
+       });
+        
     }
     else
         res.render('errorPage', {message: "You don't have access to this page"});
