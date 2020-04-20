@@ -859,9 +859,29 @@ assignAnimalToCaretaker = function(animal, caretaker, callback)
 }
 module.exports.assignAnimalToCaretaker = assignAnimalToCaretaker;
 
+<<<<<<< HEAD
 getAnimalInfo = function(animal, callback){
   var sql = "SELECT * from zoo_schema.animal WHERE animal_id=";
   sql+= animal;
+=======
+
+// allows a vet to prescribe medicine to animals
+prescribeMedicine = function(animal, medicine, dose, frequency, duration, disease, callback)
+{
+  var sql = "INSERT INTO animals_on_medicine(animal_id, med_id, dose_amount_mg, dose_frequency, last_prescribed, duration_days,disease) VALUES(";
+  sql += animal;
+  sql += ",";
+  sql += medicine;
+  sql += ",";
+  sql += dose;
+  sql += ",'";
+  sql += frequency;
+  sql += "',";
+  sql += "DATE(NOW()),";
+  sql += duration;
+  sql += ",'";
+  sql += disease;
+  sql += "');";
   pool.getConnection(function (err, connection) {
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err,res){
@@ -871,7 +891,26 @@ getAnimalInfo = function(animal, callback){
     });
   });
 }
-module.exports.getAnimalInfo = getAnimalInfo;
+module.exports.prescribeMedicine = prescribeMedicine;
+
+
+// functions that update food and med stock
+updateMedStock = function(med, quantity, callback)
+{
+  var sql = "UPDATE medicine_supply SET stock = stock + ";
+  sql += quantity;
+  sql += " WHERE med_id = ";
+  sql += med;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.updateMedStock = updateMedStock;
 
 
 updateAnimalInfo = function(animal, data, callback)
@@ -888,6 +927,25 @@ updateAnimalInfo = function(animal, data, callback)
   sql+=animal;
   
    pool.getConnection(function (err, connection) {
+
+if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+ }
+module.exports.updateAnimalInfo = updateAnimalInfo;
+
+
+updateFoodStock = function(food, quantity, callback)
+{
+  var sql = "UPDATE food_supply SET stock = stock + ";
+  sql += quantity;
+  sql += " WHERE food_id = ";
+  sql += food;
+  pool.getConnection(function (err, connection) {
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err,res){
       connection.release();
@@ -896,4 +954,28 @@ updateAnimalInfo = function(animal, data, callback)
     });
   });
 }
-module.exports.updateAnimalInfo = updateAnimalInfo;
+module.exports.updateFoodStock = updateFoodStock;
+
+
+// vets can assign food to an animal
+assignFood = function(animal, food, serving, frequency, callback)
+{
+  var sql = "INSERT INTO animal_diet(animal_id,food_id,serving_size_in_grams,servings_per_day) VALUES (";
+  sql += animal;
+  sql += ", ";
+  sql += food;
+  sql += ", ";
+  sql += serving;
+  sql += ", ";
+  sql += frequency;
+  sql += ");";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+}
+module.exports.assignFood = assignFood;
+

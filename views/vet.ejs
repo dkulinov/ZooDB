@@ -42,7 +42,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="/vet">
+        <a class="nav-link" href="/">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -52,10 +52,11 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Addons
-      </div>
+      <li class="nav-item active">
+        <a class="nav-link" href="/updateMedStock">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Update Medicine Stock</span></a>
+      </li>
 
       <!-- Nav Item - Charts -->
 
@@ -244,7 +245,16 @@
                     <h5 class="card-title"><%= data.animals[i].animal_name %></h5>
                     <p class="card-text"><%= data.animals[i].status %></p>
                       <p>
-                        <a href="/getMedicine/<%=data.animals[i].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">See medicine</button></a>
+                        <a href="/getMedicine/<%=data.animals[i].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">See Current medicine</button></a>
+                      </p>
+                      <p>
+                        <a href="/prescribeMedicine/<%=data.animals[i].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">Prescribe medicine</button></a>
+                      </p>
+                      <p>
+                        <a href="/getFood/<%=data.animals[i].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">See Current Food</button></a>
+                      </p>
+                      <p>
+                        <a href="/assignFood/<%=data.animals[i].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">Assign Food</button></a>
                       </p>
                   </div>
                 </div>

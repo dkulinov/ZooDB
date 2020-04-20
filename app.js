@@ -658,7 +658,7 @@ app.get('/getFood/:animalID', function(req, res)
 {
     if(!req.session.user)
         res.render('errorPage', {message: "You don't have access to this page"});
-    else if(req.session.user.dept == 15)
+    else if(req.session.user.dept == 15 || req.session.user.dept == 9)
     {
         db.getFood(req.params.animalID, function(food){
             if(food != false)
@@ -722,6 +722,112 @@ app.post('/assign/:animal/:caretaker', function(req, res){
             res.redirect('/');
         else
             res.render('errorPage', {message: 'That caretaker is already assigned to that animal'});
+    });
+});
+
+// routes that allow vets to prescribe medicine
+app.get('/prescribeMedicine/:animal', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept==9)
+    {
+        db.getMedicineStock(function(medicines)
+        {
+            if(medicines != false)
+                res.render('viewMedicine', {data: [medicines, req.params.animal]});
+            else
+                res.render('errorPage', {message:"Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/prescribeMedicine/:animal/:medicine', function(req, res){
+    db.prescribeMedicine(req.params.animal, req.params.medicine, req.body.dose, req.body.frequency, req.body.duration, req.body.disease, function(result){
+        if(result != false)
+            res.redirect('/getMedicine/' + req.params.animal);
+        else
+            res.render('errorPage', {message:"This animal is already taking this medicine"});
+    });
+});
+
+// allow vets to update medicine stock
+app.get('/updateMedStock', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept==9)
+    {
+        db.getMedicineStock(function(medicine){
+            if(medicine!=false)
+                res.render('medStock', {data:medicine});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/updateMedStock/:medicine', function(req, res){
+    db.updateMedStock(req.params.medicine, req.body.quantity, function(result){
+        if(result != false)
+            res.redirect('/updateMedStock');
+        else
+            res.render('errorPage', {message: "We encountered an error"});
+    })
+});
+
+// allow caretakers to update food stock
+app.get('/updateFoodStock', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept==15)
+    {
+        db.getFoodStock(function(food){
+            if(food != false)
+                res.render('foodStock', {data:food});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/updateFoodStock/:food', function(req, res){
+    db.updateFoodStock(req.params.food, req.body.quantity, function(result){
+        if(result != false)
+            res.redirect('/updateFoodStock');
+        else
+        res.render('errorPage', {message: "Something went wrong"});
+    });
+});
+
+// routes to allow vets assign food to animals
+app.get('/assignFood/:animal', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept == 9)
+    {
+        db.getFoodStock(function(food){
+            if(food != false)
+                res.render('viewFood', {data:[food, req.params.animal]});
+            else
+                res.render('errorPage', {message: "Something went wrong"});
+        });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/assignFood/:animal/:food', function(req, res){
+    db.assignFood(req.params.animal, req.params.food, req.body.serving, req.body.frequency, function(result)
+    {
+        if(result != false)
+            res.redirect('/getFood/' + req.params.animal);
+        else
+            res.render('errorPage', {message:"This animal is already eating this food"});
     });
 });
 
