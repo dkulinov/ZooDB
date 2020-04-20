@@ -988,3 +988,30 @@ assignFood = function(animal, food, serving, frequency, callback)
   });
 }
 module.exports.assignFood = assignFood;
+
+
+//adds new food/medicine to the db
+addNew = function(type, name, stock, target, callback)
+{
+  var sql = "INSERT INTO ";
+  if(type=="Food")
+    sql += "food_supply (food_name, stock, target_stock) VALUES ('";
+  else
+    sql += "medicine_supply (med_name, stock, target_stock) VALUES ('";
+  sql += name;
+  sql += "', ";
+  sql += stock;
+  sql += ", ";
+  sql += target;
+  sql += ");";
+  console.log(sql);
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.addNew = addNew;
