@@ -167,7 +167,7 @@ module.exports.ringUpCustomer = ringUpCustomer;
 
 getEmployeeName = function(employee,callback){
 
-  var sql = "SELECT first_name, last_name FROM zoo_schema.employee WHERE employee_id = ";
+  var sql = "SELECT first_name, last_name, department_id FROM zoo_schema.employee WHERE employee_id = ";
   sql += employee.username;
   pool.getConnection(function(err, connection){
     connection.release();
