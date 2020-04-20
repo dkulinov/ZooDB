@@ -640,12 +640,18 @@ app.get('/getMedicine/:animalID', function(req, res){
         res.render('errorPage', {message: "You don't have access to this page"});
     else if(req.session.user.dept == 9)
     {
+      var data = [];
+      db.getEmployeeName(req.session.user, function(employee){
+        data.employee = employee;
         db.getMedicine(req.params.animalID, function(med){
+          data.med = med;
             if(med != false)
-                res.render('giveMed.ejs', {data:med});
+                res.render('giveMed.ejs', {data:data});
             else
                 res.render('errorPage', {message: "This animal doesn't take any medicine"});
         });
+      })
+        
     }
     else
         res.render('errorPage', {message: "You don't have access to this page"});
@@ -755,13 +761,18 @@ app.get('/prescribeMedicine/:animal', function(req, res){
         res.render('errorPage', {message:"You don't have access to this page"});
     else if(req.session.user.dept==9)
     {
-        db.getMedicineStock(function(medicines)
-        {
+      var data = [];
+      db.getEmployeeName(req.session.user,function(employee){
+        data.employee = employee;
+        db.getMedicineStock(function(medicines){
+          data.medicines = [medicines, req.params.animal];
             if(medicines != false)
-                res.render('viewMedicine', {data: [medicines, req.params.animal]});
+                res.render('viewMedicine', {data: data});
             else
                 res.render('errorPage', {message:"Something went wrong"});
         });
+      });
+        
     }
     else
         res.render('errorPage', {message:"You don't have access to this page"});
@@ -834,12 +845,19 @@ app.get('/assignFood/:animal', function(req, res){
         res.render('errorPage', {message:"You don't have access to this page"});
     else if(req.session.user.dept == 9)
     {
+      var data = [];
+      db.getEmployeeName(req.session.user,function(employee){
+        data.employee = employee;
         db.getFoodStock(function(food){
-            if(food != false)
-                res.render('viewFood', {data:[food, req.params.animal]});
+            if(food != false){
+                data.foods = [food,req.params.animal];
+                res.render('viewFood', {data:data});
+            }
             else
                 res.render('errorPage', {message: "Something went wrong"});
         });
+      });
+        
     }
     else
         res.render('errorPage', {message:"You don't have access to this page"});
