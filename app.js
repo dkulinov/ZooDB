@@ -854,9 +854,11 @@ app.get('/updateAnimal/:animal', function(req, res){
 })
 
 app.post('/updateAnimal/:animal', function(req, res){
-    var data = [req.body.enclosure, req.body.status, req.body.diet_type, req.body.feedings];
-
-    db.updateAnimalInfo(req.params.animal, data, function(err,response){
+    var enclosure = req.body.enclosure;
+    var diet = req.body.diet_type;
+    var feeds = req.body.feedings;
+    var health = req.body.status;
+    db.updateAnimalInfo(req.params.animal, enclosure, health, diet, feeds,  function(err,response){
           if(err === true){
               res.render("errorPage.ejs", {message: "Error animal not updated"});
           }else{

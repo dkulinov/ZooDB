@@ -246,30 +246,41 @@
                   </thead>
 
                   <tbody>
-                    <form action = "/updateAnimal/<%=data[0].animal_id%>" method = "POST">
+                    <form id="updateAnimal" action = "/updateAnimal/<%=data[0].animal_id%>/" method = "POST">
                       <tr>
-                        <label>
-                  
-                  
-                </label>
                         <td><%= data[0].animal_name %>       </td>
                         <td><%= data[0].species %>           </td>
                         <td><%= data[0].dob %>               </td>
                         <td><%= data[0].gender %>            </td>
                         <td><input type="text" name="enclosure" id = "enclosure"  required placeholder="111115">      </td>
+
+                        <script type="text/javascript">
+                          function changeHealthValue(callback){
+                          var eID = document.getElementById("status");
+                          var healthVal = eID.options[eID.selectedIndex].value;
+                          var health = eID.options[eID.selectedIndex].text;
+                        }
+                        </script>
+                        
                         <td width=250%> 
-                           <div class="form-group">
-                            <select multiple class="form-control" id="status">
-                              <option>healthy</option>
-                              <option>sick</option>
-                              <option>pregnant</option>
-                              <option>deceased</option>
-                              </select>    
-                              </div>        
+                          <div>
+                            <select name="status" id="status" form="updateAnimal" required>
+                              <option value="" onchange="changeHealthValue(this)">SELECT BELOW</option>
+                              <option value="healthy" onchange="changeHealthValue(this)">healthy</option>
+                              <option value="sick" onchange="changeHealthValue(this)">sick</option>
+                              <option value="pregnant" onchange="changeHealthValue(this)">pregnant</option>
+                              <option value="deceased" onchange="changeHealthValue(this)">deceased</option>
+                            </select>
+                            <script type="text/javascript">
+                              $var = $_POST['status'];
+                            </script>
+                            
+                          </div>
                         </td>
-                        <td><input type="text" name="diet_type" id = "diet_type"  required placeholder="HERBIVORE">           </td>
+
+                        <td><input type="text" name="diet_type" id = "diet_type"  required placeholder="1. HERB 2. CARN 3. OMNI">           </td>
                         <td><input type="text" name="feedings" id = "feedings"  required>   </td>
-                        <td><a href="/viewAnimal/<%=data[0].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">DONE</button></a>
+                        <td><a href="/viewAnimal/<%=data[0].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px";>DONE</button></a>
                       </tr>  
                   </tbody>
                 </table>

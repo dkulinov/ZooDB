@@ -923,19 +923,20 @@ getAnimalInfo = function(animal, callback){
 module.exports.getAnimalInfo = getAnimalInfo;
 
 
-updateAnimalInfo = function(animal, data, callback)
+updateAnimalInfo = function(animal, enclosure_id, health, diet, feeds, callback)
 {
   var sql = "UPDATE zoo_schema.animal SET enclosure_id ="
-  sql+=data[0];
+  sql+= enclosure_id;
   sql+=", status =";
-  sql+=data[1];
+  sql+= "'"+health+"'";
   sql+=", diet_type =";
-  sql+=data[2];
+  sql+= "'"+diet+"'";
   sql+=", feedings_per_day =";
-  sql+=data[3];
+  sql+=feeds;
   sql+=" WHERE animal_id =";
   sql+=animal;
-  
+  console.log(sql);
+
    pool.getConnection(function (err, connection) {
     if(err) { console.log(err); callback(false); return; }
         connection.query(sql, function(err,res){
