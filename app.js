@@ -830,6 +830,7 @@ app.get('/updateFoodStock', function(req, res){
         res.render('errorPage', {message:"You don't have access to this page"});
 });
 
+
 app.post('/updateFoodStock/:food', function(req, res){
     db.updateFoodStock(req.params.food, req.body.quantity, function(result){
         if(result != false)
