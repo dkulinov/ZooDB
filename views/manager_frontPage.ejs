@@ -119,6 +119,14 @@
           <span>See Alerts</span></a>
       </li>
     <% } %> 
+    
+    <% if((data.employee[0].department_id >= 5 && data.employee[0].department_id<=7) || data.employee[0].department_id==11) {%>
+      <li class="nav-item">
+        <a class="nav-link" href="/addNewItem">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Add a New Item To the Store</span></a>
+      </li>
+    <% } %> 
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
