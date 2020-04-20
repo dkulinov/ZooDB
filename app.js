@@ -349,13 +349,19 @@ app.post('/insertNewAnimal', function(req, res)
 
 app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  {   
-     var userid = req.session.user;
-     const data = [];
+     if(req.session.user.isManager)
+     {
+        var userid = req.session.user;
+        const data = [];
 
-     db.getEmployeeName(userid, function(employee){
-         data.employee = employee;
-         res.render("manager_frontPage", {data: data});
+        db.getEmployeeName(userid, function(employee){
+            data.employee = employee;
+            res.render("manager_frontPage", {data: data});
+            
      });
+    }
+    else
+        res.render('errorPage', {message:"You're not a manager"});
     
  });
 
