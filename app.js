@@ -867,6 +867,32 @@ app.post('/updateAnimal/:animal', function(req, res){
         });
   })
 
+
+//allows vets to add new foods and medicine
+app.get('/addNew/:type', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.dept == 9)
+    {
+        if(req.params.type=="Food" || req.params.type=="Medicine")
+            res.render('addNew', {data:req.params.type});
+        else 
+            res.render('wrongRoute');
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
+
+app.post('/addNew/:type', function(req, res){
+    db.addNew(req.params.type, req.body.name, req.body.stock, req.body.target, function(result){
+        if(result != false)
+            res.redirect('/vetTables');
+        else 
+            res.render('errorPage', {message: "That is already in the database"});
+    });
+});
+
+
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
 app.get('*', function(req, res){
