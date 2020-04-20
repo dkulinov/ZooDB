@@ -849,8 +849,14 @@ app.get('/viewAnimal/:animal', function(req,res){
         res.render('errorPage', {message:"You don't have access to this page"});
     else if(req.session.user.isManager && req.session.user.dept==9)
     {
+        var data = [];
         db.getAnimalInfo(req.params.animal,function(animal){
-            res.render('viewAnimalInfo', {data:animal});
+            data.animal = animal;
+            db.getEmployeeName(req.session.user,function(employee){
+              data.employee = employee;
+              res.render('viewAnimalInfo', {data:data});
+            });
+            
         });
         
     }
@@ -860,9 +866,15 @@ app.get('/viewAnimal/:animal', function(req,res){
 
 
 app.get('/updateAnimal/:animal', function(req, res){
+  var data = [];
     db.getAnimalInfo(req.params.animal, function(animal){
-            res.render('updateAnimal', {data:animal});
+        data.animal = animal;
+        db.getEmployeeName(req.session.user,function(employee){
+          data.employee = employee;
+          res.render('updateAnimal', {data:data});
         });
+            
+    });
 })
 
 app.post('/updateAnimal/:animal', function(req, res){
