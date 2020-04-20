@@ -817,7 +817,7 @@ app.post('/updateMedStock/:medicine', function(req, res){
 app.get('/updateFoodStock', function(req, res){
     if(!req.session.user)
         res.render('errorPage', {message:"You don't have access to this page"});
-    else if(req.session.user.dept==15)
+    else if(req.session.user.dept==15 || req.session.user.dept==12)
     {
         db.getFoodStock(function(food){
             if(food != false)
@@ -933,6 +933,10 @@ app.get('/addNew/:type', function(req, res){
         else 
             res.render('wrongRoute');
     }
+   else if(req.session.user.dept ==12 && req.params.type=="Food") //nutrition manager can also add food
+   {
+      res.render('addNew', {data:req.params.type});
+   }
     else
         res.render('errorPage', {message:"You don't have access to this page"});
 });
