@@ -1000,7 +1000,26 @@ app.post('/updateEmployeeInfo/:id', function(req, res){
       alert("Passwords do not match");
     }
     
-  })
+});
+
+// allow store managers to add new items
+app.get('/addNewItem', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message: "You don't have access to this page"});
+    else if(req.session.user.isManager && ((req.session.user.dept>=5 && req.session.user.dept<=7) || req.session.user.dept==11))
+        res.render('newItem', {data: req.session.user.dept});
+    else
+        res.render('errorPage', {message: "You don't have access to this page"});
+});
+
+app.post('/addNewItem/:shopID', function(req, res){
+    db.addNewItem(req.body.name, req.body.size, req.body.price, req.body.stock, req.body.target, req.body.image_path,req.params.shopID,function(result){
+        if(result != false)
+            res.redirect('/shop');
+        else
+            res.render('errorPage', {message: "Something went wrong"});
+    });
+});
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
