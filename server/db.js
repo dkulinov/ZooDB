@@ -907,3 +907,27 @@ updateFoodStock = function(food, quantity, callback)
   });
 }
 module.exports.updateFoodStock = updateFoodStock;
+
+
+// vets can assign food to an animal
+assignFood = function(animal, food, serving, frequency, callback)
+{
+  var sql = "INSERT INTO animal_diet(animal_id,food_id,serving_size_in_grams,servings_per_day) VALUES (";
+  sql += animal;
+  sql += ", ";
+  sql += food;
+  sql += ", ";
+  sql += serving;
+  sql += ", ";
+  sql += frequency;
+  sql += ");";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.assignFood = assignFood;
