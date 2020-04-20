@@ -859,13 +859,7 @@ assignAnimalToCaretaker = function(animal, caretaker, callback)
 }
 module.exports.assignAnimalToCaretaker = assignAnimalToCaretaker;
 
-<<<<<<< HEAD
-getAnimalInfo = function(animal, callback){
-  var sql = "SELECT * from zoo_schema.animal WHERE animal_id=";
-  sql+= animal;
-=======
 
-// allows a vet to prescribe medicine to animals
 prescribeMedicine = function(animal, medicine, dose, frequency, duration, disease, callback)
 {
   var sql = "INSERT INTO animals_on_medicine(animal_id, med_id, dose_amount_mg, dose_frequency, last_prescribed, duration_days,disease) VALUES(";
@@ -913,6 +907,22 @@ updateMedStock = function(med, quantity, callback)
 module.exports.updateMedStock = updateMedStock;
 
 
+getAnimalInfo = function(animal, callback){
+  var sql = "SELECT * from zoo_schema.animal WHERE animal_id=";
+  sql+= animal;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+
+module.exports.getAnimalInfo = getAnimalInfo;
+
+
 updateAnimalInfo = function(animal, data, callback)
 {
   var sql = "UPDATE zoo_schema.animal SET enclosure_id ="
@@ -927,14 +937,13 @@ updateAnimalInfo = function(animal, data, callback)
   sql+=animal;
   
    pool.getConnection(function (err, connection) {
-
-if(err) { console.log(err); callback(false); return; }
-    connection.query(sql, function(err,res){
-      connection.release();
-      if(err){callback(false);}
-      callback(res);
-    });
-  });
+    if(err) { console.log(err); callback(false); return; }
+        connection.query(sql, function(err,res){
+          connection.release();
+          if(err){callback(false);}
+          callback(res);
+        });
+      });
  }
 module.exports.updateAnimalInfo = updateAnimalInfo;
 
@@ -976,6 +985,6 @@ assignFood = function(animal, food, serving, frequency, callback)
       if(err){callback(false);}
       callback(res);
     });
+  });
 }
 module.exports.assignFood = assignFood;
-
