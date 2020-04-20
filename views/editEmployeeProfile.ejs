@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Manager - Dashboard</title>
+  <title>EDIT PROFILE</title>
 
   <!-- Custom fonts for this template-->
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -17,6 +17,7 @@
 
   <!-- Custom styles for this template-->
   <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
@@ -33,7 +34,7 @@
         <!--<div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>-->
-        <div class="sidebar-brand-text mx-3">Houston Zoo Manager</div>
+        <div class="sidebar-brand-text mx-3">Edit Houston Zoo Employee Profile</div>
       </a>
 
       <!-- Divider -->
@@ -41,10 +42,9 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="/">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
+        
       </li>
+
 
 
       <!-- Divider -->
@@ -52,54 +52,20 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Select An Action
+        
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>-->
-
-      <!-- Nav Item - Charts 
-      <li class="nav-item">
-        <a class="nav-link" href="/managerCharts">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li>-->
+      <!-- Nav Item - Charts -->
 
       <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="/managerTables">
-          <i class="fas fa-fw fa-table"></i>
-          <span>General Reports</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        
       </div>
 
     </ul>
     <!-- End of Sidebar -->
-
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -114,16 +80,21 @@
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
+          
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
 
-            <div class="topbar-divider d-none d-sm-block"></div>
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
 
-            <!-- Nav Item - User Information -->
+             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= data.employee[0].first_name %> <%= data.employee[0].last_name%> </span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= data[0].first_name %> <%= data[0].last_name%> </span>
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -151,68 +122,45 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Welcome, <%= data.employee[0].first_name  %> <%= data.employee[0].last_name%>!</h1>
-            <br>
-           
+            <h1 class="h3 mb-0 text-gray-800">Employee Details</h1>
           </div>
-
-          <!-- Content Row -->
-
-
-            <!-- Earnings (Monthly) Card Example 
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>-->
-
-
-
-
-         
-          <!-- Content Row -->
-          <div class="row">
-
-            <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
-               <h6 class="m-0 font-weight-bold text-primary">Enter Start Date AND End Date to Create a Sales Report </h6>
-              <!-- Report Form-->
-              <form action = "/generateReport" method = "POST">
-                <label>
-                  Start Date:
-                  <input type="date" name="startdate" id = "startdate" min="2020-03-01"  required>
-                  <span class="validity"></span>
-                </label>    
-                <label>
-                  End Date:
-                  <input type="date" name="enddate" id = "enddate" min="2020-03-01"  required>
-                  <span class="validity"></span>
-                </label> 
-
-                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</button>
-              </form>
-
             
-            </div>
-          </div>
-        
+            
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Password</th>
+                      <th> ... </th>
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    
+                      <tr>
+                        <td><%= data[0].first_name %>       </td>
+                        <td><%= data[0].last_name %>           </td>
+                        <td><%= data[0].pswd %>               </td>
+                        <td><a href="/updateEmployeeInfo/<%=data[0].employee_id%>"><button class="btn btn-primary" style="margin-top: 10px;">EDIT</button></a>
+                      </tr>  
+                  </tbody>
+                </table>
+        </div>
         <!-- /.container-fluid -->
 
-        </div>
+
       <!-- End of Main Content -->
 
       <!-- Footer -->
-
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; HoustonZoo 2020</span>
+          </div>
+        </div>
+      </footer>
       <!-- End of Footer -->
 
     </div>
@@ -239,7 +187,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="/employeeLogin">Logout</a>
+          <a class="btn btn-primary" href="/employeeLogout">Logout</a>
         </div>
       </div>
     </div>
@@ -262,6 +210,7 @@
   <script src="../assets/vendor/demo/chart-area-demo.js"></script>
   <script src="../assets/vendor/demo/chart-pie-demo.js"></script>
 
+  </div>
 </body>
 
 </html>

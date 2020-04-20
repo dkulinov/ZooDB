@@ -1015,3 +1015,40 @@ addNew = function(type, name, stock, target, callback)
   });
 }
 module.exports.addNew = addNew;
+
+
+getEmployeeProfile = function(employee, callback){
+  var sql= "SELECT * FROM zoo_schema.employee WHERE employee_id=";
+  sql+=employee;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.getEmployeeProfile = getEmployeeProfile;
+
+
+updateEmployeeProfile = function(f_name,l_name,pass,employee,callback){
+  var sql = "UPDATE employee SET first_name =";
+  sql+= "'"+f_name+"',";
+  sql+= "last_name =";
+  sql+= "'"+l_name+"',";
+  sql+= "pswd = ";
+  sql+= "'"+pass+"'" + " WHERE employee_id =";
+  sql+= employee;
+  console.log(sql);
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+
+}
+module.exports.updateEmployeeProfile = updateEmployeeProfile;

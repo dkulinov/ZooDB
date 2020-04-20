@@ -319,7 +319,11 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
 
 app.get('/insertNewAnimal', function(req, res)
 {
-    res.render("insertAnimal.ejs");
+    data = [];
+    db.getEmployeeName(req.session.user,function(employee){
+        data.employee = employee;
+        res.render("insertAnimal.ejs",{data:data});
+    });
 });
 
 
@@ -346,10 +350,11 @@ app.post('/insertNewAnimal', function(req, res)
 app.get('/managerFrontPage',checkEmployeeSignIn, function(req,res)
  {   
      var userid = req.session.user;
-     const emp_name = [];
+     const data = [];
 
-     db.getEmployeeName(userid, function(emp_name){
-         res.render("manager_frontPage", {emp_name: emp_name});
+     db.getEmployeeName(userid, function(employee){
+         data.employee = employee;
+         res.render("manager_frontPage", {data: data});
      });
     
  });
@@ -367,7 +372,10 @@ app.get('/managerTables',checkEmployeeSignIn, function(req,res)
          db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
          {
             data.medicineStock = medicineStock;
-            res.render("manager_tables", { data: data });
+            db.getEmployeeName(req.session.user,function(employee){
+              data.employee = employee;
+              res.render("manager_tables", { data: data });
+            });
          });
        });
     });
@@ -379,10 +387,7 @@ app.use('/managerFrontPage', function(err, req, res, next){
     res.redirect('/employeeLogin');
 });
 
-app.use('/managerTables', function(err, req, res, next){
-    //User should be authenticated! Redirect him to log in.
-    res.redirect('/employeeLogin');
-});
+
 
 //this route generates a report between a start date and end date which comes from an html form
  app.post('/generateReport', function(req, res){
@@ -410,7 +415,10 @@ app.use('/managerTables', function(err, req, res, next){
                                     if(err) {console.log("error"); return;}
                                     else{
                                         data.ticketDistribution = tickets;
-                                        res.render("financialReport", {data: data});
+                                        db.getEmployeeName(req.session.user, function(employee){
+                                          data.employee=employee;
+                                          res.render("financialReport", {data: data});
+                                        })
                                     }
                                 });
                             }
@@ -686,12 +694,16 @@ app.get('/assignAnimal', function(req, res){
         res.render('errorPage', {message:"You don't have access to this page"});
     else if(req.session.user.isManager && req.session.user.dept==15)
     {
-        db.getAllAnimals(function(animals)
-        {
-            if(animals != false)
-                res.render('viewAnimals', {data:animals});
-            else
-                res.render('errorPage', {message: "Something went wrong"});
+        data =[];
+        db.getEmployeeName(req.session.user,function(employee){
+        data.employee = employee;
+            db.getAllAnimals(function(animals){
+              data.animals = animals;
+                if(animals != false)
+                    res.render('viewAnimals', {data:data});
+                else
+                    res.render('errorPage', {message: "Something went wrong"});
+            });
         });
     }
     else
@@ -892,6 +904,50 @@ app.post('/addNew/:type', function(req, res){
     });
 });
 
+
+app.get('/editEmployeeInfo', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else 
+    {
+        db.getEmployeeProfile(req.session.user.username, function(employee){
+            res.render('editEmployeeProfile', {data:employee});
+        });
+    }
+});
+
+app.get('/updateEmployeeInfo/:id', function(req, res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else 
+    {
+            db.getEmployeeProfile(req.params.id, function(employee){
+              res.render('updateEmployeeInfo', {data:employee});
+            });
+            
+    }
+});
+
+
+app.post('/updateEmployeeInfo/:id', function(req, res){
+    var firstName = req.body.first_name;
+    var lastName = req.body.last_name;
+    var password = req.body.password;
+    var confirm_pass = req.body.password2;
+    if (password == confirm_pass){
+      db.updateEmployeeProfile(firstName, lastName, confirm_pass, req.params.id,  function(err,response){
+          if(err === true){
+              res.render("errorPage.ejs", {message: "Error animal not updated"});
+          }else{
+              res.redirect("/editEmployeeInfo");
+          }
+        });
+    }
+    else{
+      alert("Passwords do not match");
+    }
+    
+  })
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom
