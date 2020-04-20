@@ -715,13 +715,18 @@ app.get('/assignCaretaker/:animal', function(req,res){
         res.render('errorPage', {message:"You don't have access to this page"});
     else if(req.session.user.isManager && req.session.user.dept==15)
     {
-        db.getAllCaretakers(function(caretakers)
-        {
+      var data = [];
+      db.getEmployeeName(req.session.user,function(employee){
+          data.employee = employee;
+          db.getAllCaretakers(function(caretakers){
+            data.caretakers = [caretakers, req.params.animal];
             if(caretakers != false)
-                res.render('viewCaretakers', {data:[caretakers, req.params.animal]});
+                res.render('viewCaretakers', {data:data});
             else
                 res.render('errorPage', {message: "Something went wrong"});
         });
+      });
+        
     }
     else
         res.render('errorPage', {message:"You don't have access to this page"});
