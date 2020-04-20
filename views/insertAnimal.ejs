@@ -60,7 +60,7 @@
       <!-- Nav Item - Charts -->
       <li class="nav-item active">
         <a class="nav-link" href="/insertNewAnimal">
-          <i class="fas fa-fw fa-table"></i>
+          <i class="fas fa-fw"></i>
           <span>Add New Animal</span></a>
       </li>
       <!-- Nav Item - Tables -->
@@ -231,39 +231,49 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
             <form action = "/insertNewAnimal" method = "POST">
+                <center>
                 <label>
                   Animal Name:
                   <input type="text" name="animalname" id = "animalname" required>
-                </label>    
+                </label>
+                <br>   
                 <label>
                   Species:
                   <input type="text" name="species" id = "species"   required>
                 </label> 
+                <br> 
                 <label>
                     DOB:
                     <input type="text" name="dob" id = "dob"   required>
                 </label> 
+                <br> 
                 <label>
                     Gender:
                     <input type="text" name="gender" id = "gender"  required>
                 </label> 
+                <br> 
                 <label>
                     Enclosure ID:
                     <input type="text" name="enclosure" id = "enclosure"  required>
                 </label>
+                <br> 
                 <label>
                     Status:
                     <input type="text" name="status" id = "status"  required>
-                </label>  
+                </label>
+                <br>   
                 <label>
                     Feedings Per Day:
                     <input type="text" name="feedings" id = "feedings"  required>
                 </label> 
+                <br> 
                 <label>
-                    Image:
+                    Image Path:
                     <input type="text" name="imagepath" id = "imagepath"  required>
-                </label>   
-                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Add Animal</button>
+                </label>  
+                <br>  
+                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-sm text-white-50"></i> Add Animal</button>
+              </center>
               </form>       
         </div>
         <!-- /.container-fluid -->

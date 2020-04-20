@@ -9,16 +9,14 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Vet Manager - Dashboard</title>
+  <title>Caretaker Manager - Dashboard</title>
 
-  <!-- Custom fonts for this template -->
+  <!-- Custom fonts for this template-->
   <link href="../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
+  <!-- Custom styles for this template-->
   <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this page -->
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
@@ -33,52 +31,39 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        <div class="sidebar-brand-icon rotate-n-15">
-        </div>
-        <div class="sidebar-brand-text mx-3">Houston Zoo Vet Manager</div>
+        <!--<div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-laugh-wink"></i>
+        </div>-->
+        <div class="sidebar-brand-text mx-3">Houston Zoo Caretaker Manager</div>
       </a>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="/">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
 
 
+
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <!-- Heading 
+      <!-- Heading -->
       <div class="sidebar-heading">
         Addons
-      </div>-->
+      </div>
 
-
-      <!-- Nav Item - Tables 
+      <!-- Nav Item - Charts -->
       <li class="nav-item active">
-        <a class="nav-link" href="/">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Vet Manager</span></a>
-      </li> -->
-
-      <!-- Divider 
-      <hr class="sidebar-divider d-none d-md-block"> -->
-
-      <li class="nav-item">
         <a class="nav-link" href="/insertNewAnimal">
           <i class="fas fa-fw"></i>
           <span>Add New Animal</span></a>
       </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="/vetTables">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Reports</span></a>
-      </li>
+      <!-- Nav Item - Tables -->
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="text-center d-none d-md-inline">
@@ -107,7 +92,7 @@
             <div class="input-group">
               <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" value="Search">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
               </div>
@@ -142,15 +127,25 @@
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">   </span>
+                <span class="badge badge-danger badge-counter"></span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
-                
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-primary">
+                      <i class="fas fa-file-alt text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="small text-gray-500">December 12, 2019</div>
+                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                  </div>
                 </a>
+
                 <a class="dropdown-item text-center small text-gray-500" href="/alertOptions">Show All Alerts</a>
               </div>
             </li>
@@ -160,14 +155,53 @@
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">   </span>
+                <span class="badge badge-danger badge-counter"></span>
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
-                
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div class="font-weight-bold">
+                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
+                    <div class="small text-gray-500">Emily Fowler · 58m</div>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
+                    <div class="status-indicator"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
+                    <div class="small text-gray-500">Jae Chun · 1d</div>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
+                    <div class="status-indicator bg-warning"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
+                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                  </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <div class="dropdown-list-image mr-3">
+                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
+                    <div class="status-indicator bg-success"></div>
+                  </div>
+                  <div>
+                    <div class="text-truncate">We need a new order meat for the tigers</div>
+                    <div class="small text-gray-500">John Smith · 2w</div>
+                  </div>
+                </a>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
               </div>
             </li>
@@ -177,24 +211,11 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= data.employee[0].first_name %> <%= data.employee[0].last_name%> </span>
                 <img class="img-profile rounded-circle" src="https://d2r55xnwy6nx47.cloudfront.net/uploads/2019/07/Olivier_1500_Trptch.jpg">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
+
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
@@ -209,69 +230,55 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
-          <!-- DataTales Example 
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Employee Information</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Employee ID</th>
-                      <th>Department</th>
-                      <th>Supervisor</th>
+                      <th>Species</th>
+                      <th>DOB</th>
+                      <th>GENDER</th>
+                      <th>ENCLOSURE-ID</th>
+                      <th>STATUS</th>
+                      <th>DIET-TYPE</th>
+                      <th>FEEDINGS-per-day</th>
+
                     </tr>
                   </thead>
 
                   <tbody>
-                      
+                    <form action = "/updateAnimal/<%=data[0].animal_id%>" method = "POST">
+                      <tr>
+                        <label>
+                  
+                  
+                </label>
+                        <td><%= data[0].animal_name %>       </td>
+                        <td><%= data[0].species %>           </td>
+                        <td><%= data[0].dob %>               </td>
+                        <td><%= data[0].gender %>            </td>
+                        <td><input type="text" name="enclosure" id = "enclosure"  required placeholder="111115">      </td>
+                        <td width=250%> 
+                           <div class="form-group">
+                            <select multiple class="form-control" id="status">
+                              <option>healthy</option>
+                              <option>sick</option>
+                              <option>pregnant</option>
+                              <option>deceased</option>
+                              </select>    
+                              </div>        
+                        </td>
+                        <td><input type="text" name="diet_type" id = "diet_type"  required placeholder="HERBIVORE">           </td>
+                        <td><input type="text" name="feedings" id = "feedings"  required>   </td>
+                        <td><a href="/viewAnimal/<%=data[0].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">DONE</button></a>
+                      </tr>  
                   </tbody>
                 </table>
-              </div>
-            </div>
-          </div> -->
-
+              </form>       
         </div>
         <!-- /.container-fluid -->
-        <!-- Second table for food -->
-        <div class="container-fluid">
-
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Welcome, <%= data.employee[0].first_name %> <%= data.employee[0].last_name%>! </h1>
-          <p class="mb-4">View of All Animals</p>
-
-                  <!-- Page Heading -->
-                  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Select an Animal to Update</h1>
-                  </div>
-                    
-                    
-                  <div class="row row-cols-lg-3 justify-content-center">
-                     <% for(var i=0; i< data.animals.length; i++){ var path = '../assets/img/' + data.animals[i].image_path; if(data.animals[i].image_path==null)data.animals[i].image_path="null"; %>
-                      <div class="col mb-4" data-aos="fade-up" data-aos-delay="0">
-                        <div class="card text-center h-100" style="box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);">
-                          <img src="<%= path %>" class="card-img-top" alt="..." style = "padding: 10px;" height = "500px" width = "500px">
-                            <div class="card-body">
-                              <h5 class="card-title"><%= data.animals[i].animal_name %></h5>
-                              <p class="card-text">ID: <%= data.animals[i].animal_id %></p>
-                              <p class="card-text">Species: <%= data.animals[i].species %></p>
-                              <p class="card-text">Health Status: <%= data.animals[i].status %></p>
-                              <a href="/viewAnimal/<%=data.animals[i].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">Select</button></a>
-                            </div>
-                          </div>
-                        </div>
-                      <% } %>
-                    </div>
-                </div>
-<!-- /.container-fluid -->
 
 
-
-      <!-- Footer -->
+      <!-- End of Main Content -->
 
       <!-- End of Footer -->
 
@@ -279,7 +286,7 @@
     <!-- End of Content Wrapper -->
 
   </div>
-  <!-- End of Page Wrapper -->
+    <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
@@ -299,7 +306,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="/employeeLogin">Logout</a>
+          <a class="btn btn-primary" href="/employeeLogout">Logout</a>
         </div>
       </div>
     </div>
@@ -316,12 +323,14 @@
   <script src="../assets/js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script src="../assets/vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="../assets/vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="../assets/vendor/demo/datatables-demo.js"></script>
+  <script src="../assets/vendor/demo/chart-area-demo.js"></script>
+  <script src="../assets/vendor/demo/chart-pie-demo.js"></script>
 
+  </div>
 </body>
 
 </html>
+

@@ -286,19 +286,15 @@ app.get('/vetManager',checkEmployeeSignIn, function(req,res)
     // otherwise you may get unexpected behavior like some data not loading
     db.getEmployeeName(username,function(employee){
         data.employee = employee;
-        db.getEmployeesAnimals(username,function(animals){
-            data.animals = animals;
-            console.log(data.animals)
             db.getAllAnimals(function(animals){
                data.animals = animals;
-               db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
+               db.getAllVets(function(employees)  //get employees from db.js file and then call the function 
                {
                   data.employeeList = employees;
-                  res.render("vetManager.ejs", { data });
-               });
-         });
-      });
-   });  
+                  res.render("vetManager.ejs", { data:data });
+            });
+        });
+    });
 });
 
 
@@ -730,7 +726,38 @@ app.post('/assign/:animal/:caretaker', function(req, res){
 });
 
 
+app.get('/viewAnimal/:animal', function(req,res){
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.isManager && req.session.user.dept==9)
+    {
+        db.getAnimalInfo(req.params.animal,function(animal){
+            res.render('viewAnimalInfo', {data:animal});
+        });
+        
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
+});
 
+
+app.get('/updateAnimal/:animal', function(req, res){
+    db.getAnimalInfo(req.params.animal, function(animal){
+            res.render('updateAnimal', {data:animal});
+        });
+})
+
+app.post('/updateAnimal/:animal', function(req, res){
+    var data = [req.body.enclosure, req.body.status, req.body.diet_type, req.body.feedings];
+
+    db.updateAnimalInfo(req.params.animal, data, function(err,response){
+          if(err === true){
+              res.render("errorPage.ejs", {message: "Error animal not updated"});
+          }else{
+              res.redirect("/viewAnimal/"+req.params.animal);
+          }
+        });
+  })
 
 // catch all route that will notify the user that this page doesn't exist
 // this has to remain the on the bottom

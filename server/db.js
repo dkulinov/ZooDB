@@ -268,6 +268,23 @@ getAllEmployees = function(callback){
 module.exports.getAllEmployees= getAllEmployees;
 
 
+getAllVets = function(callback){
+  var sql = "SELECT * FROM zoo_schema.employee WHERE department_id=9;"
+  pool.getConnection(function(err, connection){
+    connection.release();
+    if(err) { console.log(err); callback(true); return; }
+  
+    connection.query(sql, function(err, res){
+      if(err) console.log(err);
+      else
+        callback(res);
+    });
+
+  });
+}
+module.exports.getAllVets= getAllVets;
+
+
 getAllAnimals = function(callback){
   var sql = "SELECT * FROM zoo_schema.animal;";
 
@@ -323,7 +340,6 @@ insertNewAnimal = function(data, callback){
   });
 }
 module.exports.insertNewAnimal= insertNewAnimal;
-
 
 
 getFoodStock = function(callback){
@@ -842,3 +858,42 @@ assignAnimalToCaretaker = function(animal, caretaker, callback)
   });
 }
 module.exports.assignAnimalToCaretaker = assignAnimalToCaretaker;
+
+getAnimalInfo = function(animal, callback){
+  var sql = "SELECT * from zoo_schema.animal WHERE animal_id=";
+  sql+= animal;
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.getAnimalInfo = getAnimalInfo;
+
+
+updateAnimalInfo = function(animal, data, callback)
+{
+  var sql = "UPDATE zoo_schema.animal SET enclosure_id ="
+  sql+=data[0];
+  sql+=", status =";
+  sql+=data[1];
+  sql+=", diet_type =";
+  sql+=data[2];
+  sql+=", feedings_per_day =";
+  sql+=data[3];
+  sql+=" WHERE animal_id =";
+  sql+=animal;
+  
+   pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.updateAnimalInfo = updateAnimalInfo;
