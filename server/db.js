@@ -1052,3 +1052,33 @@ updateEmployeeProfile = function(f_name,l_name,pass,employee,callback){
 
 }
 module.exports.updateEmployeeProfile = updateEmployeeProfile;
+
+
+
+// adds new items to the shop
+addNewItem = function(name,size,price,stock,target,image_path,shopID,callback){
+  var sql = "INSERT INTO product (product_name,product_size,price, stock, target_stock,image_path, gift_shop_id) VALUES ('";
+  sql += name;
+  sql += "','";
+  sql += size;
+  sql += "',";
+  sql += price;
+  sql += ",";
+  sql += stock;
+  sql += ",";
+  sql += target;
+  sql += ",'";
+  sql += image_path;
+  sql += "',";
+  sql += shopID;
+  sql += ");";
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+module.exports.addNewItem = addNewItem;
