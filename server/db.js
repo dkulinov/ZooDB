@@ -1004,7 +1004,6 @@ addNew = function(type, name, stock, target, callback)
   sql += ", ";
   sql += target;
   sql += ");";
-  console.log(sql);
   pool.getConnection(function (err, connection) {
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err,res){
