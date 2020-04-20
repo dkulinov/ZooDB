@@ -56,7 +56,9 @@
 
             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
               <li class="active"><a href="/" class="nav-link">Home</a></li>
+              <% if(!data[0].isMember){ %>
               <li><a href="/shop/#tickets" class="nav-link">Tickets</a></li>
+              <% } %>
               <li><a href="/getMembership" class="nav-link">Become a Member</a></li>
               <li><a href="/shop/" class="./views/giftshops.html">Shop</a></li>
               <li><a href="/searchOrderStatus/" class="./views/giftshops.html">Track Order</a></li>
@@ -106,7 +108,9 @@
               <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Thank you for being a member!</p>
               <p class="mb-5" data-aos="fade-right" data-aos-delay="100">Your membership is valid until <%=data[0].memberUntil%>.</p>
               <% } %> 
+              <% if(!data[0].isMember){ %>
               <p data-aos="fade-right" data-aos-delay="200" data-aos-offset="-500"><a href="/shop/#tickets" class="btn btn-outline-white">Get Tickets</a></p>
+              <% } %>
             </div>
             <div class="col-lg-5 iphone-wrap">
 
