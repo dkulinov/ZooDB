@@ -1,15 +1,12 @@
 .css-input {
-    padding: 5px;
-    font-size: 16px;
-    border-width: 1px;
-    border-color: #6de7a7;
-    background-color: #ffffff;
-    color: #000000;
-    border-style: solid;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(122,252,153,.75);
-    text-shadow: 0px 0px 5px rgba(66,66,66,.0);
+    
+    padding: 10px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
-.css-input:focus {
-    outline:none;
-}
+.css-input:hover {
+    border: 1px solid #45a049;
+  }
