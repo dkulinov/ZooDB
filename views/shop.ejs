@@ -99,9 +99,9 @@
             <% if(items[2]=="Employee"){ %> 
               <h1 style="padding-top: 40px;  padding-bottom: 120px;">Gift Shop</h1>
             <% }else{ %> 
-              <h1 style="padding-top: 40px;  padding-bottom: 120px;">Welcome to our online store!</h1>
+              <h1 style="padding-top: 40px;  padding-bottom: 120px;">Welcome to our online store! <img src = "../assets/img/lion.svg" height = "100px" width = "100px"></h1>
             <% } %> 
-            <img src = "../assets/img/lion.svg" height = "100px" width = "100px">
+            
           </div>
         </div>
         <!-- if customer that's not a member or an employee in ticketing department then show tickets -->
@@ -126,7 +126,7 @@
                 <p class="card-text"><%= items[0][i].product_name %></p>
                 <form class="card-text" method="POST" action="/checkout/<%=items[0][i].product_id%>/<%=items[0][i].product_size%>/<%=items[0][i].price%>/<%=items[0][i].image_path;%>/">
                   <label>Quantity:</label>
-                  <input type="number" name="quantity" min="1" max="200" step="1" value="1">
+                  <input class = "form-control" type="number" name="quantity" min="1" max="200" step="1" value="1">
                   <p>
                     <button class="btn btn-primary" style="margin-top: 10px;">Buy</button>
                   </p>
@@ -158,7 +158,7 @@
                 <p class="card-text"><%= items[0][i].product_size %></p>
                 <form class="card-text" method="POST" action="/checkout/<%=items[0][i].product_id%>/<%=items[0][i].product_size%>/<%=items[0][i].price%>/<%=items[0][i].image_path;%>/">
                   <label>Quantity:</label>
-                  <input type="number" name="quantity" min="1" max="<%= items[0][i].stock %>" step="1" value="1">
+                  <input class = "form-control" type="number" name="quantity" min="1" max="<%= items[0][i].stock %>" step="1" value="1">
                   <p>
                     <button class="btn btn-primary" style="margin-top: 10px;">Buy</button>
                   </p>
@@ -189,7 +189,7 @@
                   <p class="card-text"><%= items[0][i].product_name %></p>
                   <form class="card-text" method="POST" action="/checkout/<%=items[0][i].product_id%>/<%=items[0][i].product_size%>/<%=items[0][i].price%>/<%=items[0][i].image_path;%>/">
                     <label>Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="<%= items[0][i].stock %>" step="1" value="1">
+                    <input class = "form-control" type="number" name="quantity" min="1" max="<%= items[0][i].stock %>" step="1" value="1">
                     <p>
                       <button class="btn btn-primary" style="margin-top: 10px;">Buy</button>
                      </p>
@@ -221,7 +221,7 @@
                   <p class="card-text"><%= items[0][i].product_size %></p>
                   <form class="card-text" method="POST" action="/checkout/<%=items[0][i].product_id%>/NA/<%=items[0][i].price%>/<%=items[0][i].image_path;%>/">
                     <label>Quantity:</label>
-                    <input type="number" name="quantity" min="1" max="<%= items[0][i].stock %>" step="1" value="1">
+                    <input class = "form-control" type="number" name="quantity" min="1" max="<%= items[0][i].stock %>" step="1" value="1">
                     <p>
                     <button class="btn btn-primary" style="margin-top: 10px;">Buy</button>
                    </p>

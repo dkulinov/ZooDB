@@ -119,15 +119,14 @@
                 <div class="card text-center h-100" style="box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);">
                     <div class="card-body">
                       <h5 class="card-title"><%= data.foods[0][i].food_name%></h5>
-                      <p class="card-text">Food ID: <%= data.foods[0][i].food_id %></p>
                       <form method="POST" action="/assignFood/<%=data.foods[1]%>/<%=data.foods[0][i].food_id%>">
                         <p>
                             <label for="frequency">Servings per day: </label>
-                            <input id="frequency" name="frequency" type="number" min="1" max="50" value="1" required>
+                            <input class="form-control" id="frequency" name="frequency" type="number" min="1" max="50" value="1" required>
                         </p>
                         <p>
                             <label for="serving">Serving Size(g): </label>
-                            <input id="serving" name="serving" type="number" min="1" value="1" required>
+                            <input class="form-control" id="serving" name="serving" type="number" min="1" value="1" required>
                         </p>
                         <button class="btn btn-primary" style="margin-top: 10px;">Assign</button>
                       </form>

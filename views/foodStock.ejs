@@ -82,8 +82,7 @@
 
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-10" data-aos="">
-              <h1 style="padding-top: 40px;  padding-bottom: 40px;">Inventory Management</h1>
-              <h1>Please select a food and update its stock</h1>
+              <h1 style = "padding-top:40px;">Please select a food and update its stock</h1>
           </div>
         </div>
 
@@ -93,13 +92,12 @@
             <div class="col mb-4" data-aos="fade-up" data-aos-delay="0">
             <div class="card text-center h-100" style="box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);">
                 <div class="card-body">
-                  <p class="card-title" style="color:black;"><%= data[i].food_name %></p>
-                  <p class="card-text">ID: <%= data[i].food_id %></p>
-                  <p class="card-text">Current Stock: <%= data[i].stock %> g</p>
-                  <p class="card-text">Target Stock: <%= data[i].target_stock %> g</p>
+                  <p class="card-title" style="color:black; font-size:1.1rem;"><i><%= data[i].food_name %></i></p>
+                  <p class="card-text"><b style="color:black; font-size:1.5rem;"><%= data[i].stock %>g </b> Available</p>
+                  <p class="card-text"><b style="color:black; font-size:1.5rem;"><%= data[i].target_stock %>g </b> Target</p>
                   <form class="card-text" method="POST" action="/updateFoodStock/<%=data[i].food_id%>">
                     <label>Quantity received (g):</label>
-                    <input type="number" name="quantity" min="1" step="1" value="1">
+                    <input class = "form-control" type="number" name="quantity" min="1" step="1" value="1">
                     <p>
                     <button class="btn btn-primary" style="margin-top: 10px;">Update</button>
                    </p>

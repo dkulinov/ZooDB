@@ -322,7 +322,10 @@ app.get('/insertNewAnimal', function(req, res)
     data = [];
     db.getEmployeeName(req.session.user,function(employee){
         data.employee = employee;
-        res.render("insertAnimal.ejs",{data:data});
+        db.getAnimalList(function(animals){
+            data.animalList = animals;
+            res.render("insertAnimal.ejs",{data:data});
+        });
     });
 });
 
@@ -336,7 +339,7 @@ app.post('/insertNewAnimal', function(req, res)
         if(err === true){
             res.render("errorPage.ejs", {message: "Error animal not inserted"});
         }else{
-            res.redirect("/caretakerManager");
+            res.redirect("/insertNewAnimal");
         }
     })
 });

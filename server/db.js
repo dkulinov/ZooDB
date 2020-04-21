@@ -326,7 +326,7 @@ insertNewAnimal = function(data, callback){
   pool.getConnection(function(err, connection) {
     if(err) { console.log(err); callback(true); return; }
     
-    var sql = "INSERT INTO zoo_schema.animal values (LPAD(FLOOR(RAND() * 999999.99), 8, '0'), ?, ?, current_date(), ?, ?, ?, ?, NULL, ?, ?);";
+    var sql = "INSERT INTO zoo_schema.animal values (NULL, ?, ?, current_date(), ?, ?, ?, ?, NULL, ?, ?);";
 
 
     connection.query(sql, data, function(err, results) {
@@ -921,6 +921,21 @@ getAnimalInfo = function(animal, callback){
 }
 
 module.exports.getAnimalInfo = getAnimalInfo;
+
+getAnimalList = function(callback){
+  var sql = "select animal_name,species,admission,dob,gender,enclosure_id,status from zoo_schema.animal;";
+  
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err); callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
+}
+
+module.exports.getAnimalList = getAnimalList;
 
 
 updateAnimalInfo = function(animal, enclosure_id, health, diet, feeds, callback)
