@@ -220,21 +220,21 @@
 
          
           <!-- Content Row -->
-          <div class="row">
+          <div class="row" style = "padding-top:20px;">
 
             <!-- Content Column -->
             <div class="col-lg-6 mb-4">
                <h6 class="m-0 font-weight-bold text-primary">Enter Start Date AND End Date to Create a Sales Report </h6>
               <!-- Report Form-->
-              <form action = "/generateReport" method = "POST">
+              <form style = "padding-top:20px;" action = "/generateReport" method = "POST">
                 <label>
                   Start Date:
-                  <input type="date" name="startdate" id = "startdate" min="2020-03-01"  required>
+                  <input class = "form-control" type="date" name="startdate" id = "startdate" min="2020-03-01"  required>
                   <span class="validity"></span>
                 </label>    
                 <label>
                   End Date:
-                  <input type="date" name="enddate" id = "enddate" min="2020-03-01"  required>
+                  <input class = "form-control" type="date" name="enddate" id = "enddate" min="2020-03-01"  required>
                   <span class="validity"></span>
                 </label> 
 

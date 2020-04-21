@@ -127,15 +127,15 @@
                       <form method="POST" action="/prescribeMedicine/<%=data.medicines[1]%>/<%=data.medicines[0][i].med_id%>">
                         <p>
                             <label for="duration">Duration(days): </label>
-                            <input id="duration" name="duration" type="number" min="1" max="365" value="1" required>
+                            <input class="form-control col-xs-2" id="duration" name="duration" type="number" min="1" max="365" value="1" required>
                         </p>
                         <p>
                             <label for="dose">Dose(mg): </label>
-                            <input id="dose" name="dose" type="number" min="1" value="1" required>
+                            <input class="form-control col-xs-2" id="dose" name="dose" type="number" min="1" value="1" required>
                         </p>
                         <p>
                             <label for="frequency">Frequency: </label>
-                            <select id="frequency" name="frequency" required>
+                            <select class="form-control col-xs-2" id="frequency" name="frequency" required>
                                 <option value="daily">Daily</option>
                                 <option value="2 a day">Two per day</option>
                                 <option value="3 a day">Three per day</option>
@@ -146,7 +146,7 @@
                         </p>
                         <p>
                             <label for="disease">Disease: </label>
-                            <input id="disease" name="disease" type="text" maxlength="100" required>
+                            <input class="form-control col-xs-2" id="disease" name="disease" type="text" maxlength="100" required>
                         </p>
                         <button class="btn btn-primary" style="margin-top: 10px;">Prescribe</button>
                       </form>
@@ -161,15 +161,7 @@
 
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; HoustonZoo 2020</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
+ 
 
     </div>
     <!-- End of Content Wrapper -->

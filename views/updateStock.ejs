@@ -100,7 +100,7 @@
                   <p class="card-text">Target Stock: <%= data[i].target_stock %></p>
                   <form class="card-text" method="POST" action="/updateStock/<%=data[i].product_id%>/<%=data[i].product_size;%>">
                     <label>Quantity received:</label>
-                    <input type="number" name="quantity" min="1" step="1" value="1">
+                    <input class = "form-control" type="number" name="quantity" min="1" step="1" value="1">
                     <p>
                     <button class="btn btn-primary" style="margin-top: 10px;">Update</button>
                    </p>

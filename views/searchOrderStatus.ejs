@@ -88,13 +88,13 @@
 
         <div class="row justify-content-center text-center mb-5">
             <div class="col-md-10" data-aos="">
-              <h2 class="section-heading" id="tickets">Please provide your details to see the status of your order:</h2>
+              <h2 id="tickets">Please provide your details to see the status of your order:</h2>
             </div>
         </div>
 
     <div class="row row-cols-1 justify-content-center">  
         <div class="col mb-4" data-aos="fade-up" data-aos-delay="0">
-          <div class="card text-center h-100 border-success" style="border-width: 3px;">
+          <div class="card text-center h-100 ">
             <div class="card-body" style="color:black">
       <!-- source: https://www.w3schools.com/howto/howto_css_checkout_form.asp -->
     <form method="POST" action="/searchOrder">
@@ -102,9 +102,9 @@
             <div class="justify-content-center text-center">
               <p class="card-text">
                 <label for="fname">Order Number:</label>
-                <input type="text" id="number" name="number" required>
+                <input class = "form-control" type="text" id="number" name="number" required>
                 <label for="zip">Zip</label>
-                <input type="text" id="zip" name="zip" placeholder="10001" required>
+                <input class = "form-control" type="text" id="zip" name="zip" placeholder="10001" required>
             </p>
             </div>
   
@@ -123,23 +123,7 @@
 </main><!-- End #main -->
   
 
-      <div class="row justify-content-center text-center">
-        <div class="col-md-7">
-          <p class="copyright">&copy; Copyright SoftLand. All Rights Reserved</p>
-          <div class="credits">
-            <!--
-            All the links in the footer should remain intact.
-            You can delete the links only if you purchased the pro version.
-            Licensing information: https://bootstrapmade.com/license/
-            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=SoftLand
-          -->
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-          </div>
-        </div>
-      </div>
 
-    </div>
-  </footer>
   
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
