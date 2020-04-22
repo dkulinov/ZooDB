@@ -116,42 +116,50 @@
                 <center>
                 <label>
                   Animal Name:
-                  <input class = "form-control" type="text" name="animalname" id = "animalname" required>
+                  <input class = "form-control" type="text" name="animalname" id = "animalname" placeholder = "John" required>
                 </label>
                 <br>   
                 <label>
                   Species:
-                  <input class = "form-control" type="text" name="species" id = "species"   required>
+                  <input class = "form-control" type="text" name="species" id = "species"   placeholder = "Tiger" required>
                 </label> 
                 <br> 
                 <label>
                     DOB:
-                    <input class = "form-control" type="text" name="dob" id = "dob"   required>
+                    <input class = "form-control" type="text" name="dob" id = "dob" placeholder = "2020-04-22"  required>
                 </label> 
                 <br> 
                 <label>
                     Gender:
-                    <input class = "form-control" type="text" name="gender" id = "gender"  required>
+                    <select name = "gender" id = "gender" class = "form-control" required>
+                      <option value = "M">M</option>
+                      <option value = "F">F</option>
+                    </select>
+                    
                 </label> 
                 <br> 
                 <label>
                     Enclosure ID:
-                    <input class = "form-control" type="text" name="enclosure" id = "enclosure"  required>
+                    <input class = "form-control" type="text" name="enclosure" id = "enclosure" placeholder = "111119" required>
                 </label>
                 <br> 
                 <label>
                     Status:
-                    <input class = "form-control" type="text" name="status" id = "status"  required>
+                    <select name = "status" id = "status" class = "form-control" required>
+                      <option value = "healthy">healthy</option>
+                      <option value = "sick">sick</option>
+                      <option value = "pregnant">pregnant</option>
+                    </select>
                 </label>
                 <br>   
                 <label>
                     Feedings Per Day:
-                    <input class = "form-control" type="text" name="feedings" id = "feedings"  required>
+                    <input class = "form-control" type="number" name="feedings" id = "feedings"  placeholder = "3" required>
                 </label> 
                 <br> 
                 <label>
                     Image Path:
-                    <input class = "form-control" type="text" name="imagepath" id = "imagepath"  required>
+                    <input class = "form-control" type="text" name="imagepath" id = "imagepath"  placeholder = "tiger.jpg" required>
                 </label>  
                 <br>  
                 <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-sm text-white-50"></i> Add Animal</button>
@@ -180,6 +188,7 @@
                       <th>Admission Date</th>
                       <th>DOB</th>
                       <th>Status</th>
+                      <th>Enclosure ID</th>
                     </tr>
                   </thead>
 
@@ -191,6 +200,7 @@
                         <td><%= data.animalList[i].admission %> </td>
                         <td><%= data.animalList[i].dob %></td>
                         <td><%= data.animalList[i].status %></td>
+                        <td><%= data.animalList[i].enclosure_id %></td>
                       </tr>
                     <% } %>   
                   </tbody>

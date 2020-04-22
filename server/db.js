@@ -950,7 +950,7 @@ updateAnimalInfo = function(animal, enclosure_id, health, diet, feeds, callback)
   sql+=feeds;
   sql+=" WHERE animal_id =";
   sql+=animal;
-  console.log(sql);
+
 
    pool.getConnection(function (err, connection) {
     if(err) { console.log(err); callback(false); return; }
@@ -1055,7 +1055,7 @@ updateEmployeeProfile = function(f_name,l_name,pass,employee,callback){
   sql+= "pswd = ";
   sql+= "'"+pass+"'" + " WHERE employee_id =";
   sql+= employee;
-  console.log(sql);
+
   pool.getConnection(function (err, connection) {
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err,res){

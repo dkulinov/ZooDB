@@ -144,7 +144,7 @@ app.post('/employeeLogin', function(req, res){
 
 app.get('/employeeLogout', function(req, res){
     req.session.destroy(function(){
-       console.log("user logged out.")
+
     });
     res.redirect('/employeeLogin');
  });
@@ -540,7 +540,7 @@ app.post('/alert', function(req, res)
     {
         db.getVetAlerts(req.body.time, function(info)
         {
-            console.log(info);
+        
             res.render('vet_alerts.ejs', {data:[info, req.body.time]});
         });
     }
