@@ -278,24 +278,32 @@ app.get('/vet',checkEmployeeSignIn, function(req,res)
     });   
 });
 
-app.get('/vetManager',checkEmployeeSignIn, function(req,res)
+app.get('/vetManager', function(req,res)
 {
-    var data = [];
-    var username = req.session.user;
-    //if you nest the functions then they will always run in order
-    // otherwise you may get unexpected behavior like some data not loading
-    db.getEmployeeName(username,function(employee){
-        data.employee = employee;
-            db.getAllAnimals(function(animals){
-               data.animals = animals;
-               db.getAllVets(function(employees)  //get employees from db.js file and then call the function 
-               {
-                  data.employeeList = employees;
-                  res.render("vetManager.ejs", { data:data });
+    if(!req.session.user)
+        res.render('errorPage', {message:"You don't have access to this page"});
+    else if(req.session.user.isManager && req.session.user.dept==9)
+    {
+        var data = [];
+        var username = req.session.user;
+        //if you nest the functions then they will always run in order
+        // otherwise you may get unexpected behavior like some data not loading
+        db.getEmployeeName(username,function(employee){
+            data.employee = employee;
+                db.getAllAnimals(function(animals){
+                data.animals = animals;
+                db.getAllVets(function(employees)  //get employees from db.js file and then call the function 
+                {
+                    data.employeeList = employees;
+                    res.render("vetManager.ejs", { data:data });
+                });
             });
         });
-    });
+    }
+    else
+        res.render('errorPage', {message:"You don't have access to this page"});
 });
+
 
 
 app.get('/vetTables',checkEmployeeSignIn, function(req,res){
@@ -1019,6 +1027,18 @@ app.post('/addNewItem/:shopID', function(req, res){
     db.addNewItem(req.body.name, req.body.size, req.body.price, req.body.stock, req.body.target, req.body.image_path,req.params.shopID,function(result){
         if(result != false)
             res.redirect('/shop');
+        else
+            res.render('errorPage', {message: "Something went wrong"});
+    });
+});
+
+
+// lets vet manager delete an animal
+app.post('/delete/:animal/', function(req, res){
+    db.deleteAnimal(req.params.animal, function(result)
+    {
+        if(result != false)
+            res.redirect('/');
         else
             res.render('errorPage', {message: "Something went wrong"});
     });

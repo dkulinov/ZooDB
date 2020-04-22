@@ -259,6 +259,9 @@
                               <p class="card-text">Species: <%= data.animals[i].species %></p>
                               <p class="card-text">Health Status: <%= data.animals[i].status %></p>
                               <a href="/viewAnimal/<%=data.animals[i].animal_id%>"><button class="btn btn-primary" style="margin-top: 10px;">Select</button></a>
+                              <form method="POST" action="/delete/<%=data.animals[i].animal_id%>/" onsubmit="return confirm('Are you sure you want to delete this animal?\nThis change is permanent!');">
+                                <button style="margin-top: 10px;" class="btn btn-danger">Delete</button>
+                              </form>
                             </div>
                           </div>
                         </div>

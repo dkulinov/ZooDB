@@ -1097,3 +1097,20 @@ addNewItem = function(name,size,price,stock,target,image_path,shopID,callback){
   });
 }
 module.exports.addNewItem = addNewItem;
+
+// lets vet manager delete an animal
+deleteAnimal = function(animal, callback)
+{
+    var sql = "DELETE FROM animal WHERE animal_id=";
+    sql += animal;
+    console.log(sql);
+    pool.getConnection(function (err, connection) {
+      if(err) { console.log(err); callback(false); return; }
+      connection.query(sql, function(err,res){
+        connection.release();
+        if(err){callback(false);}
+        callback(res);
+      });
+    });
+}
+module.exports.deleteAnimal = deleteAnimal;
