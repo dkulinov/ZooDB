@@ -144,7 +144,7 @@ app.post('/employeeLogin', function(req, res){
 
 app.get('/employeeLogout', function(req, res){
     req.session.destroy(function(){
-
+        console.log("employee Logged Out");
     });
     res.redirect('/employeeLogin');
  });
