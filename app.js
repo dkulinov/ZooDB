@@ -96,7 +96,7 @@ app.post('/signup', function(req, res){
       res.render('errorPage', {message: "Error one of the fields are missing."});   
    }
    db.signUpCustomer([req.body.firstName, req.body.lastName, req.body.email, req.body.password], function(err, data){
-      if(err) {console.log("error"); return;}
+      if(err) {console.log("error"); res.render('errorPage', {message:"Could not connect to database. Check your connection and try again."});}
       else{
         
           if(data === true){
@@ -122,7 +122,7 @@ app.post('/employeeLogin', function(req, res){
         res.render('errorPage', {message: "Missing required fields"});
     } else {
         db.authenticateEmployee([username, password], function(err, data){
-            if(err) {console.log("error"); return;}
+            if(err) {console.log("error"); res.render('errorPage', {message:"Could not connect to database. Check your connection and try again."});}
             else{
               
                 if(data === true){
@@ -164,7 +164,7 @@ app.post('/customerLogin', function(req, res){
         res.render('errorPage', {message: "Missing required fields"});
     } else {
         db.authenticateCustomer([username, password], function(err, data){
-            if(err) {console.log("error"); return;}
+            if(err) {console.log("error"); res.render('errorPage', {message:"Could not connect to database. Check your connection and try again."});}
             else{
 
                 if(data === true){
@@ -416,19 +416,19 @@ app.use('/managerFrontPage', function(err, req, res, next){
     } else {
 
         db.getRevenueTest([startdate, enddate], function(err,revenue){
-            if(err) {console.log("error"); return;}
+            if(err) {console.log("error"); res.render('errorPage', {message:"Could not connect to database. Check your connection and try again."});}
             else{
                 data.revenue = revenue;
                 db.getOrdersTest([startdate, enddate], function(err,orders){
-                    if(err) {console.log("error"); return;}
+                    if(err) {console.log("error"); res.render('errorPage', {message:"Could not connect to database. Check your connection and try again."});}
                     else{
                         data.orderTable = orders;
                         db.getMostSoldProductsTest([startdate, enddate], function(err,products){
-                            if(err) {console.log("error"); return;}
+                            if(err) {console.log("error"); res.render('errorPage', {message:"Could not connect to database. Check your connection and try again."});}
                             else{
                                 data.mostSoldProducts = products;
                                 db.getTicketDistribution([startdate, enddate], function(err,tickets){
-                                    if(err) {console.log("error"); return;}
+                                    if(err) {console.log("error"); res.render('errorPage', {message:"Could not connect to database. Check your connection and try again."});}
                                     else{
                                         data.ticketDistribution = tickets;
                                         db.getEmployeeName(req.session.user, function(employee){
