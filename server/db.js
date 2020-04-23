@@ -304,7 +304,7 @@ module.exports.getAllAnimals= getAllAnimals;
 
 
 getCareTakersInfo = function(callback){
-  var sql = "SELECT * FROM zoo_schema.takes_care_of NATURAL JOIN zoo_schema.animal;"
+  var sql = "SELECT takes_care_of.*, animal.*, CONCAT(employee.first_name,' ',employee.last_name) AS caretaker_name, enclosure.enclosure_name FROM zoo_schema.takes_care_of JOIN animal ON animal.animal_id=takes_care_of.animal_id JOIN employee ON takes_care_of.caretaker_id=employee.employee_id JOIN enclosure ON enclosure.enclosure_id = animal.enclosure_id;"
   pool.getConnection(function(err, connection){
     connection.release();
     if(err) { console.log(err); callback(true); return; }
