@@ -1,9 +1,33 @@
 # ZooDB
-Zoo DBMS for COSC 3380
+Zoo DBMS for Databases Course
+
+# User Roles
+All users have password set as password.
+
+***Login Information***
+Login as a customer by clicking Login then Customer Login from home page.
+***johndoe@gmail.com - Customer***
+Logout from customer by going to home page and selecting Login | Logout and pick the Logout option.
+
+Login as employee by clicking Login then Employee Login from home page.
+***10015*** - Vet Alondra Aguilar
+***10008*** - Vet Manager Charlotte de Witte
+***10001*** - Nutrition Manager Andrew Jones
+***10014*** - Caretaker Asucena Ochoa
+***10010*** - Caretaker Manager Chris Jamez
+***10018*** - Normal Employee Sam Arnold
+Logout as employee by clicking the name in the top right and selecting logout option.
+
+#What can each role can Do?
+***Vet*** - 
+***Vet Manager*** - 
+***Caretaker*** - 
+***Caretaker Manager*** - 
+***General Manager*** -
+***Regular Zoo Employee *** - 
 
 
-
-
+### SETUP INFORMATION
 
 # Setting up the database
 This project uses mySql and uses the schema called zoo_schema to 
