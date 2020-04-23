@@ -212,18 +212,17 @@ function checkCustomerSignIn(req, res, next){
 /* can be used in each route  to see if the user is logged in and if it is an employee*/
 function checkEmployeeSignIn(req, res, next){
    if(!req.session.user){
-      var err = new Error("Not logged in!");
-      next(err);
+      var err = "You are not logged in!";
+      res.render('errorPage', {message: err});
    }
    else if(req.session.user.role === "Employee"){
       
        next();   //If session exists, proceed to page
    }else {
-      var err = new Error("Not logged in!");
-      next(err);
+      var err = "You are not logged in!";
+      res.render('errorPage', {message: err});
    }
 }
-
 /*---------------------------------------- Regular Employee Page Routes ----------------------------------*/
 /*app.get('/regularEmployee', checkEmployeeSignIn, function(req, res)
 {
