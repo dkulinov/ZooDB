@@ -24,15 +24,15 @@ Logout as employee by clicking the name in the top right and selecting logout op
 ***Caretaker*** -    
 ***Caretaker Manager*** -   
 ***General Manager*** -  
-***Regular Zoo Employee *** -   
+***Regular Zoo Employee *** -     
 
 
-### SETUP INFORMATION  
+#SETUP INFORMATION  
 
-# Setting up the database  
+## Setting up the database  
 This project uses mySql and uses the schema called zoo_schema   
 
-# Running the Server  
+## Running the Server  
 First of all make sure you have Node installed on your computer. You can get it from here https://nodejs.org/en/download/   
 then you can try doing node -v in the terminal to see if it installed correctly  
 
