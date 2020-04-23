@@ -251,7 +251,7 @@ module.exports.getEmployeesAnimals = getEmployeesAnimals;
 /* ------------------------------------- Manager Page functions ----------------------------------------- */
 
 getAllEmployees = function(callback){
-  var sql = "SELECT * FROM zoo_schema.employee;";
+  var sql = "SELECT employee.*, department.department_name, CONCAT(s.first_name,' ', s.last_name) AS supervisor FROM zoo_schema.employee JOIN department ON department.department_id=employee.department_id JOIN employee AS s ON employee.supervisor_id = s.employee_id;";
 
   pool.getConnection(function(err, connection){
     connection.release();
