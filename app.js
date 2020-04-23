@@ -458,10 +458,15 @@ app.get('/shop', function(req,res)
     var items = [];
     db.getProducts(function(items)
     {
-        if(!req.session.user)
-            res.render("shop.ejs", {items: [items, false, "none", -1]});
+        if(items!=false)
+        {
+            if(!req.session.user)
+                res.render("shop.ejs", {items: [items, false, "none", -1]});
+            else
+                res.render("shop.ejs", {items: [items, req.session.user.isMember, req.session.user.role, req.session.user.dept]});
+        }
         else
-            res.render("shop.ejs", {items: [items, req.session.user.isMember, req.session.user.role, req.session.user.dept]});
+            res.render('errorPage', {message:"Something went wrong"});
     });
 });
 
@@ -483,17 +488,27 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
     if(order.in_store == 0)
     {
         db.makeOnlinePurchase(order, function(response){
-            newID = response;
-            newID = newID.insertId;
-            res.render("confirmation.ejs", {newID:newID});
+            if(response!=false)
+            {
+                newID = response;
+                newID = newID.insertId;
+                res.render("confirmation.ejs", {newID:newID});
+            }
+            else
+                res.render('errorPage', {message:"Something went wrong"});
         });
     }
     else
     {
         db.ringUpCustomer(order, function(response){
-            newID = response;
-            newID = newID.insertId;
-            res.render("confirmation.ejs", {newID:newID});
+            if(response!=false)
+            {
+                newID = response;
+                newID = newID.insertId;
+                res.render("confirmation.ejs", {newID:newID});
+            }
+            else
+                res.render('errorPage', {message:"Something went wrong"});
         });
     }
 });
