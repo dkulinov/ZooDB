@@ -676,7 +676,7 @@ getCustomerInfo = function(email, callback)
   sql += email;
   sql += "';"
   pool.getConnection(function(err, connection){
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
       if(err) callback(false);
