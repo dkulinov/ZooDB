@@ -12,20 +12,28 @@ Logout from customer by going to home page and selecting Login | Logout and pick
 Login as employee by clicking Login then Employee Login from home page.  
 ***10015*** - Vet Alondra Aguilar  
 ***10008*** - Vet Manager Charlotte de Witte  
-***10001*** - Nutrition Manager Andrew Jones  
 ***10014*** - Caretaker Asucena Ochoa  
 ***10010*** - Caretaker Manager Chris Jamez  
-***10018*** - Normal Employee Sam Arnold  
+***10013*** - General Manager
+***10004*** - Clothing Shop Manager Katherine Gomez
+***10016*** - Clothing Shop Employee John Smith
+***10009*** - Kids' Shop Manager Daniel Evans
+***10017*** - Kids' Shop Employee Judy Long
+***10003*** - Accessories Shop Manager Travis Lee
+***10018*** - Accessories Shop Employee Sam Arnold  
+***10020*** - Ticket Shop Manager Jake Brown
+***10019*** - Ticket Shop Employee Christopher Tick
 Logout as employee by clicking the name in the top right and selecting logout option.  
 
 #What can each role can Do?  
-***Vet*** -   
-***Vet Manager*** -   
-***Caretaker*** -    
-***Caretaker Manager*** -   
-***General Manager*** -  
-***Regular Zoo Employee *** -     
-
+***Vet*** - Give animals Medicine (see animal named Hop and click "See current medicine"); Prescribe Medicine to any Animal; See animals' diet (see animal named Hop); Assign Food to an animal's diet; Update medicine Stock when shipment is received; Add a new medicine to the database; Add a new food to the database; See which medicines are runnning low on stock by clicking alerts.
+***Vet Manager*** - Same capabilities as the regular vets by clicking the buttons on the left side. This will take you to the regular vet page and you can follow the instructions from the Vet info above. Additionally, vet manager can add new animals, edit animal information, and delete animals.
+***Caretaker*** - See all the animals that they take care of. Feed them thereby updating the food stock. See caretaker alerts and caretaker report which shows how many health status changes occur.
+***Caretaker Manager*** - Can update food stock as shipments are received. Can add new animals. Can assign animals to caretakers. Can view alerts
+***General Manager*** -  Can view financial report.
+***Shop Managers*** - Update the stock in their shop as shipments are received. See low stock alerts of products in their shops (except ticket shop because there's no stock). Add new items to their shops.
+***Zoo Shop Employees*** - can ring people up depending on the gift shop they work in. Can also update product stock as "shipment is received".
+***Customer*** - purchase products from the shop, become a member, view order history (all orders purchased under their email), track orders (if they have the order # and zipc ode). If a customer has a membership, they can extend it by another year by buying one more membership. Also if the customer has a membership they will not be able to buy tickets as all the tickets are free to them.
 
 #SETUP INFORMATION  
 
