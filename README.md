@@ -1,5 +1,5 @@
 # ZooDB
-Zoo DBMS for Databases Course
+Zoo DBMS for Databases Course  
 Online Link: (http://ec2-18-224-190-30.us-east-2.compute.amazonaws.com:3000)
 # User Roles
 All users have password set as ***password***.  
