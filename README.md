@@ -14,16 +14,16 @@ Login as employee by clicking Login then Employee Login from home page.
 ***10015*** - Vet Alondra Aguilar  
 ***10008*** - Vet Manager Charlotte de Witte  
 ***10014*** - Caretaker Asucena Ochoa  
-***10010*** - Caretaker Manager Chris Jamez  
-***10013*** - General Manager
-***10004*** - Clothing Shop Manager Katherine Gomez
-***10016*** - Clothing Shop Employee John Smith
-***10009*** - Kids' Shop Manager Daniel Evans
-***10017*** - Kids' Shop Employee Judy Long
-***10003*** - Accessories Shop Manager Travis Lee
-***10018*** - Accessories Shop Employee Sam Arnold  
-***10020*** - Ticket Shop Manager Jake Brown
-***10019*** - Ticket Shop Employee Christopher Tick
+***10010*** - Caretaker Manager Chris Jamez   
+***10013*** - General Manager    
+***10004*** - Clothing Shop Manager Katherine Gomez   
+***10016*** - Clothing Shop Employee John Smith   
+***10009*** - Kids' Shop Manager Daniel Evans   
+***10017*** - Kids' Shop Employee Judy Long   
+***10003*** - Accessories Shop Manager Travis Lee   
+***10018*** - Accessories Shop Employee Sam Arnold    
+***10020*** - Ticket Shop Manager Jake Brown   
+***10019*** - Ticket Shop Employee Christopher Tick   
 
 Logout as employee by clicking the name in the top right and selecting logout option.  
 
