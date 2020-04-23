@@ -399,7 +399,7 @@ module.exports.getRevenueTest = getRevenueTest;
 
 
 getOrdersTest = function(data, callback){
-  var sql = "SELECT * FROM zoo_schema.order WHERE order_date BETWEEN ? AND ?;";
+  var sql = "SELECT zoo_schema.`order`.*, product.product_name, product.product_size FROM zoo_schema.order JOIN product ON `order`.product_id=product.product_id WHERE order_date BETWEEN ? AND ?;";
   
   pool.getConnection(function(err, connection){
     connection.release();
