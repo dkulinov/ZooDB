@@ -562,8 +562,10 @@ app.post('/alert', function(req, res)
     {
         db.getVetAlerts(req.body.time, function(info)
         {
-        
-            res.render('vet_alerts.ejs', {data:[info, req.body.time]});
+            if(info != false)
+                res.render('vet_alerts.ejs', {data:[info, req.body.time]});
+            else 
+                res.render('errorPage', {message:"Something went wrong"})
         });
     }
     else if(req.session.user.isCareTaker)
@@ -582,21 +584,26 @@ app.post('/alert', function(req, res)
         {
             db.getNutritionAlerts(req.body.time, function(info)
             {
-                res.render('nutrition_alerts.ejs', {data:[info, req.body.time]});
+                if(info!=false)
+                    res.render('nutrition_alerts.ejs', {data:[info, req.body.time]});
+                else
+                    res.render('errorPage', {message:"Something went wrong"});
             });
         }
         else if(req.session.user.dept >=5 && req.session.user.dept <=7)
         {
             db.getStoreManagersAlerts(req.session.user.username, req.body.time, function(info)
             {
-                res.render('manager_alerts.ejs', {data:[info, req.body.time]});
+                if(info != false)
+                    res.render('manager_alerts.ejs', {data:[info, req.body.time]});
+                else
+                    res.render('errorPage', {message:"Something went wrong"});
             });
         }
         else
             res.render('errorPage', {message: "You don't have access to this page!"}); // any other managers
     }
 });
-
 
 /* --------------------- Tracking Routes  ----------------------- */
 
