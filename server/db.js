@@ -694,7 +694,7 @@ getOrderHistory = function(email, callback)
   sql += email;
   sql += "' ORDER BY order_date DESC;"
   pool.getConnection(function(err, connection){
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
       if(err) callback(false);
@@ -710,7 +710,7 @@ getMembership = function(callback)
 {
   var sql = "SELECT * FROM product WHERE product_id = 37378708;"
   pool.getConnection(function(err, connection){
-    if(err) {console.log(err); callback(true); return;}
+    if(err) {console.log(err); callback(false); return;}
     connection.query(sql, function(err, res){
       connection.release();
       if(err) callback(false);
@@ -727,7 +727,7 @@ getProductsForUpdate = function(dept, callback){
   sql += dept;
   sql += " GROUP BY product_id";
   pool.getConnection(function (err, connection) {
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
@@ -749,7 +749,7 @@ updateStock = function(id, size, quantity, callback){
   sql += size;
   sql += "';";
   pool.getConnection(function (err, connection) {
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err,res){        
       connection.release();
       if(err){callback(false);}
