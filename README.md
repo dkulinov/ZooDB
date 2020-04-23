@@ -29,8 +29,7 @@ Logout as employee by clicking the name in the top right and selecting logout op
 
 #What can each role can Do?  
 
-***Vet*** - Give animals Medicine (see animal named Hop and click "See current medicine"); Prescribe Medicine to any Animal; See animals' diet (see animal named Hop); Assign Food to an animal's diet; Update medicine Stock when shipment is received; Add a new medicine to the database; Add a new food to the database; See which medicines are runnning low on stock by clicking alerts.
-
+***Vet*** - Give animals Medicine (see animal named Hop and click "See current medicine"); Prescribe Medicine to any Animal; See animals' diet (see animal named Hop); Assign Food to an animal's diet; Update medicine Stock when shipment is received; Add a new medicine to the database; Add a new food to the database; See which medicines are runnning low on stock by clicking alerts.   
 ***Vet Manager*** - Same capabilities as the regular vets by clicking the buttons on the left side. This will take you to the regular vet page and you can follow the instructions from the Vet info above. Additionally, vet manager can add new animals, edit animal information, and delete animals.   
 ***Caretaker*** - See all the animals that they take care of. Feed them thereby updating the food stock. See caretaker alerts and caretaker report which shows how many health status changes occur.   
 ***Caretaker Manager*** - Can update food stock as shipments are received. Can add new animals. Can assign animals to caretakers. Can view alerts.   
