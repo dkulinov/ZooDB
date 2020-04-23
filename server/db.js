@@ -576,10 +576,10 @@ getVetAlerts = function(time, callback)
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) console.log(err);
+      if(err) callback(false);
       else
         callback(res);
     });
@@ -606,10 +606,10 @@ getNutritionAlerts = function(time, callback)
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) console.log(err);
+      if(err) callback(false);
       else
         callback(res);
     });
@@ -637,17 +637,16 @@ getStoreManagersAlerts = function(id, time, callback)
   }
   sql += " ORDER BY date_generated ASC";
   pool.getConnection(function(err, connection){
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) console.log(err);
+      if(err) callback(false);
       else
         callback(res);
     });
 });
 }
 module.exports.getStoreManagersAlerts = getStoreManagersAlerts;
-
 
 
 /* --------------------------------------------------------------------------- */
