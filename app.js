@@ -635,8 +635,13 @@ app.get('/customerFrontPage', function(req, res)
     {
         db.getCustomerInfo(req.session.user.username, function(data)
         {
-            req.session.user.isMember = data[0].isMember;
-            res.render('customerFrontPage.ejs', {data:data});
+            if(data!=false)
+            {
+                req.session.user.isMember = data[0].isMember;
+                res.render('customerFrontPage.ejs', {data:data});
+            }
+            else
+                res.render('errorPage',{message:"Something went wrong"});
         });
     }
 });
