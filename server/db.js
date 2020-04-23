@@ -122,6 +122,7 @@ getProducts = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
+    if(err) callback(false);
       if(res.length)
         callback(res);
     });
@@ -138,7 +139,7 @@ makeOnlinePurchase = function(order, callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) console.log(err);
+      if(err) callback(false);
       else
         callback(res);
     });
@@ -156,7 +157,7 @@ ringUpCustomer = function(order, callback)
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) console.log(err);
+      if(err) callback(false);
       else
         callback(res);
     });
