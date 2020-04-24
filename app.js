@@ -331,7 +331,10 @@ app.get('/insertNewAnimal', function(req, res)
         data.employee = employee;
         db.getAnimalList(function(animals){
             data.animalList = animals;
-            res.render("insertAnimal.ejs",{data:data});
+            if(animals!=false)
+               res.render("insertAnimal.ejs",{data:data});
+            else
+               res.render('errorPage', {message:"Something went wrong"});
         });
     });
 });
@@ -534,7 +537,10 @@ app.get('/updateStock', function(req, res)
 app.post('/updateStock/:id/:size', function(req, res){
     db.updateStock(req.params.id, req.params.size, req.body.quantity, function(data)
     {
-        res.redirect('/updateStock');
+       if(data!=false)
+         res.redirect('/updateStock');
+       else
+          res.render('errorPage', {message:"Something went wrong"});
     });
 });
 
@@ -657,7 +663,10 @@ app.get('/orderHistory', function(req, res)
     {
         db.getOrderHistory(req.session.user.username, function(data)
         {
-            res.render('orderHistory.ejs', {data:data});
+           if(data!=false)
+               res.render('orderHistory.ejs', {data:data});
+           else
+              res.render('errorPage', {message:"Something went wrong"});
         });
     }
 });
@@ -673,7 +682,10 @@ app.get('/getMembership', function(req,res)
     {
         db.getMembership(function(data)
         {
-            res.render('becomeMember.ejs', {data:data});
+           if(data!=false)
+               res.render('becomeMember.ejs', {data:data});
+           else
+              res.render('errorPage', {message:"Something went wrong});
         });
     }
 });
@@ -1001,7 +1013,10 @@ app.get('/editEmployeeInfo', function(req, res){
     else 
     {
         db.getEmployeeProfile(req.session.user.username, function(employee){
-            res.render('editEmployeeProfile', {data:employee});
+           if(employee!=false)
+              res.render('editEmployeeProfile', {data:employee});
+           else
+              res.render('errorPage', {message:"Something went wrong"});
         });
     }
 });
