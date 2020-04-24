@@ -37,7 +37,7 @@ Logout as employee by clicking the name in the top right and selecting logout op
 ***Caretaker*** - See all the animals that they take care of. Feed them thereby updating the food stock. See caretaker alerts and caretaker report which shows how many health status changes occur.   
 ***Caretaker Manager*** - Can update food stock as shipments are received. Can add new animals. Can assign animals to caretakers. Can view alerts.   
 
-***General Manager*** -  Can view financial report.   
+***General Manager*** -  Can view financial report. Can also view general report (button on the left) and see list of employees, food, and medicine stocks.  
 
 ***Shop Managers*** - Update the stock in their shop as shipments are received. See low stock alerts of products in their shops (except ticket shop because there's no stock). Add new items to their shops.   
 ***Zoo Shop Employees*** - can ring people up depending on the gift shop they work in. Can also update product stock as "shipment is received".   
