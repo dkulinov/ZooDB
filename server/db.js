@@ -972,10 +972,10 @@ updateAnimalInfo = function(animal, enclosure_id, health, diet, feeds, callback)
 
 
   pool.getConnection(function (err, connection) {
-    if(err) { console.log(err);; callback(false); return; }
+    if(err) { console.log(err);; callback(true); return; }
     connection.query(sql, function(err,res){
       connection.release();
-      if(err){callback(false);}
+      if(err){callback(true);}
       callback(res);
     });
   });
