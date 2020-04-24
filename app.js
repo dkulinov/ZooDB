@@ -656,7 +656,7 @@ app.post('/alert', function(req, res)
     {
         db.getVetAlerts(req.body.time, function(info)
         {
-            if(info != false)
+            if(info !== false)
                 res.render('vet_alerts.ejs', {data:[info, req.body.time]});
             else 
                 res.render('errorPage', {message:"Something went wrong"});
@@ -681,7 +681,7 @@ app.post('/alert', function(req, res)
         {
             db.getNutritionAlerts(req.body.time, function(info)
             {
-                if(info!=false)
+                if(info!==false)
                     res.render('nutrition_alerts.ejs', {data:[info, req.body.time]});
                 else
                     res.render('errorPage', {message:"Something went wrong"});
@@ -691,7 +691,7 @@ app.post('/alert', function(req, res)
         {
             db.getStoreManagersAlerts(req.session.user.username, req.body.time, function(info)
             {
-                if(info != false)
+                if(info !== false)
                     res.render('manager_alerts.ejs', {data:[info, req.body.time]});
                 else
                     res.render('errorPage', {message:"Something went wrong"});
