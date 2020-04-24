@@ -412,7 +412,11 @@ app.get('/insertNewAnimal', function(req, res)
 //conenct html form to this route and send all the data like animalname, species etc...
 app.post('/insertNewAnimal', function(req, res)
 {
-    var file = req.files.image_path, filename= file.name;
+    var file = null;
+    if(req.files)
+        file = req.files.image_path;
+    var filename=null;
+    if(file) filename= file.name;
     var data = [req.body.animalname, req.body.species, req.body.dob, req.body.gender, req.body.enclosure, req.body.status, req.body.diet, req.body.feedings, filename];
     db.insertNewAnimal(data, function(err,response)
     {
@@ -432,11 +436,13 @@ app.post('/insertNewAnimal', function(req, res)
               }
             })
           }
+          else if(!req.files)
+          {
+            res.redirect("/insertNewAnimal");
+          }
         }
     })
 });
-
-
 
 
 
