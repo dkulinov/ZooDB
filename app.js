@@ -244,7 +244,10 @@ app.get('/caretaker',checkEmployeeSignIn, function(req,res)
         data.employee = employee;  
         db.getEmployeesAnimals(username, function(animals){
             data.animals = animals;
-            res.render("caretaker.ejs", { data: data });
+            if(animals!=false)
+               res.render("caretaker.ejs", { data: data });
+            else
+               res.render('errorPage', {message:"Something went wrong"});
         });
     });  
 });
@@ -258,7 +261,10 @@ app.get('/caretakerManager',checkEmployeeSignIn, function(req,res)
         data.employee = employee;
         db.getCareTakersInfo(function(caretakers){
             data.caretakers = caretakers;
-            res.render("caretakerManager.ejs", { data: data });
+            if(caretakers!=false)
+               res.render("caretakerManager.ejs", { data: data });
+            else
+               res.render('errorPage', {message:"Something went wrong"});
       });
    }); 
 });
@@ -272,7 +278,10 @@ app.get('/vet',checkEmployeeSignIn, function(req,res)
         data.employee = employee;
         db.getAllAnimals(function(animals){
             data.animals = animals;
-            res.render("vet.ejs", { data: data });
+            if(animals!=false)
+               res.render("vet.ejs", { data: data });
+            else
+               res.render('errorPage', {message:"Something went wrong"});
       });
     });   
 });
@@ -291,11 +300,19 @@ app.get('/vetManager', function(req,res)
             data.employee = employee;
                 db.getAllAnimals(function(animals){
                 data.animals = animals;
-                db.getAllVets(function(employees)  //get employees from db.js file and then call the function 
+                if(animals!=false)
                 {
-                    data.employeeList = employees;
-                    res.render("vetManager.ejs", { data:data });
-                });
+                   db.getAllVets(function(employees)  //get employees from db.js file and then call the function 
+                   {
+                       data.employeeList = employees;
+                       if(employees!=false)
+                           res.render("vetManager.ejs", { data:data });
+                        else
+                           res.render('errorPage', {message:"Something went wrong"});
+                   });
+                }
+                else
+                    res.render('errorPage', {message:"Something went wrong"});
             });
         });
     }
@@ -311,13 +328,24 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
         data.employee = employee;
         db.getAllAnimals(function(animalList){
          data.animalList = animalList;
-         db.getFoodStock(function(foodStock){
-            data.foodStock = foodStock;
-            db.getMedicineStock(function(medicineStock){
-               data.medicineStock = medicineStock;
-               res.render("vet_tables.ejs", {data :data});
+         if(animalList!=false){
+            db.getFoodStock(function(foodStock){
+               data.foodStock = foodStock;
+               if(foodStock!=false){
+                  db.getMedicineStock(function(medicineStock){
+                     data.medicineStock = medicineStock;
+                     if(medicineStock!=false)
+                        res.render("vet_tables.ejs", {data :data});
+                     else
+                        res.render('errorPage',{message:"Something went wrong"});
+                  });
+               }
+               else
+                  res.render('errorPage',{message:"Something went wrong"});
             });
-         });
+         }
+           else
+              res.render('errorPage',{message:"Something went wrong"});
       });
    }); 
 });
@@ -385,18 +413,30 @@ app.get('/managerTables',checkEmployeeSignIn, function(req,res)
     db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
     {
        data.employeeList = employees;
-       db.getFoodStock(function(foodStock)  
-       {
-        data.foodStock = foodStock;
-         db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
-         {
-            data.medicineStock = medicineStock;
-            db.getEmployeeName(req.session.user,function(employee){
-              data.employee = employee;
-              res.render("manager_tables", { data: data });
-            });
-         });
-       });
+       if(employees!=false){
+          db.getFoodStock(function(foodStock)  
+          {
+           data.foodStock = foodStock;
+           if(foodStock != false){
+                db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
+                {
+                    data.medicineStock = medicineStock;
+                    if(medicineStock!=false){
+                        db.getEmployeeName(req.session.user,function(employee){
+                            data.employee = employee;
+                            res.render("manager_tables", { data: data });
+                        });
+                    }
+                    else
+                        res.render('errorPage', {message:"Something went wrong"});
+                });
+            }
+            else
+                res.render('errorPage', {message:"Something went wrong"});
+        });
+       }
+       else
+            res.render('errorPage', {message:"Something went wrong"});
     });
 });
 
@@ -568,10 +608,10 @@ app.post('/alert', function(req, res)
     {
         db.getVetAlerts(req.body.time, function(info)
         {
-            if(info != false)
+            if(info !== false)
                 res.render('vet_alerts.ejs', {data:[info, req.body.time]});
             else 
-                res.render('errorPage', {message:"Something went wrong"})
+                res.render('errorPage', {message:"Something went wrong"});
         });
     }
     else if(req.session.user.isCareTaker)
@@ -579,7 +619,10 @@ app.post('/alert', function(req, res)
         // render caretaker report
         db.getCareTakerAlerts(req.session.user, req.body.time, function(alerts, numHealthy, numSick, numPregnant, numDeceased)
         {
-            res.render('caretaker_alerts.ejs', {data:[alerts, req.body.time, numHealthy, numSick, numPregnant,numDeceased]});
+           if(alerts===false)
+              res.render('errorPage', {message:"Something went wrong"});
+           else
+               res.render('caretaker_alerts.ejs', {data:[alerts, req.body.time, numHealthy, numSick, numPregnant,numDeceased]});
         });
     }
     else if(req.session.user.isManager)
@@ -685,7 +728,7 @@ app.get('/getMembership', function(req,res)
            if(data!=false)
                res.render('becomeMember.ejs', {data:data});
            else
-              res.render('errorPage', {message:"Something went wrong});
+              res.render('errorPage', {message:"Something went wrong"});
         });
     }
 });
@@ -938,11 +981,14 @@ app.get('/viewAnimal/:animal', function(req,res){
         var data = [];
         db.getAnimalInfo(req.params.animal,function(animal){
             data.animal = animal;
-            db.getEmployeeName(req.session.user,function(employee){
-              data.employee = employee;
-              res.render('viewAnimalInfo', {data:data});
-            });
-            
+           if(animal!=false){
+               db.getEmployeeName(req.session.user,function(employee){
+                 data.employee = employee;
+                 res.render('viewAnimalInfo', {data:data});
+               });
+           }
+           else
+              res.render('errorPage', {message:"Something went wrong"});
         });
         
     }
@@ -955,11 +1001,14 @@ app.get('/updateAnimal/:animal', function(req, res){
   var data = [];
     db.getAnimalInfo(req.params.animal, function(animal){
         data.animal = animal;
-        db.getEmployeeName(req.session.user,function(employee){
-          data.employee = employee;
-          res.render('updateAnimal', {data:data});
-        });
-            
+       if(animal!=false){
+           db.getEmployeeName(req.session.user,function(employee){
+             data.employee = employee;
+             res.render('updateAnimal', {data:data});
+           });
+       }
+       else
+          res.render('errorPage', {message:"Something went wrong"});
     });
 })
 
