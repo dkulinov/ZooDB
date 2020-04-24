@@ -1229,7 +1229,7 @@ app.post('/addNewItem/:shopID', function(req, res){
         if(result != false)
             res.redirect('/shop');
         else
-            res.render('errorPage', {message: "Something went wrong"});
+            res.render('errorPage', {message: "Something went wrong. That item might already be in the shop."});
     });
 });
 
