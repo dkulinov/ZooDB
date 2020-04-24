@@ -1072,7 +1072,7 @@ updateEmployeeProfile = function(f_name,l_name,pass,employee,callback){
       connection.release();
       if(err){callback(true); return;}
       else
-        callback(res);
+        callback(false,res);
     });
   });
 
