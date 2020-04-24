@@ -171,11 +171,12 @@ getEmployeeName = function(employee,callback){
   var sql = "SELECT first_name, last_name, department_id FROM zoo_schema.employee WHERE employee_id = ";
   sql += employee.username;
   pool.getConnection(function(err, connection){
-    if(err) { console.log(err); callback(true); return; }
+    if(err) { console.log(err); callback(false); return; }
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) console.log(err);
+      if(err) {callback(false);return;}
+      else
         callback(res);
     });
   });
