@@ -7,6 +7,7 @@ All users have password set as ***password***.
 ***Login Information***  
 Login as a customer by clicking Login then Customer Login from home page.  
 ***johndoe@gmail.com - Customer***  
+You can also create an an account by clicking customer log in and then create an account.     
 Logout from customer by going to home page and selecting Login | Logout and pick the Logout option.  
 
 Login as employee by clicking Login then Employee Login from home page. 
