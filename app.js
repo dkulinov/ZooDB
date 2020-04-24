@@ -1159,7 +1159,10 @@ app.get('/updateEmployeeInfo/:id', function(req, res){
     else 
     {
             db.getEmployeeProfile(req.params.id, function(employee){
-              res.render('updateEmployeeInfo', {data:employee});
+              if(employee!==false)
+                  res.render('updateEmployeeInfo', {data:employee});
+              else
+                 res.render('errorPage', {message:"Something went wrong"});
             });
             
     }
