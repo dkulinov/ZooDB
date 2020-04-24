@@ -122,7 +122,7 @@ getProducts = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-    if(err) callback(false);
+    if(err) {callback(false);return;}
       if(res.length)
         callback(res);
     });
@@ -139,7 +139,7 @@ makeOnlinePurchase = function(order, callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -157,7 +157,7 @@ ringUpCustomer = function(order, callback)
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -241,7 +241,7 @@ getEmployeesAnimals = function(employee,callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
         else
         callback(res);
     });
@@ -260,7 +260,7 @@ getAllEmployees = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -277,7 +277,7 @@ getAllVets = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -295,7 +295,7 @@ getAllAnimals = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -312,7 +312,7 @@ getCareTakersInfo = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -352,7 +352,7 @@ getFoodStock = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -370,7 +370,7 @@ getMedicineStock = function(callback){
   
     connection.query(sql, function(err, res){
     connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -481,7 +481,7 @@ getCareTakerAlerts = function(employee, time, callback)
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
       {
         var sql2 = "SELECT COUNT(*) AS numHealthy FROM caretaker_alerts WHERE new_health_status='healthy' AND caretaker_id = ";
@@ -496,7 +496,7 @@ getCareTakerAlerts = function(employee, time, callback)
         if(err) { console.log(err); callback(false); return; }
           connection.query(sql2, function(err, res2){
             connection.release();
-            if(err) callback(false);
+            if(err) {callback(false);return;}
             else
             {
               var sql3 = "SELECT COUNT(*) AS numSick FROM caretaker_alerts WHERE new_health_status='sick' AND caretaker_id = ";
@@ -511,7 +511,7 @@ getCareTakerAlerts = function(employee, time, callback)
               if(err) { console.log(err); callback(false); return; }
                 connection.query(sql3, function(err, res3){
                   connection.release();
-                  if(err) callback(false);
+                  if(err) {callback(false);return;}
                   else
                   {
                     var sql4 = "SELECT COUNT(*) AS numPregnant FROM caretaker_alerts WHERE new_health_status='pregnant' AND caretaker_id = ";
@@ -526,7 +526,7 @@ getCareTakerAlerts = function(employee, time, callback)
                       if(err) { console.log(err); callback(false); return; }
                       connection.query(sql4, function(err, res4){
                         connection.release();
-                        if(err) callback(false);
+                        if(err) {callback(false);return;}
                         else
                         {
                           var sql5 = "SELECT COUNT(*) AS numDeceased FROM caretaker_alerts WHERE new_health_status='deceased' AND caretaker_id = ";
@@ -541,7 +541,7 @@ getCareTakerAlerts = function(employee, time, callback)
                           if(err) { console.log(err); callback(false); return; }
                             connection.query(sql5, function(err, res5){
                               connection.release();
-                              if(err) callback(false);
+                              if(err) {callback(false);return;}
                               else
                               {
                                 callback(res, res2, res3, res4, res5);
@@ -584,7 +584,7 @@ getVetAlerts = function(time, callback)
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -614,7 +614,7 @@ getNutritionAlerts = function(time, callback)
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -645,7 +645,7 @@ getStoreManagersAlerts = function(id, time, callback)
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -666,7 +666,7 @@ searchOrder = function(number, zipcode, callback)
     if(err) { console.log(err); callback(true); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -684,7 +684,7 @@ getCustomerInfo = function(email, callback)
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -702,7 +702,7 @@ getOrderHistory = function(email, callback)
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -718,7 +718,7 @@ getMembership = function(callback)
     if(err) {console.log(err); callback(false); return;}
     connection.query(sql, function(err, res){
       connection.release();
-      if(err) callback(false);
+      if(err) {callback(false);return;}
       else
         callback(res);
     });
@@ -1069,7 +1069,7 @@ updateEmployeeProfile = function(f_name,l_name,pass,employee,callback){
     if(err) { console.log(err); callback(true); return; }
     connection.query(sql, function(err,res){
       connection.release();
-      if(err){callback(true);}
+      if(err){callback(true); return;}
       else
         callback(res);
     });
