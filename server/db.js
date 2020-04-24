@@ -731,7 +731,7 @@ module.exports.getMembership = getMembership;
 getProductsForUpdate = function(dept, callback){
   var sql = "SELECT * FROM product WHERE gift_shop_id = ";
   sql += dept;
-  sql += " GROUP BY product_id";
+  sql += " ORDER BY product_id";
   pool.getConnection(function (err, connection) {
     if(err) { console.log(err); callback(false); return; }
     connection.query(sql, function(err,res){
