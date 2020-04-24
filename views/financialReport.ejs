@@ -196,10 +196,12 @@
                           <tr>
                             <th>Order ID</th>
                             <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Product Size</th>
+                            <th>Quantity</th>
                             <th>Order Date</th>
                             <th>Total Price</th>
                             <th>Email</th>
-
                           </tr>
                         </thead>
       
@@ -208,10 +210,12 @@
                             <tr>
                               <td><%= data.orderTable[i].order_id  %>  </td>
                               <td><%= data.orderTable[i].product_id %> </td>
+                              <td><%= data.orderTable[i].product_name %> </td>
+                              <td><%= data.orderTable[i].product_size %> </td>
+                              <td><%= data.orderTable[i].quantity %> </td>
                               <td><%= data.orderTable[i].order_date %> </td>
                               <td><%= data.orderTable[i].price_total %> </td>
                               <td><%= data.orderTable[i].email %> </td>
-                              
                             </tr>
                           <% } %>   
                         </tbody>

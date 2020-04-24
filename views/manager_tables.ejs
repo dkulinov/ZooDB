@@ -129,6 +129,7 @@
                       <th>Employee ID</th>
                       <th>Department</th>
                       <th>Supervisor</th>
+                      <th>Supervisor ID</th>
                     </tr>
                   </thead>
 
@@ -137,7 +138,8 @@
                       <tr>
                         <td><%= data.employeeList[i].first_name + " " +  data.employeeList[i].last_name %>  </td>
                         <td><%= data.employeeList[i].employee_id %> </td>
-                        <td><%= data.employeeList[i].department_id %> </td>
+                        <td><%= data.employeeList[i].department_name %> </td>
+                        <td><%= data.employeeList[i].supervisor %></td>
                         <td><%= data.employeeList[i].supervisor_id %></td>
                       </tr>
                     <% } %>   
