@@ -112,7 +112,7 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <h1 style = "text-align: center; padding-bottom: 20px;">Insert New Animal</h1>
-            <form action = "/insertNewAnimal" method = "POST">
+            <form enctype="multipart/form-data" action = "/insertNewAnimal" method = "POST" id="new_animal">
                 <center>
                 <label>
                   Animal Name:
@@ -131,25 +131,83 @@
                 <br> 
                 <label>
                     Gender:
+                    <script type="text/javascript">
+                      function changeGenderValue(callback){
+                      var eID = document.getElementById("gender");
+                      var genderVal = eID.options[eID.selectedIndex].value;
+                      var gender = eID.options[eID.selectedIndex].text;
+                      }
+                  </script>
                     <select name = "gender" id = "gender" class = "form-control" required>
-                      <option value = "M">M</option>
-                      <option value = "F">F</option>
+                      <option value = "" onchange="changeGenderValue(this)">SELECT BELOW</option>
+                      <option value = "M" onchange="changeGenderValue(this)">M</option>
+                      <option value = "F" onchange="changeGenderValue(this)">F</option>
                     </select>
                     
                 </label> 
-                <br> 
+                <br>  
                 <label>
                     Enclosure ID:
-                    <input class = "form-control" type="text" name="enclosure" id = "enclosure" placeholder = "111119" required>
+                    <br>
+                    <script type="text/javascript">
+                            function changeEnclosureValue(callback){
+                            var eID2 = document.getElementById("enclosure");
+                            var enclosureVal = eID2.options[eID2.selectedIndex].value;
+                            var enclosure = eID2.options[eID2.selectedIndex].text;
+                            }
+                        </script>
+                        <td>
+                          <select name="enclosure" id="enclosure" class="form-control" required>
+                              <option value="" onchange="changeEnclosureValue(this)">SELECT BELOW</option>
+                              <option value="111111" onchange="changeEnclosureValue(this)">Gorillas in the African Forest</option>
+                              <option value="111112" onchange="changeEnclosureValue(this)">Jungle Trails</option>
+                              <option value="111113" onchange="changeEnclosureValue(this)">Cat Canyon</option>
+                              <option value="111114" onchange="changeEnclosureValue(this)">Giraffe Ridge</option>
+                              <option value="111115" onchange="changeEnclosureValue(this)">Hippo Outpost</option>
+                              <option value="111116" onchange="changeEnclosureValue(this)">African Forest</option>
+                              <option value="111117" onchange="changeEnclosureValue(this)">Wings of the World</option>
+                              <option value="111118" onchange="changeEnclosureValue(this)">Ice Age</option>
+                              <option value="111119" onchange="changeEnclosureValue(this)">Dry Desert</option>
+                              <option value="111120" onchange="changeEnclosureValue(this)">Amazon Forest</option>
+                              <option value="111121" onchange="changeEnclosureValue(this)">Swamp Lands</option>
+                              <option value="111122" onchange="changeEnclosureValue(this)">Aquatic World</option>
+                            </select>
+                        </td>
                 </label>
                 <br> 
                 <label>
                     Status:
+                    <script type="text/javascript">
+                      function changeStatusValue(callback){
+                      var eID = document.getElementById("status");
+                      var statusVal = eID.options[eID.selectedIndex].value;
+                      var status = eID.options[eID.selectedIndex].text;
+                      }
+                  </script>
                     <select name = "status" id = "status" class = "form-control" required>
-                      <option value = "healthy">healthy</option>
-                      <option value = "sick">sick</option>
-                      <option value = "pregnant">pregnant</option>
+                      <option value = "" onchange="changeStatusValue(this)">SELECT BELOW</option>
+                      <option value = "healthy" onchange="changeStatusValue(this)">healthy</option>
+                      <option value = "sick" onchange="changeStatusValue(this)">sick</option>
+                      <option value = "pregnant" onchange="changeStatusValue(this)">pregnant</option>
                     </select>
+                </label>
+                <br> 
+                <label>
+                  Diet Type:
+                  <script type="text/javascript">
+                      function changeDietValue(callback){
+                      var eID = document.getElementById("diet");
+                      var dietVal = eID.options[eID.selectedIndex].value;
+                      var diet = eID.options[eID.selectedIndex].text;
+                      }
+                  </script>
+                        
+                  <select name="diet" id="diet" class="form-control" required>
+                    <option value="" onchange="changeDietValue(this)">SELECT BELOW</option>
+                    <option value="1" onchange="changeDietValue(this)">Herbivore</option>
+                    <option value="2" onchange="changeDietValue(this)">Carnivore</option>
+                    <option value="3" onchange="changeDietValue(this)">Omnivore</option>
+                  </select> 
                 </label>
                 <br>   
                 <label>
@@ -159,12 +217,17 @@
                 <br> 
                 <label>
                     Image Path:
-                    <input class = "form-control" type="text" name="imagepath" id = "imagepath"  placeholder = "tiger.jpg" required>
-                </label>  
-                <br>  
+                    <br>
+                        <input type="file" name="image_path" form="new_animal"/>
+                </label>
+                <br>
+
                 <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-sm text-white-50"></i> Add Animal</button>
               </center>
-              </form>       
+              </form>
+              <script type="text/javascript">
+                    $var = $_POST['gender','enclosure','status','diet'];
+              </script>       
         </div>
         <!-- /.container-fluid -->
         <div class="container-fluid">
@@ -264,8 +327,7 @@
   <script src="../assets/vendor/demo/chart-area-demo.js"></script>
   <script src="../assets/vendor/demo/chart-pie-demo.js"></script>
   <script src="../assets/vendor/demo/datatables-demo.js"></script>
-  </div>
+  </div> 
 </body>
 
 </html>
-

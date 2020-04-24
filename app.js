@@ -7,9 +7,10 @@ var session = require('express-session');
 var app = express();
 var port = process.env.PORT || 3000;
 var path = require('path');
-var db = require('./server/db.js'); 
-
+var db = require('./server/db.js');
 var bodyParser = require('body-parser');
+var upload = require("express-fileupload");
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
@@ -29,6 +30,8 @@ app.set('view engine', 'ejs');
 
 //redefine views folder to the right path
 app.set('views', path.join(__dirname, './views'));
+
+app.use(upload());
 
 // ------------------------------------------------------------------------- //
 
@@ -341,13 +344,26 @@ app.get('/insertNewAnimal', function(req, res)
 //conenct html form to this route and send all the data like animalname, species etc...
 app.post('/insertNewAnimal', function(req, res)
 {
-    var data = [req.body.animalname, req.body.species, req.body.dob, req.body.gender, req.body.enclosure, req.body.status, req.body.feedings, req.body.imagepath]
+    var file = req.files.image_path, filename= file.name;
+    var data = [req.body.animalname, req.body.species, req.body.dob, req.body.gender, req.body.enclosure, req.body.status, req.body.diet, req.body.feedings, filename];
     db.insertNewAnimal(data, function(err,response)
     {
         if(err === true){
             res.render("errorPage.ejs", {message: "Error animal not inserted"});
-        }else{
-            res.redirect("/insertNewAnimal");
+        }
+        else{
+          if(req.files){
+      
+          file.mv("./assets/img/"+filename, function(err){
+            if(err){
+              console.log(err)
+              res.end("error occured")
+            }
+            else{
+              res.redirect("/insertNewAnimal");
+              }
+            })
+          }
         }
     })
 });
@@ -921,23 +937,26 @@ app.get('/updateAnimal/:animal', function(req, res){
           data.employee = employee;
           res.render('updateAnimal', {data:data});
         });
-            
     });
-})
+});
 
+//updates the Animal info you changed in the updateAnimal page
 app.post('/updateAnimal/:animal', function(req, res){
     var enclosure = req.body.enclosure;
-    var diet = req.body.diet_type;
-    var feeds = req.body.feedings;
     var health = req.body.status;
+    var diet = req.body.diet;
+    var feeds = req.body.feedings;
+
     db.updateAnimalInfo(req.params.animal, enclosure, health, diet, feeds,  function(err,response){
-          if(err === true){
+        if(err === true){
               res.render("errorPage.ejs", {message: "Error animal not updated"});
-          }else{
+          }
+        else{
+          //has problems making this request
               res.redirect("/viewAnimal/"+req.params.animal);
           }
         });
-  })
+  });
 
 
 //allows vets to add new foods and medicine
@@ -1001,7 +1020,7 @@ app.post('/updateEmployeeInfo/:id', function(req, res){
     if (password == confirm_pass){
       db.updateEmployeeProfile(firstName, lastName, confirm_pass, req.params.id,  function(err,response){
           if(err === true){
-              res.render("errorPage.ejs", {message: "Error animal not updated"});
+              res.render("errorPage.ejs", {message: "Error Employee not updated"});
           }else{
               res.redirect("/editEmployeeInfo");
           }

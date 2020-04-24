@@ -320,13 +320,24 @@ getCareTakersInfo = function(callback){
 module.exports.getCareTakersInfo= getCareTakersInfo;
 
 
-//insert into zoo_schema.animal values (LPAD(FLOOR(RAND() * 999999.99), 7, '0'), 'Kai', 'Lion', current_date(), '2016-05-02', 'M', '111113', 'healthy', NULL, 2, 'lion.jpg');
+/*  insert into zoo_schema.animal values 
+    animal_id: (LPAD(FLOOR(RAND() * 999999.99), 7, '0'), 
+    animal_name:'Kai', 
+    species:'Lion', 
+    admission: current_date(), 
+    dob:'2016-05-02', 
+    gender:'M',
+    enclosure_id: '111113', 
+    status:'healthy', 
+    diet-type:'herbivore', 
+    feedings-per-day:2, 
+    image_path:'lion.jpg');*/
 insertNewAnimal = function(data, callback){
 
   pool.getConnection(function(err, connection) {
     if(err) { console.log(err); callback(true); return; }
     
-    var sql = "INSERT INTO zoo_schema.animal values (NULL, ?, ?, current_date(), ?, ?, ?, ?, NULL, ?, ?);";
+    var sql = "INSERT INTO zoo_schema.animal values (NULL, ?, ?, current_date(), ?, ?, ?, ?, ?, ?, ?);";
 
 
     connection.query(sql, data, function(err, results) {
@@ -335,7 +346,6 @@ insertNewAnimal = function(data, callback){
 
         callback(false, true);  //no error return to app.js       
 
-           
     });
   });
 }
@@ -942,24 +952,24 @@ updateAnimalInfo = function(animal, enclosure_id, health, diet, feeds, callback)
 {
   var sql = "UPDATE zoo_schema.animal SET enclosure_id ="
   sql+= enclosure_id;
-  sql+=", status =";
+  sql+= ", status =";
   sql+= "'"+health+"'";
-  sql+=", diet_type =";
+  sql+= ", diet_type=";
   sql+= "'"+diet+"'";
-  sql+=", feedings_per_day =";
-  sql+=feeds;
+  sql+= ", feedings_per_day =";
+  sql+= feeds;
   sql+=" WHERE animal_id =";
-  sql+=animal;
+  sql+= animal;
+  console.log(sql);
 
-
-   pool.getConnection(function (err, connection) {
-    if(err) { console.log(err); callback(false); return; }
-        connection.query(sql, function(err,res){
-          connection.release();
-          if(err){callback(false);}
-          callback(res);
-        });
-      });
+  pool.getConnection(function (err, connection) {
+    if(err) { console.log(err);; callback(false); return; }
+    connection.query(sql, function(err,res){
+      connection.release();
+      if(err){callback(false);}
+      callback(res);
+    });
+  });
  }
 module.exports.updateAnimalInfo = updateAnimalInfo;
 
