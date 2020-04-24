@@ -46,13 +46,18 @@ function user(username, role, dept=-1, isManager=false, isCareTaker=false, isMem
 
 function assignEmployeeInfo(emp, dept, isM, isC, isMem, cb)
 {
-    emp.dept = dept;
-    if(isM > 0)
-        emp.isManager = true;
-    if(isC > 0)
-        emp.isCareTaker = true;
-   emp.isMember = isMem;
-    cb();
+    if(emp!==false)
+    {
+        emp.dept = dept;
+        if(isM > 0)
+            emp.isManager = true;
+        if(isC > 0)
+            emp.isCareTaker = true;
+        emp.isMember = isMem;
+        cb(true);
+    }
+    else
+        cb(false);
 }
 
 
@@ -127,9 +132,12 @@ app.post('/employeeLogin', function(req, res){
               
                 if(data === true){
                     req.session.user = new user(username, "Employee");
-                    db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function()
+                    db.getEmployeeInfo(req.session.user, assignEmployeeInfo, function(val)
                     {
-                        res.redirect('/');             
+                        if(val!==false)
+                            res.redirect('/');    
+                        else
+                            res.render('errorPage', {message:"Something went wrong"});
                     });
                 }else{
                   res.render('errorPage', {message: "Wrong username or password"});
