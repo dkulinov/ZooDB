@@ -759,7 +759,7 @@ updateStock = function(id, size, quantity, callback){
     connection.query(sql, function(err,res){        
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -775,7 +775,7 @@ getMedicine = function(id, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -793,7 +793,7 @@ giveMedicine = function(id, doses, doseAmount, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -810,7 +810,7 @@ getFood = function(id, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -827,7 +827,7 @@ giveFood = function(id, servings, servingAmount, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -843,7 +843,7 @@ getAllCaretakers = function(callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -861,7 +861,7 @@ assignAnimalToCaretaker = function(animal, caretaker, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -889,7 +889,7 @@ prescribeMedicine = function(animal, medicine, dose, frequency, duration, diseas
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -908,7 +908,7 @@ updateMedStock = function(med, quantity, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -923,7 +923,7 @@ getAnimalInfo = function(animal, callback){
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -938,7 +938,7 @@ getAnimalList = function(callback){
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -965,7 +965,7 @@ updateAnimalInfo = function(animal, enclosure_id, health, diet, feeds, callback)
         connection.query(sql, function(err,res){
           connection.release();
           if(err){callback(false);}
-          callback(res);
+          else callback(res);
         });
       });
  }
@@ -983,7 +983,7 @@ updateFoodStock = function(food, quantity, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
@@ -1007,7 +1007,7 @@ assignFood = function(animal, food, serving, frequency, callback)
     connection.query(sql, function(err,res){
       connection.release();
       if(err){callback(false);}
-      callback(res);
+      else callback(res);
     });
   });
 }
