@@ -1123,7 +1123,6 @@ app.post('/updateAnimal/:animal', function(req, res){
               res.render("errorPage.ejs", {message: "Error animal not updated"});
           }
         else{
-          //has problems making this request
               res.redirect("/viewAnimal/"+req.params.animal);
           }
         });
