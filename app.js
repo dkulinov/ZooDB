@@ -244,7 +244,7 @@ app.get('/caretaker',checkEmployeeSignIn, function(req,res)
         data.employee = employee;  
         db.getEmployeesAnimals(username, function(animals){
             data.animals = animals;
-            if(animals!=false)
+            if(animals!==false)
                res.render("caretaker.ejs", { data: data });
             else
                res.render('errorPage', {message:"Something went wrong"});
@@ -261,7 +261,7 @@ app.get('/caretakerManager',checkEmployeeSignIn, function(req,res)
         data.employee = employee;
         db.getCareTakersInfo(function(caretakers){
             data.caretakers = caretakers;
-            if(caretakers!=false)
+            if(caretakers!==false)
                res.render("caretakerManager.ejs", { data: data });
             else
                res.render('errorPage', {message:"Something went wrong"});
@@ -278,7 +278,7 @@ app.get('/vet',checkEmployeeSignIn, function(req,res)
         data.employee = employee;
         db.getAllAnimals(function(animals){
             data.animals = animals;
-            if(animals!=false)
+            if(animals!==false)
                res.render("vet.ejs", { data: data });
             else
                res.render('errorPage', {message:"Something went wrong"});
@@ -300,12 +300,12 @@ app.get('/vetManager', function(req,res)
             data.employee = employee;
                 db.getAllAnimals(function(animals){
                 data.animals = animals;
-                if(animals!=false)
+                if(animals!==false)
                 {
                    db.getAllVets(function(employees)  //get employees from db.js file and then call the function 
                    {
                        data.employeeList = employees;
-                       if(employees!=false)
+                       if(employees!==false)
                            res.render("vetManager.ejs", { data:data });
                         else
                            res.render('errorPage', {message:"Something went wrong"});
@@ -328,13 +328,13 @@ app.get('/vetTables',checkEmployeeSignIn, function(req,res){
         data.employee = employee;
         db.getAllAnimals(function(animalList){
          data.animalList = animalList;
-         if(animalList!=false){
+         if(animalList!==false){
             db.getFoodStock(function(foodStock){
                data.foodStock = foodStock;
-               if(foodStock!=false){
+               if(foodStock!==false){
                   db.getMedicineStock(function(medicineStock){
                      data.medicineStock = medicineStock;
-                     if(medicineStock!=false)
+                     if(medicineStock!==false)
                         res.render("vet_tables.ejs", {data :data});
                      else
                         res.render('errorPage',{message:"Something went wrong"});
@@ -359,7 +359,7 @@ app.get('/insertNewAnimal', function(req, res)
         data.employee = employee;
         db.getAnimalList(function(animals){
             data.animalList = animals;
-            if(animals!=false)
+            if(animals!==false)
                res.render("insertAnimal.ejs",{data:data});
             else
                res.render('errorPage', {message:"Something went wrong"});
@@ -413,15 +413,15 @@ app.get('/managerTables',checkEmployeeSignIn, function(req,res)
     db.getAllEmployees(function(employees)  //get employees from db.js file and then call the function 
     {
        data.employeeList = employees;
-       if(employees!=false){
+       if(employees!==false){
           db.getFoodStock(function(foodStock)  
           {
            data.foodStock = foodStock;
-           if(foodStock != false){
+           if(foodStock !== false){
                 db.getMedicineStock(function(medicineStock)  //after running the last query we render the page
                 {
                     data.medicineStock = medicineStock;
-                    if(medicineStock!=false){
+                    if(medicineStock!==false){
                         db.getEmployeeName(req.session.user,function(employee){
                             data.employee = employee;
                             res.render("manager_tables", { data: data });
@@ -501,7 +501,7 @@ app.get('/shop', function(req,res)
     var items = [];
     db.getProducts(function(items)
     {
-        if(items!=false)
+        if(items!==false)
         {
             if(!req.session.user)
                 res.render("shop.ejs", {items: [items, false, "none", -1]});
@@ -531,7 +531,7 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
     if(order.in_store == 0)
     {
         db.makeOnlinePurchase(order, function(response){
-            if(response!=false)
+            if(response!==false)
             {
                 newID = response;
                 newID = newID.insertId;
@@ -544,7 +544,7 @@ app.post('/buy/:id/:size/:quantity/:total/:in_store', function(req,res)
     else
     {
         db.ringUpCustomer(order, function(response){
-            if(response!=false)
+            if(response!==false)
             {
                 newID = response;
                 newID = newID.insertId;
@@ -564,7 +564,7 @@ app.get('/updateStock', function(req, res)
     else if(req.session.user.dept == 5 ||  req.session.user.dept== 6 || req.session.user.dept==7)
     {
         db.getProductsForUpdate(req.session.user.dept, function(data){
-            if(data!=false)
+            if(data!==false)
                 res.render('updateStock', {data:data});
             else
                 res.render('errorPage', {message:"We had a problem"});
@@ -577,7 +577,7 @@ app.get('/updateStock', function(req, res)
 app.post('/updateStock/:id/:size', function(req, res){
     db.updateStock(req.params.id, req.params.size, req.body.quantity, function(data)
     {
-       if(data!=false)
+       if(data!==false)
          res.redirect('/updateStock');
        else
           res.render('errorPage', {message:"Something went wrong"});
@@ -633,7 +633,7 @@ app.post('/alert', function(req, res)
         {
             db.getNutritionAlerts(req.body.time, function(info)
             {
-                if(info!=false)
+                if(info!==false)
                     res.render('nutrition_alerts.ejs', {data:[info, req.body.time]});
                 else
                     res.render('errorPage', {message:"Something went wrong"});
@@ -643,7 +643,7 @@ app.post('/alert', function(req, res)
         {
             db.getStoreManagersAlerts(req.session.user.username, req.body.time, function(info)
             {
-                if(info != false)
+                if(info !== false)
                     res.render('manager_alerts.ejs', {data:[info, req.body.time]});
                 else
                     res.render('errorPage', {message:"Something went wrong"});
@@ -666,7 +666,7 @@ app.post('/searchOrder', function(req, res)
 {
     db.searchOrder(req.body.number, req.body.zip, function(data)
     {
-        if(data != false)
+        if(data !== false)
             res.render('order_status.ejs', {data:data});
         else
             res.render('errorPage', {message: "We couldn't find your order!"});
@@ -684,7 +684,7 @@ app.get('/customerFrontPage', function(req, res)
     {
         db.getCustomerInfo(req.session.user.username, function(data)
         {
-            if(data!=false)
+            if(data!==false)
             {
                 req.session.user.isMember = data[0].isMember;
                 res.render('customerFrontPage.ejs', {data:data});
@@ -706,7 +706,7 @@ app.get('/orderHistory', function(req, res)
     {
         db.getOrderHistory(req.session.user.username, function(data)
         {
-           if(data!=false)
+           if(data!==false)
                res.render('orderHistory.ejs', {data:data});
            else
               res.render('errorPage', {message:"Something went wrong"});
@@ -725,7 +725,7 @@ app.get('/getMembership', function(req,res)
     {
         db.getMembership(function(data)
         {
-           if(data!=false)
+           if(data!==false)
                res.render('becomeMember.ejs', {data:data});
            else
               res.render('errorPage', {message:"Something went wrong"});
@@ -743,7 +743,7 @@ app.get('/getMedicine/:animalID', function(req, res){
         data.employee = employee;
         db.getMedicine(req.params.animalID, function(med){
           data.med = med;
-            if(med != false)
+            if(med !== false)
                 res.render('giveMed.ejs', {data:data});
             else
                 res.render('errorPage', {message: "This animal doesn't take any medicine"});
@@ -758,7 +758,7 @@ app.get('/getMedicine/:animalID', function(req, res){
 // routes for vets to see animal medicine info and update medicine stock
 app.post('/giveMedicine/:id/:doseAmount/:animal', function(req,res){
     db.giveMedicine(req.params.id, req.body.doses, req.params.doseAmount, function(info){
-        if(info != false)
+        if(info !== false)
             res.redirect('/getMedicine/' + req.params.animal);
         else
             res.render('errorPage', {message:"Something went wrong"});
@@ -776,7 +776,7 @@ app.get('/getFood/:animalID', function(req, res)
         db.getEmployeeName(req.session.user,function(employee){
           data.employee = employee;
           db.getFood(req.params.animalID, function(food){
-            if(food != false){
+            if(food !== false){
                 data.food = food;
                 res.render('giveFood.ejs', {data:data});
             }
@@ -792,7 +792,7 @@ app.get('/getFood/:animalID', function(req, res)
 
 app.post('/giveFood/:id/:servingAmount/:animal', function(req, res){
     db.giveFood(req.params.id, req.body.servings, req.params.servingAmount, function(info){
-        if(info != false)
+        if(info !== false)
             res.redirect('/getFood/' + req.params.animal);
         else
             res.render('errorPage', {message:"Something went wrong"});
@@ -810,7 +810,7 @@ app.get('/assignAnimal', function(req, res){
         data.employee = employee;
             db.getAllAnimals(function(animals){
               data.animals = animals;
-                if(animals != false)
+                if(animals !== false)
                     res.render('viewAnimals', {data:data});
                 else
                     res.render('errorPage', {message: "Something went wrong"});
@@ -831,7 +831,7 @@ app.get('/assignCaretaker/:animal', function(req,res){
           data.employee = employee;
           db.getAllCaretakers(function(caretakers){
             data.caretakers = [caretakers, req.params.animal];
-            if(caretakers != false)
+            if(caretakers !== false)
                 res.render('viewCaretakers', {data:data});
             else
                 res.render('errorPage', {message: "Something went wrong"});
@@ -846,7 +846,7 @@ app.get('/assignCaretaker/:animal', function(req,res){
 app.post('/assign/:animal/:caretaker', function(req, res){
     db.assignAnimalToCaretaker(req.params.animal, req.params.caretaker, function(result)
     {
-        if(result != false)
+        if(result !== false)
             res.redirect('/');
         else
             res.render('errorPage', {message: 'That caretaker is already assigned to that animal'});
@@ -864,7 +864,7 @@ app.get('/prescribeMedicine/:animal', function(req, res){
         data.employee = employee;
         db.getMedicineStock(function(medicines){
           data.medicines = [medicines, req.params.animal];
-            if(medicines != false)
+            if(medicines !== false)
                 res.render('viewMedicine', {data: data});
             else
                 res.render('errorPage', {message:"Something went wrong"});
@@ -878,7 +878,7 @@ app.get('/prescribeMedicine/:animal', function(req, res){
 
 app.post('/prescribeMedicine/:animal/:medicine', function(req, res){
     db.prescribeMedicine(req.params.animal, req.params.medicine, req.body.dose, req.body.frequency, req.body.duration, req.body.disease, function(result){
-        if(result != false)
+        if(result !== false)
             res.redirect('/getMedicine/' + req.params.animal);
         else
             res.render('errorPage', {message:"This animal is already taking this medicine"});
@@ -892,7 +892,7 @@ app.get('/updateMedStock', function(req, res){
     else if(req.session.user.dept==9)
     {
         db.getMedicineStock(function(medicine){
-            if(medicine!=false)
+            if(medicine!==false)
                 res.render('medStock', {data:medicine});
             else
                 res.render('errorPage', {message: "Something went wrong"});
@@ -904,7 +904,7 @@ app.get('/updateMedStock', function(req, res){
 
 app.post('/updateMedStock/:medicine', function(req, res){
     db.updateMedStock(req.params.medicine, req.body.quantity, function(result){
-        if(result != false)
+        if(result !== false)
             res.redirect('/updateMedStock');
         else
             res.render('errorPage', {message: "We encountered an error"});
@@ -918,7 +918,7 @@ app.get('/updateFoodStock', function(req, res){
     else if(req.session.user.dept==15 || req.session.user.dept==12)
     {
         db.getFoodStock(function(food){
-            if(food != false)
+            if(food !== false)
                 res.render('foodStock', {data:food});
             else
                 res.render('errorPage', {message: "Something went wrong"});
@@ -931,7 +931,7 @@ app.get('/updateFoodStock', function(req, res){
 
 app.post('/updateFoodStock/:food', function(req, res){
     db.updateFoodStock(req.params.food, req.body.quantity, function(result){
-        if(result != false)
+        if(result !== false)
             res.redirect('/updateFoodStock');
         else
         res.render('errorPage', {message: "Something went wrong"});
@@ -948,7 +948,7 @@ app.get('/assignFood/:animal', function(req, res){
       db.getEmployeeName(req.session.user,function(employee){
         data.employee = employee;
         db.getFoodStock(function(food){
-            if(food != false){
+            if(food !== false){
                 data.foods = [food,req.params.animal];
                 res.render('viewFood', {data:data});
             }
@@ -965,7 +965,7 @@ app.get('/assignFood/:animal', function(req, res){
 app.post('/assignFood/:animal/:food', function(req, res){
     db.assignFood(req.params.animal, req.params.food, req.body.serving, req.body.frequency, function(result)
     {
-        if(result != false)
+        if(result !== false)
             res.redirect('/getFood/' + req.params.animal);
         else
             res.render('errorPage', {message:"This animal is already eating this food"});
@@ -981,7 +981,7 @@ app.get('/viewAnimal/:animal', function(req,res){
         var data = [];
         db.getAnimalInfo(req.params.animal,function(animal){
             data.animal = animal;
-           if(animal!=false){
+           if(animal!==false){
                db.getEmployeeName(req.session.user,function(employee){
                  data.employee = employee;
                  res.render('viewAnimalInfo', {data:data});
@@ -1001,7 +1001,7 @@ app.get('/updateAnimal/:animal', function(req, res){
   var data = [];
     db.getAnimalInfo(req.params.animal, function(animal){
         data.animal = animal;
-       if(animal!=false){
+       if(animal!==false){
            db.getEmployeeName(req.session.user,function(employee){
              data.employee = employee;
              res.render('updateAnimal', {data:data});
@@ -1048,7 +1048,7 @@ app.get('/addNew/:type', function(req, res){
 
 app.post('/addNew/:type', function(req, res){
     db.addNew(req.params.type, req.body.name, req.body.stock, req.body.target, function(result){
-        if(result != false)
+        if(result !== false)
             res.redirect('/vetTables');
         else 
             res.render('errorPage', {message: "That is already in the database"});
@@ -1062,7 +1062,7 @@ app.get('/editEmployeeInfo', function(req, res){
     else 
     {
         db.getEmployeeProfile(req.session.user.username, function(employee){
-           if(employee!=false)
+           if(employee!==false)
               res.render('editEmployeeProfile', {data:employee});
            else
               res.render('errorPage', {message:"Something went wrong"});
@@ -1115,7 +1115,7 @@ app.get('/addNewItem', function(req, res){
 
 app.post('/addNewItem/:shopID', function(req, res){
     db.addNewItem(req.body.name, req.body.size, req.body.price, req.body.stock, req.body.target, req.body.image_path,req.params.shopID,function(result){
-        if(result != false)
+        if(result !== false)
             res.redirect('/shop');
         else
             res.render('errorPage', {message: "Something went wrong"});
@@ -1127,7 +1127,7 @@ app.post('/addNewItem/:shopID', function(req, res){
 app.post('/delete/:animal/', function(req, res){
     db.deleteAnimal(req.params.animal, function(result)
     {
-        if(result != false)
+        if(result !== false)
             res.redirect('/');
         else
             res.render('errorPage', {message: "Something went wrong"});
